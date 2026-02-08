@@ -4,7 +4,7 @@
 
 **Language:** Rust
 **Interface:** CLI-first + TUI for exploration
-**License:** MIT
+**License:** GPL-3.0
 **Repository:** github.com/[you]/dotsmith
 
 ---

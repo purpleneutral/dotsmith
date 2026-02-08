@@ -1,5 +1,8 @@
 pub mod config;
+pub mod deploy;
 pub mod detect;
 pub mod errors;
 pub mod manifest;
 pub mod module;
+pub mod reload;
+pub mod snapshot;

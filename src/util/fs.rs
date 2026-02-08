@@ -1,4 +1,8 @@
+use std::io::Write;
+use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
+
+use anyhow::Context;
 
 /// Check if a path is a symlink (without following it).
 pub fn is_symlink(path: &Path) -> bool {
@@ -14,6 +18,30 @@ pub fn symlink_target(path: &Path) -> Option<PathBuf> {
     } else {
         None
     }
+}
+
+/// Write content to a file atomically (write to .tmp then rename).
+/// Sets file permissions to 0600 (owner-only read/write).
+pub fn atomic_write(path: &Path, content: &str) -> anyhow::Result<()> {
+    let tmp_path = path.with_extension("tmp");
+
+    {
+        let mut file = std::fs::File::create(&tmp_path)
+            .with_context(|| format!("failed to create {}", tmp_path.display()))?;
+        file.write_all(content.as_bytes())?;
+        file.sync_all()?;
+        file.set_permissions(std::fs::Permissions::from_mode(0o600))?;
+    }
+
+    std::fs::rename(&tmp_path, path).with_context(|| {
+        format!(
+            "failed to rename {} to {}",
+            tmp_path.display(),
+            path.display()
+        )
+    })?;
+
+    Ok(())
 }
 
 /// Check if a resolved path is within the user's home directory.
@@ -85,6 +113,32 @@ mod tests {
         std::fs::write(&file, "content").unwrap();
 
         assert_eq!(symlink_target(&file), None);
+    }
+
+    #[test]
+    fn test_atomic_write() {
+        let tmp = TempDir::new().unwrap();
+        let path = tmp.path().join("test.conf");
+
+        atomic_write(&path, "hello world").unwrap();
+
+        assert!(path.exists());
+        assert_eq!(std::fs::read_to_string(&path).unwrap(), "hello world");
+
+        // Check permissions
+        let mode = std::fs::metadata(&path).unwrap().permissions().mode() & 0o777;
+        assert_eq!(mode, 0o600, "file should have 0600 permissions");
+    }
+
+    #[test]
+    fn test_atomic_write_overwrites() {
+        let tmp = TempDir::new().unwrap();
+        let path = tmp.path().join("test.conf");
+
+        atomic_write(&path, "first").unwrap();
+        atomic_write(&path, "second").unwrap();
+
+        assert_eq!(std::fs::read_to_string(&path).unwrap(), "second");
     }
 
     #[test]

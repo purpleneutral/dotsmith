@@ -1,7 +1,5 @@
 use std::collections::BTreeMap;
 use std::fs;
-use std::io::Write;
-use std::os::unix::fs::PermissionsExt;
 use std::path::Path;
 
 use anyhow::{Context, Result};
@@ -9,6 +7,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use crate::core::errors::DotsmithError;
+use crate::util;
 
 /// The root manifest file tracking all tools managed by dotsmith.
 /// Stored at `<config_dir>/manifest.toml`.
@@ -65,27 +64,10 @@ impl Manifest {
             .with_context(|| format!("failed to create {}", config_dir.display()))?;
 
         let path = config_dir.join("manifest.toml");
-        let tmp_path = config_dir.join("manifest.toml.tmp");
-
         let content = toml::to_string_pretty(self).context("failed to serialize manifest")?;
 
-        // Write to temp file first (atomic write)
-        {
-            let mut file =
-                fs::File::create(&tmp_path).context("failed to create temp manifest file")?;
-            file.write_all(content.as_bytes())
-                .context("failed to write temp manifest file")?;
-            file.sync_all()
-                .context("failed to sync temp manifest file")?;
-
-            // Set permissions to owner-only read/write
-            let perms = fs::Permissions::from_mode(0o600);
-            file.set_permissions(perms)
-                .context("failed to set manifest permissions")?;
-        }
-
-        // Atomic rename
-        fs::rename(&tmp_path, &path).context("failed to rename temp manifest to manifest.toml")?;
+        util::fs::atomic_write(&path, &content)
+            .context("failed to write manifest.toml")?;
 
         Ok(())
     }
@@ -121,6 +103,7 @@ impl Manifest {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::os::unix::fs::PermissionsExt;
     use tempfile::TempDir;
 
     fn sample_entry() -> ToolEntry {

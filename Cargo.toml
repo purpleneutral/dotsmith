@@ -2,8 +2,11 @@
 name = "dotsmith"
 version = "0.1.0-alpha.1"
 edition = "2024"
+rust-version = "1.85"
 description = "The dotfile workbench — explore, manage, and master your configs"
 license = "MIT"
+repository = "https://github.com/purpleneutral/dotsmith"
+readme = "README.md"
 keywords = ["dotfiles", "config", "tui", "terminal", "cli"]
 categories = ["command-line-utilities", "config"]
 
@@ -16,6 +19,9 @@ chrono = { version = "0.4", features = ["serde"] }
 anyhow = "1"
 thiserror = "2"
 colored = "2"
+rusqlite = { version = "0.32", features = ["bundled"] }
+similar = "2"
+sha2 = "0.10"
 
 [dev-dependencies]
 tempfile = "3"

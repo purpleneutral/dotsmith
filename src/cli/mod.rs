@@ -1,7 +1,13 @@
 pub mod add;
+pub mod deploy;
+pub mod diff;
+pub mod history;
 pub mod init;
 pub mod list;
+pub mod reload;
 pub mod remove;
+pub mod rollback;
+pub mod snapshot;
 pub mod status;
 
 use clap::{Parser, Subcommand};
@@ -48,4 +54,59 @@ pub enum Commands {
 
     /// Show recent changes and warnings
     Status,
+
+    /// Take a snapshot of config files
+    Snapshot {
+        /// Tool name (snapshots all tools if omitted)
+        tool: Option<String>,
+
+        /// Message to attach to this snapshot
+        #[arg(short, long)]
+        message: Option<String>,
+    },
+
+    /// Show snapshot history for a tool
+    History {
+        /// Tool name
+        tool: String,
+
+        /// Maximum number of entries to show
+        #[arg(short, long, default_value = "20")]
+        limit: usize,
+    },
+
+    /// Show diff between current configs and last snapshot
+    Diff {
+        /// Tool name (diffs all tools if omitted)
+        tool: Option<String>,
+    },
+
+    /// Rollback a config file to a specific snapshot
+    Rollback {
+        /// Snapshot ID to rollback to (from history output)
+        snapshot_id: i64,
+
+        /// Preview changes without applying them
+        #[arg(long)]
+        dry_run: bool,
+    },
+
+    /// Deploy config symlinks from source to target
+    Deploy {
+        /// Source path (where config files live)
+        source: String,
+
+        /// Target path (where symlinks should be created)
+        target: String,
+
+        /// Preview changes without applying them
+        #[arg(long)]
+        dry_run: bool,
+    },
+
+    /// Reload configuration for a running tool
+    Reload {
+        /// Tool name to reload
+        tool: String,
+    },
 }

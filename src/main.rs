@@ -16,6 +16,22 @@ fn main() -> Result<()> {
         Commands::Remove { ref tool } => cli::remove::run(cli.verbose, tool),
         Commands::List => cli::list::run(cli.verbose),
         Commands::Status => cli::status::run(cli.verbose),
+        Commands::Snapshot {
+            ref tool,
+            ref message,
+        } => cli::snapshot::run(cli.verbose, tool.as_deref(), message.as_deref()),
+        Commands::History { ref tool, limit } => cli::history::run(cli.verbose, tool, limit),
+        Commands::Diff { ref tool } => cli::diff::run(cli.verbose, tool.as_deref()),
+        Commands::Rollback {
+            snapshot_id,
+            dry_run,
+        } => cli::rollback::run(cli.verbose, snapshot_id, dry_run),
+        Commands::Deploy {
+            ref source,
+            ref target,
+            dry_run,
+        } => cli::deploy::run(cli.verbose, source, target, dry_run),
+        Commands::Reload { ref tool } => cli::reload::run(cli.verbose, tool),
     };
 
     if let Err(e) = result {

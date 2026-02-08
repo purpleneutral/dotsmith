@@ -1,0 +1,33 @@
+[metadata]
+name = "zsh"
+display_name = "Zsh"
+description = "Z Shell — a powerful interactive shell with extensive customization"
+homepage = "https://www.zsh.org/"
+
+config_paths = [
+    "~/.config/zsh",
+    "~/.zshrc",
+    "~/.zshenv",
+    "~/.zprofile",
+    "~/.zsh",
+]
+
+detect_command = "which zsh"
+reload_command = "zsh -c 'source ${ZDOTDIR:-$HOME}/.zshrc'"
+reload_description = "source zshrc in a new shell"
+man_page = "zshall"
+config_format = "shell"
+
+plugins_supported = true
+plugin_dir = "~/.config/zsh/zinix-mgr"
+
+categories = [
+    "history",
+    "completion",
+    "prompt",
+    "navigation",
+    "globbing",
+    "safety",
+    "performance",
+    "interaction",
+]

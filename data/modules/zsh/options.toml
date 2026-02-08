@@ -1,0 +1,318 @@
+[[options]]
+name = "HIST_IGNORE_DUPS"
+type = "boolean"
+default = "off"
+category = "history"
+description = "Do not enter command lines into the history list if they are duplicates of the previous event"
+why = "Reduces history clutter from repeated commands like ls, cd, clear"
+example = "setopt HIST_IGNORE_DUPS"
+tags = ["essential", "history"]
+
+[[options]]
+name = "HIST_IGNORE_ALL_DUPS"
+type = "boolean"
+default = "off"
+category = "history"
+description = "Remove older duplicate entries from history when a new duplicate is added"
+why = "Keeps history clean — only the most recent invocation of each command is retained"
+example = "setopt HIST_IGNORE_ALL_DUPS"
+tags = ["history"]
+related = ["HIST_IGNORE_DUPS"]
+
+[[options]]
+name = "HIST_IGNORE_SPACE"
+type = "boolean"
+default = "off"
+category = "history"
+description = "Do not add commands prefixed with a space to history"
+why = "Allows running sensitive commands (passwords, tokens) without recording them"
+example = "setopt HIST_IGNORE_SPACE"
+tags = ["essential", "security", "history"]
+
+[[options]]
+name = "SHARE_HISTORY"
+type = "boolean"
+default = "off"
+category = "history"
+description = "Share command history between all running zsh sessions"
+why = "Commands typed in one terminal are immediately available in others via up-arrow"
+example = "setopt SHARE_HISTORY"
+tags = ["essential", "history"]
+related = ["INC_APPEND_HISTORY"]
+
+[[options]]
+name = "INC_APPEND_HISTORY"
+type = "boolean"
+default = "off"
+category = "history"
+description = "Append history entries incrementally as commands are entered, not on shell exit"
+why = "Prevents history loss if a shell session crashes or is killed"
+example = "setopt INC_APPEND_HISTORY"
+tags = ["essential", "history"]
+related = ["SHARE_HISTORY"]
+
+[[options]]
+name = "EXTENDED_HISTORY"
+type = "boolean"
+default = "off"
+category = "history"
+description = "Save timestamps and duration for each history entry"
+why = "Enables analysis of when and how long commands took"
+example = "setopt EXTENDED_HISTORY"
+tags = ["history"]
+
+[[options]]
+name = "HIST_EXPIRE_DUPS_FIRST"
+type = "boolean"
+default = "off"
+category = "history"
+description = "When history reaches HISTSIZE, expire duplicate entries before unique ones"
+why = "Preserves unique commands longer when history fills up"
+example = "setopt HIST_EXPIRE_DUPS_FIRST"
+tags = ["history"]
+
+[[options]]
+name = "HIST_VERIFY"
+type = "boolean"
+default = "off"
+category = "history"
+description = "Show history expansion result before executing (like bash shopt histverify)"
+why = "Lets you review !! and !$ expansions before they run — prevents accidents"
+example = "setopt HIST_VERIFY"
+tags = ["safety", "history"]
+
+[[options]]
+name = "HISTSIZE"
+type = "integer"
+default = "30"
+category = "history"
+description = "Maximum number of events stored in internal history list"
+why = "Higher values let you search further back with Ctrl-R and up-arrow"
+example = "HISTSIZE=10000"
+tags = ["essential", "history"]
+
+[[options]]
+name = "SAVEHIST"
+type = "integer"
+default = "0"
+category = "history"
+description = "Maximum number of history events saved to the history file"
+why = "Set this to at least HISTSIZE to persist history across sessions"
+example = "SAVEHIST=10000"
+tags = ["essential", "history"]
+related = ["HISTSIZE"]
+
+[[options]]
+name = "HISTFILE"
+type = "path"
+default = "~/.zsh_history"
+category = "history"
+description = "Path to the file where command history is saved"
+why = "Relocate to XDG-compliant location or keep in ZDOTDIR"
+example = "HISTFILE=${ZDOTDIR}/.zsh_history"
+tags = ["history"]
+
+[[options]]
+name = "AUTO_CD"
+type = "boolean"
+default = "off"
+category = "navigation"
+description = "If a command is a directory name, cd into it without typing cd"
+why = "Speeds up navigation — just type the directory name"
+example = "setopt AUTO_CD"
+tags = ["essential", "navigation"]
+
+[[options]]
+name = "AUTO_PUSHD"
+type = "boolean"
+default = "off"
+category = "navigation"
+description = "Make cd push the old directory onto the directory stack"
+why = "Enables popd to go back to previous directories like browser back button"
+example = "setopt AUTO_PUSHD"
+tags = ["navigation"]
+related = ["PUSHD_IGNORE_DUPS", "PUSHD_SILENT"]
+
+[[options]]
+name = "PUSHD_IGNORE_DUPS"
+type = "boolean"
+default = "off"
+category = "navigation"
+description = "Don't push duplicate directories onto the directory stack"
+why = "Keeps the directory stack clean when navigating back and forth"
+example = "setopt PUSHD_IGNORE_DUPS"
+tags = ["navigation"]
+related = ["AUTO_PUSHD"]
+
+[[options]]
+name = "PUSHD_SILENT"
+type = "boolean"
+default = "off"
+category = "navigation"
+description = "Do not print the directory stack after pushd or popd"
+why = "Reduces output noise when using AUTO_PUSHD"
+example = "setopt PUSHD_SILENT"
+tags = ["navigation"]
+related = ["AUTO_PUSHD"]
+
+[[options]]
+name = "CORRECT"
+type = "boolean"
+default = "off"
+category = "interaction"
+description = "Try to correct the spelling of commands"
+why = "Catches typos like 'gti' and suggests 'git'"
+example = "setopt CORRECT"
+tags = ["interaction"]
+related = ["CORRECT_ALL"]
+
+[[options]]
+name = "CORRECT_ALL"
+type = "boolean"
+default = "off"
+category = "interaction"
+description = "Try to correct the spelling of all arguments in a command line"
+why = "More aggressive correction — also fixes filename typos"
+example = "setopt CORRECT_ALL"
+tags = ["interaction"]
+related = ["CORRECT"]
+
+[[options]]
+name = "INTERACTIVE_COMMENTS"
+type = "boolean"
+default = "off"
+category = "interaction"
+description = "Allow comments in interactive shell (lines starting with #)"
+why = "Lets you comment out parts of a command line while editing"
+example = "setopt INTERACTIVE_COMMENTS"
+tags = ["essential", "interaction"]
+
+[[options]]
+name = "NO_BEEP"
+type = "boolean"
+default = "off"
+category = "interaction"
+description = "Disable terminal beeping"
+why = "Prevents annoying beeps on tab completion failure and errors"
+example = "setopt NO_BEEP"
+tags = ["essential", "interaction"]
+
+[[options]]
+name = "AUTO_MENU"
+type = "boolean"
+default = "on"
+category = "completion"
+description = "Automatically use menu completion after the second consecutive tab press"
+why = "First tab completes as far as possible, second tab shows menu of options"
+example = "setopt AUTO_MENU"
+tags = ["completion"]
+
+[[options]]
+name = "ALWAYS_TO_END"
+type = "boolean"
+default = "off"
+category = "completion"
+description = "Move cursor to the end of a word when completing from the middle"
+why = "Natural cursor placement after completion — cursor ends up where you'd expect"
+example = "setopt ALWAYS_TO_END"
+tags = ["completion"]
+
+[[options]]
+name = "COMPLETE_IN_WORD"
+type = "boolean"
+default = "off"
+category = "completion"
+description = "Allow completion from within a word, not just at the end"
+why = "Tab completion works even when cursor is in the middle of a word"
+example = "setopt COMPLETE_IN_WORD"
+tags = ["completion"]
+
+[[options]]
+name = "MENU_COMPLETE"
+type = "boolean"
+default = "off"
+category = "completion"
+description = "On ambiguous completion, insert the first match immediately instead of just showing options"
+why = "Faster completion — cycle through matches with repeated tabs"
+example = "setopt MENU_COMPLETE"
+tags = ["completion"]
+
+[[options]]
+name = "EXTENDED_GLOB"
+type = "boolean"
+default = "off"
+category = "globbing"
+description = "Enable extended globbing operators (#, ~, ^)"
+why = "Powerful file matching — ls ^*.txt (all non-txt files), ls **/*.rs (recursive)"
+example = "setopt EXTENDED_GLOB"
+tags = ["essential", "globbing"]
+
+[[options]]
+name = "GLOB_DOTS"
+type = "boolean"
+default = "off"
+category = "globbing"
+description = "Include dotfiles in globbing results without explicit dot"
+why = "ls * also shows .hidden files — no need for ls .* separately"
+example = "setopt GLOB_DOTS"
+tags = ["globbing"]
+
+[[options]]
+name = "NOMATCH"
+type = "boolean"
+default = "on"
+category = "globbing"
+description = "Error if a glob pattern has no matches (on by default)"
+why = "Turning this off passes unmatched globs as literal strings (like bash)"
+example = "unsetopt NOMATCH"
+tags = ["globbing"]
+
+[[options]]
+name = "NO_CLOBBER"
+type = "boolean"
+default = "off"
+category = "safety"
+description = "Prevent > from overwriting existing files (use >| to force)"
+why = "Prevents accidental data loss from output redirection"
+example = "setopt NO_CLOBBER"
+tags = ["safety"]
+
+[[options]]
+name = "RM_STAR_WAIT"
+type = "boolean"
+default = "off"
+category = "safety"
+description = "Wait 10 seconds before executing rm * or rm path/*"
+why = "Gives you a chance to cancel accidental rm * commands"
+example = "setopt RM_STAR_WAIT"
+tags = ["safety"]
+
+[[options]]
+name = "PROMPT_SUBST"
+type = "boolean"
+default = "off"
+category = "prompt"
+description = "Enable parameter expansion, command substitution, and arithmetic in prompts"
+why = "Required for most custom prompt themes and dynamic prompt content"
+example = "setopt PROMPT_SUBST"
+tags = ["essential", "prompt"]
+
+[[options]]
+name = "TRANSIENT_RPROMPT"
+type = "boolean"
+default = "off"
+category = "prompt"
+description = "Remove the right prompt from previous command lines on new prompt"
+why = "Keeps terminal output clean — old RPROMPTs don't clutter scrollback"
+example = "setopt TRANSIENT_RPROMPT"
+tags = ["prompt"]
+
+[[options]]
+name = "ZDOTDIR"
+type = "path"
+default = "$HOME"
+category = "performance"
+description = "Directory to look for zsh startup files (.zshrc, .zshenv, etc.)"
+why = "Move zsh configs out of ~ into ~/.config/zsh/ for XDG compliance"
+example = "export ZDOTDIR=~/.config/zsh"
+tags = ["essential", "performance"]

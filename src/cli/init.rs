@@ -1,5 +1,4 @@
 use std::fs;
-use std::io::Write;
 use std::os::unix::fs::PermissionsExt;
 
 use anyhow::{Context, Result};
@@ -27,7 +26,7 @@ pub fn run(verbose: bool) -> Result<()> {
     // Write default config.toml atomically
     let config = DotsmithConfig::default();
     let config_content = toml::to_string_pretty(&config).context("failed to serialize config")?;
-    atomic_write(&config_dir.join("config.toml"), &config_content)?;
+    util::fs::atomic_write(&config_dir.join("config.toml"), &config_content)?;
 
     // Write empty manifest.toml
     let manifest = Manifest::default();
@@ -48,29 +47,6 @@ pub fn run(verbose: bool) -> Result<()> {
         "  Run {} to start tracking a tool.",
         "dotsmith add <tool>".bold()
     );
-
-    Ok(())
-}
-
-/// Write content to a file atomically with 0600 permissions.
-fn atomic_write(path: &std::path::Path, content: &str) -> Result<()> {
-    let tmp_path = path.with_extension("toml.tmp");
-
-    {
-        let mut file = fs::File::create(&tmp_path)
-            .with_context(|| format!("failed to create {}", tmp_path.display()))?;
-        file.write_all(content.as_bytes())?;
-        file.sync_all()?;
-        file.set_permissions(fs::Permissions::from_mode(0o600))?;
-    }
-
-    fs::rename(&tmp_path, path).with_context(|| {
-        format!(
-            "failed to rename {} to {}",
-            tmp_path.display(),
-            path.display()
-        )
-    })?;
 
     Ok(())
 }

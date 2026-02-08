@@ -7,6 +7,7 @@ pub mod list;
 pub mod plugins;
 pub mod reload;
 pub mod remove;
+pub mod repo;
 pub mod rollback;
 pub mod snapshot;
 pub mod status;
@@ -124,6 +125,27 @@ pub enum Commands {
         #[command(subcommand)]
         action: PluginAction,
     },
+
+    /// Manage dotfile git repo for backups
+    Repo {
+        #[command(subcommand)]
+        action: RepoAction,
+    },
+}
+
+#[derive(Subcommand)]
+pub enum RepoAction {
+    /// Initialize a git repo for dotfile backups
+    Init {
+        /// Path to create the repo at (e.g., ~/dots)
+        path: String,
+    },
+
+    /// Sync tracked configs into the repo and commit
+    Sync,
+
+    /// Show repo status
+    Status,
 }
 
 #[derive(Subcommand)]

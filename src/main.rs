@@ -6,7 +6,7 @@ mod core;
 mod tui;
 mod util;
 
-use cli::{Commands, DotsmithCli};
+use cli::{Commands, DotsmithCli, RepoAction};
 
 fn main() -> Result<()> {
     let cli = DotsmithCli::parse();
@@ -39,6 +39,11 @@ fn main() -> Result<()> {
             ref tool,
             ref action,
         }) => cli::plugins::run(cli.verbose, tool, action),
+        Some(Commands::Repo { action }) => match action {
+            RepoAction::Init { path } => cli::repo::run_init(cli.verbose, &path),
+            RepoAction::Sync => cli::repo::run_sync(cli.verbose),
+            RepoAction::Status => cli::repo::run_status(cli.verbose),
+        },
     };
 
     if let Err(e) = result {

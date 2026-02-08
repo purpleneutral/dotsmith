@@ -25,8 +25,7 @@ pub fn run(verbose: bool) -> Result<()> {
 
     // Write default config.toml atomically
     let config = DotsmithConfig::default();
-    let config_content = toml::to_string_pretty(&config).context("failed to serialize config")?;
-    util::fs::atomic_write(&config_dir.join("config.toml"), &config_content)?;
+    config.save(&config_dir)?;
 
     // Write empty manifest.toml
     let manifest = Manifest::default();

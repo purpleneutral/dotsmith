@@ -6,4 +6,5 @@ pub mod manifest;
 pub mod module;
 pub mod plugin;
 pub mod reload;
+pub mod repo;
 pub mod snapshot;

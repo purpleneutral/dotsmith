@@ -10,6 +10,10 @@ pub enum ExploreAction {
     Back,
     /// User wants to quit.
     Quit,
+    /// Snapshot the current tool.
+    Snapshot(String),
+    /// Reload the current tool.
+    Reload(String),
 }
 
 /// Handle a key event in the explore view.
@@ -57,6 +61,8 @@ pub fn handle_key(key: KeyEvent, state: &mut ExploreState) -> ExploreAction {
             state.search_mode = true;
             ExploreAction::None
         }
+        KeyCode::Char('s') => ExploreAction::Snapshot(state.tool_name.clone()),
+        KeyCode::Char('r') => ExploreAction::Reload(state.tool_name.clone()),
         _ => ExploreAction::None,
     }
 }

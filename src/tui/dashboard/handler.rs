@@ -8,6 +8,18 @@ pub enum DashboardAction {
     None,
     /// User wants to explore the selected tool.
     Explore(String),
+    /// Snapshot all tracked tools.
+    SnapshotAll,
+    /// Reload the selected tool.
+    ReloadSelected(String),
+    /// Show diff for the selected tool.
+    ShowDiff(String),
+    /// Show history for the selected tool.
+    ShowHistory(String),
+    /// Show plugins for the selected tool.
+    ShowPlugins(String),
+    /// Sync the git repo.
+    SyncRepo,
     /// User wants to quit.
     Quit,
 }
@@ -35,6 +47,24 @@ pub fn handle_key(key: KeyEvent, state: &mut DashboardState) -> DashboardAction 
                 DashboardAction::None
             }
         }
+        KeyCode::Char('s') => DashboardAction::SnapshotAll,
+        KeyCode::Char('r') => state
+            .selected_tool()
+            .map(|t| DashboardAction::ReloadSelected(t.name.clone()))
+            .unwrap_or(DashboardAction::None),
+        KeyCode::Char('d') => state
+            .selected_tool()
+            .map(|t| DashboardAction::ShowDiff(t.name.clone()))
+            .unwrap_or(DashboardAction::None),
+        KeyCode::Char('h') => state
+            .selected_tool()
+            .map(|t| DashboardAction::ShowHistory(t.name.clone()))
+            .unwrap_or(DashboardAction::None),
+        KeyCode::Char('p') => state
+            .selected_tool()
+            .map(|t| DashboardAction::ShowPlugins(t.name.clone()))
+            .unwrap_or(DashboardAction::None),
+        KeyCode::Char('g') => DashboardAction::SyncRepo,
         _ => DashboardAction::None,
     }
 }
@@ -132,6 +162,52 @@ mod tests {
         let mut state = sample_state();
         let action = handle_key(make_key(KeyCode::Enter), &mut state);
         assert!(matches!(action, DashboardAction::Explore(name) if name == "tmux"));
+    }
+
+    #[test]
+    fn test_snapshot_all() {
+        let mut state = sample_state();
+        assert!(matches!(
+            handle_key(make_key(KeyCode::Char('s')), &mut state),
+            DashboardAction::SnapshotAll
+        ));
+    }
+
+    #[test]
+    fn test_reload_selected() {
+        let mut state = sample_state();
+        let action = handle_key(make_key(KeyCode::Char('r')), &mut state);
+        assert!(matches!(action, DashboardAction::ReloadSelected(name) if name == "tmux"));
+    }
+
+    #[test]
+    fn test_show_diff() {
+        let mut state = sample_state();
+        let action = handle_key(make_key(KeyCode::Char('d')), &mut state);
+        assert!(matches!(action, DashboardAction::ShowDiff(name) if name == "tmux"));
+    }
+
+    #[test]
+    fn test_show_history() {
+        let mut state = sample_state();
+        let action = handle_key(make_key(KeyCode::Char('h')), &mut state);
+        assert!(matches!(action, DashboardAction::ShowHistory(name) if name == "tmux"));
+    }
+
+    #[test]
+    fn test_show_plugins() {
+        let mut state = sample_state();
+        let action = handle_key(make_key(KeyCode::Char('p')), &mut state);
+        assert!(matches!(action, DashboardAction::ShowPlugins(name) if name == "tmux"));
+    }
+
+    #[test]
+    fn test_sync_repo() {
+        let mut state = sample_state();
+        assert!(matches!(
+            handle_key(make_key(KeyCode::Char('g')), &mut state),
+            DashboardAction::SyncRepo
+        ));
     }
 
     #[test]

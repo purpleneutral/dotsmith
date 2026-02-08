@@ -2,6 +2,21 @@
 
 All notable changes to dotsmith will be documented in this file.
 
+## [0.1.0-alpha.4] - 2026-02-08
+
+### Added
+
+- **Phase 4b: Full TUI Integration**
+  - Status bar with mode indicator, tool name, and toast notifications (auto-expire after 3s)
+  - Dashboard quick actions: `s` snapshot all, `r` reload, `d` diff, `h` history, `p` plugins, `g` sync repo
+  - Diff view: scrollable colored unified diff (j/k scroll, d/u page, g/G top/bottom)
+  - History view: snapshot table with `Enter` to view diff, `r` to rollback
+  - Plugin view: list/add/remove/update plugins from TUI (supports add input mode)
+  - Explore quick actions: `s` snapshot, `r` reload current tool
+  - Git repo management: `dotsmith repo init <path>`, `dotsmith repo sync`, `dotsmith repo status`
+  - Config file gains `repo_path` setting for persistent repo location
+  - `DotsmithConfig::load()/save()` methods for config file management
+
 ## [0.1.0-alpha.3] - 2026-02-08
 
 ### Added

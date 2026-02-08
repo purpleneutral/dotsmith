@@ -91,6 +91,12 @@ fn draw_help(f: &mut Frame, area: Rect) {
     let help = HelpBar::new(vec![
         HelpItem { key: "j/k", action: "navigate" },
         HelpItem { key: "e", action: "explore" },
+        HelpItem { key: "s", action: "snapshot" },
+        HelpItem { key: "r", action: "reload" },
+        HelpItem { key: "d", action: "diff" },
+        HelpItem { key: "h", action: "history" },
+        HelpItem { key: "p", action: "plugins" },
+        HelpItem { key: "g", action: "sync repo" },
         HelpItem { key: "q", action: "quit" },
     ]);
     f.render_widget(help, area);

@@ -17,12 +17,11 @@ use clap::{Parser, Subcommand};
 #[command(
     name = "dotsmith",
     about = "The dotfile workbench — explore, manage, and master your configs",
-    version,
-    arg_required_else_help = true
+    version
 )]
 pub struct DotsmithCli {
     #[command(subcommand)]
-    pub command: Commands,
+    pub command: Option<Commands>,
 
     /// Enable verbose output
     #[arg(short, long, global = true)]
@@ -108,6 +107,12 @@ pub enum Commands {
     /// Reload configuration for a running tool
     Reload {
         /// Tool name to reload
+        tool: String,
+    },
+
+    /// Explore config options for a tool (interactive TUI)
+    Explore {
+        /// Tool name (e.g., tmux, zsh, git)
         tool: String,
     },
 

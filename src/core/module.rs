@@ -61,7 +61,7 @@ pub struct OptionDatabase {
     pub options: Vec<OptionEntry>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct OptionEntry {
     pub name: String,
 

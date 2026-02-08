@@ -1,6 +1,6 @@
 [package]
 name = "dotsmith"
-version = "0.1.0-alpha.2"
+version = "0.1.0-alpha.3"
 edition = "2024"
 rust-version = "1.85"
 description = "The dotfile workbench — explore, manage, and master your configs"
@@ -22,6 +22,8 @@ colored = "2"
 rusqlite = { version = "0.32", features = ["bundled"] }
 similar = "2"
 sha2 = "0.10"
+ratatui = "0.29"
+crossterm = "0.28"
 
 [dev-dependencies]
 tempfile = "3"

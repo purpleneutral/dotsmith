@@ -17,6 +17,11 @@ fn init_dotsmith(config_dir: &std::path::Path) {
 
 #[test]
 fn test_add_tmux_tier1() {
+    if !common::tool_has_config("tmux") {
+        eprintln!("skipping: tmux config not found on this system");
+        return;
+    }
+
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith");
     init_dotsmith(&config_dir);
@@ -33,6 +38,11 @@ fn test_add_tmux_tier1() {
 
 #[test]
 fn test_add_duplicate_fails() {
+    if !common::tool_has_config("tmux") {
+        eprintln!("skipping: tmux config not found on this system");
+        return;
+    }
+
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith");
     init_dotsmith(&config_dir);
@@ -86,6 +96,11 @@ fn test_add_without_init_fails() {
 
 #[test]
 fn test_add_updates_manifest() {
+    if !common::tool_has_config("tmux") {
+        eprintln!("skipping: tmux config not found on this system");
+        return;
+    }
+
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith");
     init_dotsmith(&config_dir);

@@ -2,6 +2,26 @@
 
 All notable changes to dotsmith will be documented in this file.
 
+## [0.1.0-alpha.3] - 2026-02-08
+
+### Added
+
+- **Phase 4: TUI Dashboard and Option Explorer**
+  - Interactive TUI built with ratatui 0.29 + crossterm 0.28
+  - Dashboard view: overview of all tracked tools with tier, paths, plugins, last snapshot
+  - Option explorer: three-panel layout (categories | options | details) for Tier 1 tools
+  - `dotsmith` with no subcommand launches the dashboard
+  - `dotsmith explore <tool>` opens the explorer directly for a tool
+  - Keyboard navigation: j/k, Tab panel cycling, / for search, Esc to go back, q to quit
+  - Search filters options by name, description, and tags (case-insensitive)
+  - Category filtering narrows options to a specific group
+  - Panic hook ensures terminal is always restored cleanly
+  - git Tier 1 module: 31 curated options across 8 categories
+
+### Fixed
+
+- Integration tests that require tool-specific configs (tmux) now skip gracefully on CI
+
 ## [0.1.0-alpha.2] - 2026-02-08
 
 ### Added

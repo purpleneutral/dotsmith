@@ -1,6 +1,50 @@
 use std::fs;
 use std::path::PathBuf;
+use std::process::Command;
 use tempfile::TempDir;
+
+/// Check if a tool is installed AND has at least one config file on this system.
+/// Used to skip integration tests that require real tool configs (e.g., on CI runners).
+pub fn tool_has_config(tool: &str) -> bool {
+    // First check if the tool is installed
+    let installed = Command::new("which")
+        .arg(tool)
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .status()
+        .is_ok_and(|s| s.success());
+
+    if !installed {
+        return false;
+    }
+
+    // Check known config paths for the tool
+    let home = dirs::home_dir().unwrap_or_default();
+    let xdg = dirs::config_dir().unwrap_or_else(|| home.join(".config"));
+
+    let candidates: Vec<PathBuf> = match tool {
+        "tmux" => vec![
+            xdg.join("tmux/tmux.conf"),
+            xdg.join("tmux"),
+            home.join(".tmux.conf"),
+        ],
+        "zsh" => vec![
+            xdg.join("zsh/.zshrc"),
+            xdg.join("zsh"),
+            home.join(".zshrc"),
+        ],
+        "git" => vec![
+            xdg.join("git/config"),
+            home.join(".gitconfig"),
+        ],
+        _ => vec![
+            xdg.join(tool),
+            home.join(format!(".{}rc", tool)),
+        ],
+    };
+
+    candidates.iter().any(|p| p.exists())
+}
 
 /// A test environment with isolated directories.
 /// All dotsmith operations use this temp dir instead of real `~/.config/`.

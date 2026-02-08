@@ -77,6 +77,12 @@ dotsmith plugins zsh add zsh-users/zsh-syntax-highlighting
 dotsmith plugins zsh list
 dotsmith plugins zsh update
 dotsmith plugins tmux add tmux-plugins/tmux-sensible
+
+# Explore config options (interactive TUI)
+dotsmith explore tmux    # browse all tmux options
+dotsmith explore zsh     # browse all zsh options
+dotsmith explore git     # browse all git options
+dotsmith                 # dashboard overview of all tracked tools
 ```
 
 ## Commands
@@ -98,6 +104,7 @@ dotsmith plugins tmux add tmux-plugins/tmux-sensible
 | `plugins <tool> remove <name>` | Remove a plugin |
 | `plugins <tool> list` | List installed plugins |
 | `plugins <tool> update [name]` | Update one or all plugins |
+| `explore <tool>` | Interactive TUI explorer for config options |
 
 ## Tiered Support
 
@@ -160,12 +167,12 @@ make check               # clippy + tests
 
 ## Project Status
 
-**Current:** v0.1.0-alpha.2 (Phase 3 complete)
+**Current:** v0.1.0-alpha.3 (Phase 4 complete)
 
 - Phase 1: CLI skeleton, manifest, module system, tool detection
 - Phase 2: Snapshots, diff, deploy, rollback, reload, zsh module
 - Phase 3: Built-in plugin management for zsh and tmux
-- Phase 4: TUI explorer (planned)
+- Phase 4: TUI dashboard and option explorer (ratatui)
 - Phase 5: Polish, completions, distribution (planned)
 
 ## License

@@ -23,4 +23,28 @@ pub enum DotsmithError {
     #[error("path '{path}' resolves outside your home directory to '{resolved}'")]
     #[allow(dead_code)]
     PathTraversal { path: String, resolved: String },
+
+    #[error("plugin '{0}' is already installed for {1}")]
+    PluginAlreadyInstalled(String, String),
+
+    #[error("plugin '{0}' is not installed for {1}")]
+    PluginNotInstalled(String, String),
+
+    #[error("no init file detected in plugin '{0}' — expected {1}")]
+    PluginNoInitFile(String, String),
+
+    #[error("git is not installed — required for plugin management")]
+    GitNotInstalled,
+
+    #[error("git clone failed for '{0}': {1}")]
+    GitCloneFailed(String, String),
+
+    #[error("git pull failed for '{0}': {1}")]
+    GitPullFailed(String, String),
+
+    #[error("invalid plugin repository specifier: '{0}'")]
+    InvalidPluginRepo(String),
+
+    #[error("plugin management is not supported for '{0}'")]
+    PluginsNotSupported(String),
 }

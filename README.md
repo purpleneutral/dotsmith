@@ -70,6 +70,13 @@ dotsmith deploy ~/.config/oz/dots/tmux ~/.config/tmux
 
 # Reload a running tool
 dotsmith reload tmux
+
+# Manage plugins (replaces tpm, zinit, etc.)
+dotsmith plugins zsh add zsh-users/zsh-autosuggestions
+dotsmith plugins zsh add zsh-users/zsh-syntax-highlighting
+dotsmith plugins zsh list
+dotsmith plugins zsh update
+dotsmith plugins tmux add tmux-plugins/tmux-sensible
 ```
 
 ## Commands
@@ -87,6 +94,10 @@ dotsmith reload tmux
 | `rollback <id> [--dry-run]` | Restore a config file to a previous snapshot |
 | `deploy <src> <dst> [--dry-run]` | Create config symlinks with backup |
 | `reload <tool>` | Reload a running tool's configuration |
+| `plugins <tool> add <repo>` | Add a plugin (GitHub shorthand: `user/repo`) |
+| `plugins <tool> remove <name>` | Remove a plugin |
+| `plugins <tool> list` | List installed plugins |
+| `plugins <tool> update [name]` | Update one or all plugins |
 
 ## Tiered Support
 
@@ -99,6 +110,24 @@ dotsmith reload tmux
 - Snapshot, diff, rollback all work
 - No curated option database (yet)
 
+## Plugin Management
+
+dotsmith includes built-in plugin management for zsh and tmux, inspired by [zsh_unplugged](https://github.com/mattmc3/zsh_unplugged). A plugin is just a git repo with a file to source -- no framework needed.
+
+```sh
+# Add plugins using GitHub shorthand
+dotsmith plugins zsh add zsh-users/zsh-autosuggestions
+dotsmith plugins tmux add tmux-plugins/tmux-sensible
+
+# Then add ONE line to your .zshrc / tmux.conf:
+#   source ~/.config/dotsmith/plugins/zsh/loader.zsh
+#   source-file ~/.config/dotsmith/plugins/tmux/loader.conf
+```
+
+dotsmith clones with `--depth 1`, auto-detects init files (`*.plugin.zsh`, `*.tmux`, etc.), and generates a loader file that you source once. Updates are a single command: `dotsmith plugins zsh update`.
+
+Supported tools: **zsh**, **tmux**. Existing plugin managers (TPM, zinit, etc.) are detected on `add` but never replaced -- opt in to dotsmith plugin management explicitly.
+
 ## How It Works
 
 dotsmith tracks your configs **in-place**. It never copies, moves, or re-symlinks your files.
@@ -110,10 +139,11 @@ dotsmith tracks your configs **in-place**. It never copies, moves, or re-symlink
 - Config files are never modified unless you explicitly run a write command
 
 Data is stored at `~/.config/dotsmith/`:
-- `manifest.toml` -- which tools are tracked
+- `manifest.toml` -- which tools are tracked (including plugin entries)
 - `config.toml` -- dotsmith settings
 - `snapshots.db` -- snapshot history (SQLite, WAL mode)
 - `backups/` -- automatic backups from rollback/deploy
+- `plugins/` -- cloned plugin repositories and loader files
 
 All dotsmith-created files use `0600`/`0700` permissions.
 
@@ -129,11 +159,11 @@ make check               # clippy + tests
 
 ## Project Status
 
-**Current:** v0.1.0-alpha.1 (Phase 2 complete)
+**Current:** v0.1.0-alpha.2 (Phase 3 complete)
 
 - Phase 1: CLI skeleton, manifest, module system, tool detection
 - Phase 2: Snapshots, diff, deploy, rollback, reload, zsh module
-- Phase 3: Plugin management (planned)
+- Phase 3: Built-in plugin management for zsh and tmux
 - Phase 4: TUI explorer (planned)
 - Phase 5: Polish, completions, distribution (planned)
 

@@ -40,6 +40,24 @@ pub struct ToolEntry {
     /// When the last snapshot was taken.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_snapshot: Option<DateTime<Utc>>,
+
+    /// Plugins managed by dotsmith for this tool.
+    /// Empty map is omitted from TOML for backward compat.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub plugins: BTreeMap<String, PluginEntry>,
+}
+
+/// A single plugin registered in the manifest.
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+pub struct PluginEntry {
+    /// GitHub shorthand or full URL (e.g., "zsh-users/zsh-autosuggestions")
+    pub repo: String,
+
+    /// Relative path to the init/source file within the plugin directory
+    pub init: String,
+
+    /// When this plugin was added
+    pub added_at: DateTime<Utc>,
 }
 
 impl Manifest {
@@ -98,6 +116,11 @@ impl Manifest {
     pub fn get_tool(&self, name: &str) -> Option<&ToolEntry> {
         self.tools.get(name)
     }
+
+    /// Get a mutable reference to a tool entry.
+    pub fn get_tool_mut(&mut self, name: &str) -> Option<&mut ToolEntry> {
+        self.tools.get_mut(name)
+    }
 }
 
 #[cfg(test)]
@@ -114,6 +137,7 @@ mod tests {
             plugin_manager: Some("tpm".to_string()),
             added_at: Utc::now(),
             last_snapshot: None,
+            plugins: BTreeMap::new(),
         }
     }
 

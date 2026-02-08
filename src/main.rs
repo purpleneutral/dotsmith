@@ -32,6 +32,10 @@ fn main() -> Result<()> {
             dry_run,
         } => cli::deploy::run(cli.verbose, source, target, dry_run),
         Commands::Reload { ref tool } => cli::reload::run(cli.verbose, tool),
+        Commands::Plugins {
+            ref tool,
+            ref action,
+        } => cli::plugins::run(cli.verbose, tool, action),
     };
 
     if let Err(e) = result {

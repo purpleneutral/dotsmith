@@ -4,6 +4,7 @@ pub mod diff;
 pub mod history;
 pub mod init;
 pub mod list;
+pub mod plugins;
 pub mod reload;
 pub mod remove;
 pub mod rollback;
@@ -108,5 +109,38 @@ pub enum Commands {
     Reload {
         /// Tool name to reload
         tool: String,
+    },
+
+    /// Manage plugins for a tool (zsh, tmux)
+    Plugins {
+        /// Tool name (e.g., zsh, tmux)
+        tool: String,
+
+        #[command(subcommand)]
+        action: PluginAction,
+    },
+}
+
+#[derive(Subcommand)]
+pub enum PluginAction {
+    /// Add a plugin (GitHub shorthand: user/repo)
+    Add {
+        /// Plugin repository (e.g., zsh-users/zsh-autosuggestions)
+        repo: String,
+    },
+
+    /// Remove an installed plugin
+    Remove {
+        /// Plugin name to remove
+        name: String,
+    },
+
+    /// List installed plugins
+    List,
+
+    /// Update one or all plugins
+    Update {
+        /// Plugin name (updates all if omitted)
+        name: Option<String>,
     },
 }

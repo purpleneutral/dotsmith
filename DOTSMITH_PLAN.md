@@ -187,7 +187,7 @@ dotsmith/
 ├── Cargo.toml
 ├── Cargo.lock
 ├── README.md
-├── LICENSE                         # MIT
+├── LICENSE                         # GPL-3.0
 ├── CHANGELOG.md
 │
 ├── src/
@@ -327,7 +327,7 @@ name = "dotsmith"
 version = "0.1.0"
 edition = "2021"
 description = "The dotfile workbench — explore, manage, and master your configs"
-license = "MIT"
+license = "GPL-3.0-only"
 repository = "https://github.com/[you]/dotsmith"
 keywords = ["dotfiles", "config", "tui", "terminal", "cli"]
 categories = ["command-line-utilities", "config"]

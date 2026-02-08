@@ -2,6 +2,22 @@
 
 All notable changes to dotsmith will be documented in this file.
 
+## [0.1.0-alpha.2] - 2026-02-08
+
+### Added
+
+- **Phase 3: Plugin Management**
+  - Built-in plugin management for zsh and tmux (replaces tpm, zinit, etc.)
+  - `plugins <tool> add <repo>` -- clone with `--depth 1`, auto-detect init file, register in manifest
+  - `plugins <tool> remove <name>` -- remove plugin directory and manifest entry
+  - `plugins <tool> list` -- show installed plugins with repo and init file
+  - `plugins <tool> update [name]` -- `git pull --ff-only` with zwc recompile for zsh
+  - GitHub shorthand support (`user/repo`) and full HTTPS/file URL support
+  - Auto-generated loader files (`loader.zsh` / `loader.conf`) -- source once in your rc file
+  - Init file detection: `*.plugin.zsh`, `*.zsh-theme`, `init.zsh`, `*.tmux`
+  - Backward-compatible manifest extension (`PluginEntry` under `[tools.<tool>.plugins]`)
+  - Cleanup on failure (removes cloned directory if init file detection fails)
+
 ## [0.1.0-alpha.1] - 2026-02-08
 
 ### Added

@@ -56,6 +56,7 @@ pub fn run(verbose: bool, tool: &str) -> Result<()> {
         plugin_manager: plugin_manager.clone(),
         added_at: Utc::now(),
         last_snapshot: None,
+        plugins: std::collections::BTreeMap::new(),
     };
 
     manifest.add_tool(tool, entry)?;

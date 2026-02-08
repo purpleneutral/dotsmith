@@ -1,0 +1,31 @@
+[metadata]
+name = "tmux"
+display_name = "tmux"
+description = "Terminal multiplexer"
+homepage = "https://github.com/tmux/tmux"
+
+config_paths = [
+    "~/.config/tmux/tmux.conf",
+    "~/.tmux.conf",
+]
+
+detect_command = "which tmux"
+
+reload_command = "tmux source-file {config_path}"
+reload_description = "Source tmux config"
+
+man_page = "tmux"
+config_format = "tmux"
+
+plugins_supported = true
+plugin_dir = "~/.config/tmux/plugs"
+
+categories = [
+    "appearance",
+    "behavior",
+    "interaction",
+    "keybindings",
+    "performance",
+    "status-bar",
+    "windows-panes",
+]

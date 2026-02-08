@@ -1,0 +1,329 @@
+[[options]]
+name = "mouse"
+type = "boolean"
+default = "off"
+category = "interaction"
+description = "Enable mouse support for pane selection, resizing, and scrolling"
+why = "Essential for beginners, still useful for pros. Click panes, scroll with mousewheel, resize with drag."
+example = "set -g mouse on"
+since = "2.1"
+tags = ["mouse", "scroll", "click", "resize"]
+related = ["mouse-select-pane", "mouse-select-window"]
+
+[[options]]
+name = "prefix"
+type = "keybinding"
+default = "C-b"
+category = "keybindings"
+description = "The prefix key used before all tmux commands"
+why = "C-b conflicts with backward-char in shells. C-a (screen-style) or C-Space are popular alternatives."
+example = "set -g prefix C-a"
+tags = ["prefix", "keybinding", "leader"]
+
+[[options]]
+name = "prefix2"
+type = "keybinding"
+default = ""
+category = "keybindings"
+description = "A secondary prefix key — allows using two different prefixes"
+why = "Useful if you switch between C-a and C-b depending on context, or want a fallback."
+example = "set -g prefix2 C-Space"
+tags = ["prefix", "keybinding"]
+related = ["prefix"]
+
+[[options]]
+name = "base-index"
+type = "integer"
+default = "0"
+category = "windows-panes"
+description = "Base index for numbering windows"
+why = "Setting to 1 makes window numbers match keyboard layout (1 is leftmost, not 0)."
+example = "set -g base-index 1"
+tags = ["index", "numbering", "windows"]
+related = ["pane-base-index"]
+
+[[options]]
+name = "pane-base-index"
+type = "integer"
+default = "0"
+category = "windows-panes"
+description = "Base index for numbering panes within a window"
+why = "Set to 1 alongside base-index for consistent 1-based numbering everywhere."
+example = "setw -g pane-base-index 1"
+tags = ["index", "numbering", "panes"]
+related = ["base-index"]
+
+[[options]]
+name = "escape-time"
+type = "integer"
+default = "500"
+category = "performance"
+description = "Time in milliseconds tmux waits after an escape key to determine if it is part of a sequence"
+why = "Default 500ms causes noticeable delay in vim/nvim when pressing Escape. Set to 0 for instant mode switching."
+example = "set -sg escape-time 0"
+tags = ["escape", "delay", "vim", "performance", "latency"]
+
+[[options]]
+name = "history-limit"
+type = "integer"
+default = "2000"
+category = "behavior"
+description = "Maximum number of lines held in scrollback buffer per pane"
+why = "2000 is too low for log-heavy workflows. 50000 is a good balance of memory and history."
+example = "set -g history-limit 50000"
+tags = ["history", "scrollback", "buffer", "memory"]
+
+[[options]]
+name = "default-terminal"
+type = "string"
+default = "screen"
+category = "appearance"
+description = "Set the default terminal type for new windows"
+why = "Set to 'tmux-256color' or 'screen-256color' for proper color support in vim, bat, etc."
+example = "set -g default-terminal 'tmux-256color'"
+tags = ["terminal", "color", "256color", "truecolor"]
+related = ["terminal-overrides"]
+
+[[options]]
+name = "renumber-windows"
+type = "boolean"
+default = "off"
+category = "windows-panes"
+description = "Automatically renumber windows when one is closed"
+why = "Without this, closing window 2 of [1,2,3] leaves a gap: [1,3]. With it, windows stay sequential."
+example = "set -g renumber-windows on"
+tags = ["windows", "numbering", "auto"]
+
+[[options]]
+name = "set-clipboard"
+type = "enum"
+default = "external"
+values = ["on", "external", "off"]
+category = "interaction"
+description = "Control whether tmux sets the system clipboard via OSC 52 escape sequences"
+why = "Set to 'on' to enable copying from tmux to system clipboard. Requires terminal support."
+example = "set -g set-clipboard on"
+since = "1.5"
+tags = ["clipboard", "copy", "paste", "osc52"]
+
+[[options]]
+name = "focus-events"
+type = "boolean"
+default = "off"
+category = "behavior"
+description = "Pass focus events through to applications running inside tmux"
+why = "Required for vim/nvim autoread, gitgutter, and other tools that react to focus changes."
+example = "set -g focus-events on"
+tags = ["focus", "vim", "nvim", "events"]
+
+[[options]]
+name = "status"
+type = "boolean"
+default = "on"
+category = "status-bar"
+description = "Show or hide the status bar"
+why = "Turn off for a minimal, distraction-free setup."
+example = "set -g status on"
+tags = ["status", "bar", "visibility"]
+
+[[options]]
+name = "status-position"
+type = "enum"
+default = "bottom"
+values = ["top", "bottom"]
+category = "status-bar"
+description = "Position the status bar at the top or bottom of the terminal"
+why = "Top position keeps your eye-line near the tab bar. Bottom is traditional."
+example = "set -g status-position top"
+tags = ["status", "bar", "position", "top", "bottom"]
+
+[[options]]
+name = "status-interval"
+type = "integer"
+default = "15"
+category = "status-bar"
+description = "How often (in seconds) to refresh the status bar"
+why = "Lower values update clock/battery faster but use more CPU. 5 is a good balance."
+example = "set -g status-interval 5"
+tags = ["status", "refresh", "interval", "performance"]
+
+[[options]]
+name = "status-style"
+type = "string"
+default = "fg=white,bg=green"
+category = "status-bar"
+description = "Default style for the status bar (foreground, background, attributes)"
+why = "Customize to match your terminal theme."
+example = "set -g status-style 'fg=#abb2bf,bg=#282c34'"
+tags = ["status", "style", "color", "theme"]
+
+[[options]]
+name = "mode-keys"
+type = "enum"
+default = "emacs"
+values = ["vi", "emacs"]
+category = "keybindings"
+description = "Key bindings style in copy mode"
+why = "If you use vim, set to vi for familiar navigation in copy mode (hjkl, /, v, y)."
+example = "setw -g mode-keys vi"
+tags = ["keybindings", "vi", "emacs", "copy", "mode"]
+related = ["status-keys"]
+
+[[options]]
+name = "status-keys"
+type = "enum"
+default = "emacs"
+values = ["vi", "emacs"]
+category = "keybindings"
+description = "Key bindings style in the status line (command prompt)"
+why = "Match mode-keys for consistency. Vi mode gives you Escape to edit commands."
+example = "set -g status-keys vi"
+tags = ["keybindings", "vi", "emacs", "status", "command"]
+related = ["mode-keys"]
+
+[[options]]
+name = "display-time"
+type = "integer"
+default = "750"
+category = "behavior"
+description = "Time in milliseconds to display status messages and indicators"
+why = "Increase if messages disappear before you can read them. 2000-4000 is comfortable."
+example = "set -g display-time 4000"
+tags = ["display", "message", "timeout"]
+
+[[options]]
+name = "display-panes-time"
+type = "integer"
+default = "1000"
+category = "behavior"
+description = "Time in milliseconds to display pane numbers (prefix + q)"
+why = "Increase if you have many panes and need more time to read the numbers."
+example = "set -g display-panes-time 2000"
+tags = ["display", "panes", "timeout"]
+
+[[options]]
+name = "repeat-time"
+type = "integer"
+default = "500"
+category = "keybindings"
+description = "Time in milliseconds after a repeatable key binding can be used without the prefix"
+why = "Allows quick repeated pane resizing without re-pressing prefix each time."
+example = "set -g repeat-time 1000"
+tags = ["repeat", "keybinding", "timeout"]
+
+[[options]]
+name = "aggressive-resize"
+type = "boolean"
+default = "off"
+category = "windows-panes"
+description = "Resize windows based on the smallest client currently viewing the window, not the session"
+why = "Useful with multiple monitors. Without it, all windows resize to the smallest attached client."
+example = "setw -g aggressive-resize on"
+tags = ["resize", "window", "client", "monitor"]
+
+[[options]]
+name = "automatic-rename"
+type = "boolean"
+default = "on"
+category = "windows-panes"
+description = "Automatically rename windows based on the running program"
+why = "Handy to see what is running. Turn off if you prefer manually named windows."
+example = "setw -g automatic-rename on"
+tags = ["rename", "window", "automatic", "program"]
+
+[[options]]
+name = "monitor-activity"
+type = "boolean"
+default = "off"
+category = "behavior"
+description = "Monitor windows for activity and highlight them in the status bar"
+why = "Get notified when something happens in a background window (build finishes, log output, etc.)."
+example = "setw -g monitor-activity on"
+tags = ["monitor", "activity", "notification", "alert"]
+
+[[options]]
+name = "visual-activity"
+type = "enum"
+default = "off"
+values = ["on", "off", "both"]
+category = "behavior"
+description = "Display a message when activity is detected in a monitored window"
+why = "Pairs with monitor-activity. Set to 'on' for status message, 'both' for message + bell."
+example = "set -g visual-activity on"
+tags = ["activity", "notification", "visual", "alert"]
+related = ["monitor-activity"]
+
+[[options]]
+name = "allow-passthrough"
+type = "enum"
+default = "off"
+values = ["on", "off", "all"]
+category = "behavior"
+description = "Allow applications to send escape sequences directly to the terminal"
+why = "Required for image display protocols (kitty graphics, sixel) inside tmux."
+example = "set -g allow-passthrough on"
+since = "3.3"
+tags = ["passthrough", "escape", "graphics", "images", "kitty"]
+
+[[options]]
+name = "detach-on-destroy"
+type = "enum"
+default = "on"
+values = ["on", "off", "no-detached", "previous", "next"]
+category = "behavior"
+description = "Action when the current session is destroyed"
+why = "Set to 'previous' or 'next' to automatically switch to another session instead of detaching."
+example = "set -g detach-on-destroy off"
+tags = ["session", "destroy", "detach"]
+
+[[options]]
+name = "pane-border-style"
+type = "string"
+default = "fg=default"
+category = "appearance"
+description = "Style for pane borders (inactive panes)"
+why = "Subtle borders reduce visual noise. Match your theme."
+example = "set -g pane-border-style 'fg=#3e4452'"
+tags = ["pane", "border", "style", "color", "theme"]
+related = ["pane-active-border-style"]
+
+[[options]]
+name = "pane-active-border-style"
+type = "string"
+default = "fg=green"
+category = "appearance"
+description = "Style for the active pane border"
+why = "Makes it easy to identify which pane has focus. Use a bright accent color."
+example = "set -g pane-active-border-style 'fg=#61afef'"
+tags = ["pane", "border", "active", "style", "color", "theme"]
+related = ["pane-border-style"]
+
+[[options]]
+name = "window-status-current-style"
+type = "string"
+default = "fg=default,bg=default"
+category = "status-bar"
+description = "Style for the current (active) window in the status bar"
+why = "Highlight the active window so you can quickly see where you are."
+example = "setw -g window-status-current-style 'fg=#282c34,bg=#61afef,bold'"
+tags = ["window", "status", "current", "active", "style", "theme"]
+
+[[options]]
+name = "window-status-style"
+type = "string"
+default = "fg=default,bg=default"
+category = "status-bar"
+description = "Style for inactive windows in the status bar"
+why = "Dim inactive windows to reduce visual noise."
+example = "setw -g window-status-style 'fg=#5c6370'"
+tags = ["window", "status", "inactive", "style", "theme"]
+
+[[options]]
+name = "message-style"
+type = "string"
+default = "fg=white,bg=black"
+category = "appearance"
+description = "Style for status line messages"
+why = "Match your theme for a polished look."
+example = "set -g message-style 'fg=#abb2bf,bg=#282c34'"
+tags = ["message", "style", "color", "theme"]

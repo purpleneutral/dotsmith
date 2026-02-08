@@ -104,6 +104,7 @@ dotsmith plugins tmux add tmux-plugins/tmux-sensible
 **Tier 1** -- Full support with curated option databases:
 - **tmux** -- 31 options across interaction, display, behavior, plugins, clipboard
 - **zsh** -- 31 options across history, completion, prompt, navigation, globbing, safety
+- **git** -- 31 options across user, core, diff, merge, push, color, aliases, safety
 
 **Tier 2** -- Auto-detected tracking for any tool:
 - Automatically discovers config paths at `~/.config/<tool>/`, `~/.<tool>rc`, `~/.<tool>config`, etc.

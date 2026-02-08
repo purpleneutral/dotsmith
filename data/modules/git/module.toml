@@ -1,0 +1,28 @@
+[metadata]
+name = "git"
+display_name = "Git"
+description = "Distributed version control system"
+homepage = "https://git-scm.com"
+
+config_paths = [
+    "~/.config/git/config",
+    "~/.gitconfig",
+]
+
+detect_command = "which git"
+
+man_page = "git-config"
+config_format = "git"
+
+plugins_supported = false
+
+categories = [
+    "user",
+    "core",
+    "diff",
+    "merge",
+    "push",
+    "color",
+    "aliases",
+    "safety",
+]

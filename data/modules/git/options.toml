@@ -1,0 +1,347 @@
+# ---- user ----
+
+[[options]]
+name = "user.name"
+type = "string"
+default = ""
+category = "user"
+description = "Your name to be recorded in commits"
+why = "Required for all commits. Appears in git log and on platforms like GitHub."
+example = "git config --global user.name 'Jane Doe'"
+tags = ["essential", "identity"]
+related = ["user.email"]
+
+[[options]]
+name = "user.email"
+type = "string"
+default = ""
+category = "user"
+description = "Your email address to be recorded in commits"
+why = "Required for all commits. GitHub links commits to your account based on this email."
+example = "git config --global user.email 'jane@example.com'"
+tags = ["essential", "identity"]
+related = ["user.name"]
+
+[[options]]
+name = "user.signingkey"
+type = "string"
+default = ""
+category = "user"
+description = "GPG key ID used for commit and tag signing"
+why = "Required if you sign commits. GitHub shows a 'Verified' badge next to signed commits."
+example = "git config --global user.signingkey ABCDEF1234567890"
+tags = ["gpg", "signing", "security"]
+related = ["commit.gpgsign"]
+
+[[options]]
+name = "commit.gpgsign"
+type = "boolean"
+default = "false"
+category = "user"
+description = "Automatically sign all commits with your GPG key"
+why = "Saves adding -S to every commit. Proves authorship cryptographically."
+example = "git config --global commit.gpgsign true"
+tags = ["gpg", "signing", "security"]
+related = ["user.signingkey"]
+
+# ---- core ----
+
+[[options]]
+name = "core.editor"
+type = "string"
+default = "vi"
+category = "core"
+description = "The editor git uses for commit messages, interactive rebase, etc."
+why = "Set to your preferred editor. Affects all interactive git operations."
+example = "git config --global core.editor vim"
+tags = ["essential", "workflow", "editor"]
+
+[[options]]
+name = "core.pager"
+type = "string"
+default = "less"
+category = "core"
+description = "The pager used for git log, diff, and other paginated output"
+why = "delta, bat, or less -FRX are popular alternatives with better syntax highlighting."
+example = "git config --global core.pager 'less -FRX'"
+tags = ["pager", "workflow", "output"]
+
+[[options]]
+name = "core.excludesfile"
+type = "path"
+default = ""
+category = "core"
+description = "Path to a global gitignore file applied to all repositories"
+why = "Ignore editor files (.swp, .idea), OS files (.DS_Store), and other personal patterns globally."
+example = "git config --global core.excludesfile ~/.config/git/ignore"
+tags = ["gitignore", "global", "workflow"]
+
+[[options]]
+name = "core.autocrlf"
+type = "string"
+default = "false"
+category = "core"
+description = "Automatic line ending conversion between LF (Unix) and CRLF (Windows)"
+why = "Set to 'input' on Linux/macOS to strip CRLFs on commit. Prevents cross-platform line ending issues."
+example = "git config --global core.autocrlf input"
+tags = ["line-endings", "cross-platform"]
+related = ["core.eol"]
+
+[[options]]
+name = "core.fsmonitor"
+type = "boolean"
+default = "false"
+category = "core"
+description = "Use a filesystem monitor daemon to speed up status/diff on large repos"
+why = "Dramatically speeds up git status in large repositories. Uses watchman or built-in fsmonitor."
+example = "git config --global core.fsmonitor true"
+since = "2.37"
+tags = ["performance", "large-repos"]
+
+# ---- diff ----
+
+[[options]]
+name = "diff.algorithm"
+type = "enum"
+default = "myers"
+values = ["myers", "minimal", "patience", "histogram"]
+category = "diff"
+description = "Algorithm used for computing diffs"
+why = "histogram produces cleaner diffs with less noise on refactored code. patience is good for highly edited files."
+example = "git config --global diff.algorithm histogram"
+tags = ["diff", "algorithm", "output"]
+
+[[options]]
+name = "diff.colorMoved"
+type = "enum"
+default = "false"
+values = ["no", "default", "plain", "blocks", "zebra", "dimmed-zebra"]
+category = "diff"
+description = "Highlight lines that were moved from one location to another in a diff"
+why = "Makes refactoring diffs much easier to read — moved code is colored differently from changed code."
+example = "git config --global diff.colorMoved default"
+tags = ["diff", "color", "readability"]
+
+[[options]]
+name = "diff.tool"
+type = "string"
+default = ""
+category = "diff"
+description = "Default diff tool for git difftool"
+why = "Set to your preferred visual diff tool (meld, vimdiff, nvimdiff, kdiff3, etc.)."
+example = "git config --global diff.tool nvimdiff"
+tags = ["difftool", "visual", "workflow"]
+related = ["merge.tool"]
+
+[[options]]
+name = "diff.context"
+type = "integer"
+default = "3"
+category = "diff"
+description = "Number of context lines shown around each change in a diff"
+why = "More context helps understand changes in unfamiliar code. 5-6 lines is common."
+example = "git config --global diff.context 5"
+tags = ["diff", "context", "output"]
+
+# ---- merge ----
+
+[[options]]
+name = "merge.tool"
+type = "string"
+default = ""
+category = "merge"
+description = "Default merge tool for git mergetool"
+why = "Visual merge tools (meld, kdiff3, nvimdiff) make resolving conflicts much easier."
+example = "git config --global merge.tool nvimdiff"
+tags = ["mergetool", "conflicts", "workflow"]
+related = ["diff.tool"]
+
+[[options]]
+name = "merge.conflictstyle"
+type = "enum"
+default = "merge"
+values = ["merge", "diff3", "zdiff3"]
+category = "merge"
+description = "Style of conflict markers in merge conflicts"
+why = "diff3 shows the original text alongside both sides, making conflict resolution much clearer."
+example = "git config --global merge.conflictstyle zdiff3"
+since = "2.35"
+tags = ["conflicts", "merge", "readability"]
+
+[[options]]
+name = "merge.ff"
+type = "enum"
+default = "true"
+values = ["true", "false", "only"]
+category = "merge"
+description = "Whether to allow fast-forward merges"
+why = "'only' prevents accidental merge commits. 'false' always creates merge commits for a cleaner history."
+example = "git config --global merge.ff only"
+tags = ["merge", "history", "workflow"]
+
+[[options]]
+name = "rerere.enabled"
+type = "boolean"
+default = "false"
+category = "merge"
+description = "Reuse recorded resolution of previously resolved merge conflicts"
+why = "Remembers how you resolved conflicts. Next time the same conflict appears, git resolves it automatically."
+example = "git config --global rerere.enabled true"
+tags = ["conflicts", "automation", "reuse"]
+
+# ---- push ----
+
+[[options]]
+name = "push.default"
+type = "enum"
+default = "simple"
+values = ["nothing", "current", "upstream", "simple", "matching"]
+category = "push"
+description = "What to push when no refspec is given"
+why = "'current' is safest — pushes the current branch to a branch of the same name on the remote."
+example = "git config --global push.default current"
+tags = ["push", "remote", "workflow"]
+
+[[options]]
+name = "push.autoSetupRemote"
+type = "boolean"
+default = "false"
+category = "push"
+description = "Automatically set up tracking when pushing a new branch"
+why = "No more 'git push -u origin branch' for new branches. Just 'git push' works on first push."
+example = "git config --global push.autoSetupRemote true"
+since = "2.37"
+tags = ["push", "tracking", "convenience"]
+
+[[options]]
+name = "fetch.prune"
+type = "boolean"
+default = "false"
+category = "push"
+description = "Automatically remove remote-tracking references that no longer exist on the remote"
+why = "Keeps your local branch list clean. Without this, deleted remote branches linger as stale references."
+example = "git config --global fetch.prune true"
+tags = ["fetch", "cleanup", "remote"]
+
+# ---- color ----
+
+[[options]]
+name = "color.ui"
+type = "enum"
+default = "auto"
+values = ["auto", "always", "never"]
+category = "color"
+description = "Enable colorized output for git commands"
+why = "'auto' colors output when writing to a terminal but not when piping. Usually the right choice."
+example = "git config --global color.ui auto"
+tags = ["essential", "color", "output"]
+
+[[options]]
+name = "color.diff"
+type = "enum"
+default = "auto"
+values = ["auto", "always", "never"]
+category = "color"
+description = "Colorize diff output"
+why = "Set to 'always' if your pager strips color codes. Usually 'auto' is fine."
+example = "git config --global color.diff auto"
+tags = ["color", "diff", "output"]
+related = ["color.ui"]
+
+[[options]]
+name = "color.branch"
+type = "enum"
+default = "auto"
+values = ["auto", "always", "never"]
+category = "color"
+description = "Colorize branch listing output"
+why = "Makes the current branch and remote tracking branches visually distinct."
+example = "git config --global color.branch auto"
+tags = ["color", "branch", "output"]
+related = ["color.ui"]
+
+# ---- aliases ----
+
+[[options]]
+name = "alias.st"
+type = "string"
+default = ""
+category = "aliases"
+description = "Alias for 'git status'"
+why = "The most commonly typed git command deserves a short alias."
+example = "git config --global alias.st status"
+tags = ["alias", "shortcut", "status"]
+
+[[options]]
+name = "alias.co"
+type = "string"
+default = ""
+category = "aliases"
+description = "Alias for 'git checkout'"
+why = "Saves keystrokes on a frequently used command."
+example = "git config --global alias.co checkout"
+tags = ["alias", "shortcut", "checkout"]
+
+[[options]]
+name = "alias.br"
+type = "string"
+default = ""
+category = "aliases"
+description = "Alias for 'git branch'"
+why = "Quick access to branch operations."
+example = "git config --global alias.br branch"
+tags = ["alias", "shortcut", "branch"]
+
+[[options]]
+name = "alias.lg"
+type = "string"
+default = ""
+category = "aliases"
+description = "Pretty one-line log with graph"
+why = "The default git log is verbose. A compact graph view shows branch topology at a glance."
+example = "git config --global alias.lg 'log --oneline --graph --decorate --all'"
+tags = ["alias", "log", "graph", "history"]
+
+# ---- safety ----
+
+[[options]]
+name = "rebase.autoStash"
+type = "boolean"
+default = "false"
+category = "safety"
+description = "Automatically stash uncommitted changes before rebase and apply them after"
+why = "No more 'cannot rebase: you have unstaged changes'. Git handles the stash/unstash automatically."
+example = "git config --global rebase.autoStash true"
+tags = ["rebase", "stash", "convenience"]
+
+[[options]]
+name = "rebase.autoSquash"
+type = "boolean"
+default = "false"
+category = "safety"
+description = "Automatically reorder fixup! and squash! commits during interactive rebase"
+why = "Use 'git commit --fixup=<hash>' then 'git rebase -i' and fixups are placed automatically."
+example = "git config --global rebase.autoSquash true"
+tags = ["rebase", "squash", "fixup", "workflow"]
+
+[[options]]
+name = "pull.rebase"
+type = "enum"
+default = "false"
+values = ["false", "true", "merges", "interactive"]
+category = "safety"
+description = "Rebase local commits on top of upstream changes instead of merging on pull"
+why = "Keeps history linear and clean. Avoids unnecessary merge commits from 'git pull'."
+example = "git config --global pull.rebase true"
+tags = ["pull", "rebase", "history", "workflow"]
+
+[[options]]
+name = "init.defaultBranch"
+type = "string"
+default = "master"
+category = "safety"
+description = "Default branch name for 'git init'"
+why = "Many projects and platforms now use 'main'. Set this to match your team's convention."
+example = "git config --global init.defaultBranch main"
+since = "2.28"
+tags = ["init", "branch", "convention"]

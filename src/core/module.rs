@@ -128,6 +128,7 @@ impl ModuleRegistry {
         let toml_str = match name {
             "tmux" => include_str!("../../data/modules/tmux/module.toml"),
             "zsh" => include_str!("../../data/modules/zsh/module.toml"),
+            "git" => include_str!("../../data/modules/git/module.toml"),
             _ => return None,
         };
         match toml::from_str(toml_str) {
@@ -144,6 +145,7 @@ impl ModuleRegistry {
         let toml_str = match name {
             "tmux" => include_str!("../../data/modules/tmux/options.toml"),
             "zsh" => include_str!("../../data/modules/zsh/options.toml"),
+            "git" => include_str!("../../data/modules/git/options.toml"),
             _ => return None,
         };
         match toml::from_str(toml_str) {
@@ -161,7 +163,7 @@ impl ModuleRegistry {
     /// List all built-in module names.
     #[allow(dead_code)]
     pub fn builtin_names() -> &'static [&'static str] {
-        &["tmux", "zsh"]
+        &["git", "tmux", "zsh"]
     }
 }
 

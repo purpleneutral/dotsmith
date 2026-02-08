@@ -30,6 +30,10 @@ fn test_list_empty() {
 
 #[test]
 fn test_list_with_tools() {
+    if !common::tool_has_config("tmux") {
+        return; // skip on CI / systems without tmux config
+    }
+
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith");
     init_dotsmith(&config_dir);
@@ -69,6 +73,10 @@ fn test_list_without_init_fails() {
 
 #[test]
 fn test_status_with_tools() {
+    if !common::tool_has_config("tmux") {
+        return; // skip on CI / systems without tmux config
+    }
+
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith");
     init_dotsmith(&config_dir);

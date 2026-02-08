@@ -16,6 +16,10 @@ fn init_dotsmith(config_dir: &std::path::Path) {
 
 #[test]
 fn test_remove_tool() {
+    if !common::tool_has_config("tmux") {
+        return;
+    }
+
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith");
     init_dotsmith(&config_dir);
@@ -63,6 +67,10 @@ fn test_remove_nonexistent_fails() {
 
 #[test]
 fn test_remove_does_not_touch_config_files() {
+    if !common::tool_has_config("tmux") {
+        return;
+    }
+
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith");
     init_dotsmith(&config_dir);

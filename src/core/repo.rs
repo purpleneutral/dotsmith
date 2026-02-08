@@ -41,6 +41,16 @@ pub fn init_repo(repo_path: &Path) -> Result<()> {
         bail!("git init failed: {}", stderr.trim());
     }
 
+    // Set local identity so commits work even without a global git config (e.g. CI)
+    let _ = Command::new("git")
+        .args(["config", "user.name", "dotsmith"])
+        .current_dir(repo_path)
+        .output();
+    let _ = Command::new("git")
+        .args(["config", "user.email", "dotsmith@localhost"])
+        .current_dir(repo_path)
+        .output();
+
     Ok(())
 }
 

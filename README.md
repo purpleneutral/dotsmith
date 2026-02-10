@@ -214,6 +214,12 @@ make check               # clippy + tests together
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release notes.
 
+## Support
+
+If you find dotsmith useful, consider buying me a coffee:
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow?style=flat&logo=buy-me-a-coffee)](https://buymeacoffee.com/uniqueuserg)
+
 ## License
 
 Copyright (c) 2026 purpleneutral

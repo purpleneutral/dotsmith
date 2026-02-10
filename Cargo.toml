@@ -1,6 +1,6 @@
 [package]
 name = "dotsmith"
-version = "0.1.0-alpha.7"
+version = "0.1.0-alpha.8"
 edition = "2024"
 rust-version = "1.85"
 description = "The dotfile workbench — explore, manage, and master your configs"

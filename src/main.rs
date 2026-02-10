@@ -55,6 +55,13 @@ fn main() -> Result<()> {
             man.render(&mut std::io::stdout())?;
             Ok(())
         }
+        Some(Commands::Profile { ref action }) => cli::profile::run(cli.verbose, action),
+        Some(Commands::DeployRemote {
+            ref host,
+            ref user,
+            ref tool,
+            dry_run,
+        }) => cli::deploy_remote::run(cli.verbose, host, user.as_deref(), tool.as_deref(), dry_run),
         Some(Commands::Repo { action }) => match action {
             RepoAction::Init { path } => cli::repo::run_init(cli.verbose, &path),
             RepoAction::Sync => cli::repo::run_sync(cli.verbose),

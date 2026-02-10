@@ -47,4 +47,19 @@ pub enum DotsmithError {
 
     #[error("plugin management is not supported for '{0}'")]
     PluginsNotSupported(String),
+
+    #[error("profile '{0}' already exists — use a different name or delete it first")]
+    ProfileAlreadyExists(String),
+
+    #[error("profile '{0}' not found")]
+    ProfileNotFound(String),
+
+    #[error("invalid profile name '{0}' — use only letters, digits, hyphens, and underscores")]
+    InvalidProfileName(String),
+
+    #[error("ssh is not installed — required for remote deploy")]
+    SshNotInstalled,
+
+    #[error("scp to '{0}' failed for file '{1}': {2}")]
+    ScpFailed(String, String, String),
 }

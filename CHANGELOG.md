@@ -2,6 +2,26 @@
 
 All notable changes to dotsmith will be documented in this file.
 
+## [0.1.0-alpha.8] - 2026-02-10
+
+### Added
+
+- **Phase 7: Configuration profiles + remote deploy**
+  - `dotsmith profile save <name>` — save current tracked tools and config file contents as a named profile
+  - `dotsmith profile load <name>` — restore config files from a saved profile (backs up existing files first)
+  - `dotsmith profile load --add-untracked` — also add tools from the profile that aren't currently tracked
+  - `dotsmith profile load --dry-run` — preview what loading would change without modifying anything
+  - `dotsmith profile list` — list saved profiles with creation date, tool count, and file count
+  - `dotsmith profile delete <name>` — delete a saved profile
+  - Profiles stored at `~/.config/dotsmith/profiles/<name>/` with full manifest and file contents
+  - SHA-256 checksums for profile integrity verification
+  - `dotsmith deploy-remote <host>` — deploy tracked configs to a remote host via SSH/SCP
+  - `dotsmith deploy-remote --dry-run` — preview what would be copied
+  - `dotsmith deploy-remote --tool <name>` — deploy only specific tools
+  - `dotsmith deploy-remote --user <user>` — specify SSH user
+  - Remote files are backed up before overwriting (`.dotsmith-bak.<timestamp>`)
+  - Uses system `ssh`/`scp` commands — respects `~/.ssh/config` (aliases, ProxyJump, agent forwarding)
+
 ## [0.1.0-alpha.7] - 2026-02-10
 
 ### Added

@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/purpleneutral/dotsmith/actions/workflows/ci.yml/badge.svg)](https://github.com/purpleneutral/dotsmith/actions/workflows/ci.yml)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0--alpha.7-orange.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.1.0--alpha.8-orange.svg)](CHANGELOG.md)
 
 The dotfile workbench -- explore, manage, and master your configs.
 
@@ -106,12 +106,17 @@ In the explore view, press `g` to generate a commented config snippet file at `~
 | `diff [tool]` | Colored diff between current state and last snapshot |
 | `rollback <id> [--dry-run]` | Restore a config file to a previous snapshot |
 | `deploy <src> <dst> [--dry-run]` | Create config symlinks with backup |
+| `deploy-remote <host> [--dry-run]` | Deploy tracked configs to a remote host via SSH |
 | `reload <tool>` | Reload a running tool's configuration |
 | `explore <tool>` | Interactive TUI explorer for config options |
 | `plugins <tool> add <repo>` | Add a plugin (GitHub shorthand: `user/repo`) |
 | `plugins <tool> remove <name>` | Remove a plugin |
 | `plugins <tool> list` | List installed plugins |
 | `plugins <tool> update [name]` | Update one or all plugins |
+| `profile save <name>` | Save current configs as a named profile |
+| `profile load <name>` | Restore config files from a saved profile |
+| `profile list` | List saved profiles |
+| `profile delete <name>` | Delete a saved profile |
 | `repo init <path>` | Initialize a git repo for dotfile backups |
 | `repo sync` | Copy tracked configs into the repo and commit |
 | `repo status` | Show repo status |
@@ -186,6 +191,52 @@ cd ~/dots && git remote add origin <url> && git push
 
 The `g` key on the TUI dashboard also triggers a sync.
 
+## Configuration Profiles
+
+Save and restore named configuration profiles -- great for switching between setups or migrating to a new machine:
+
+```sh
+# Save your current setup
+dotsmith profile save workstation
+
+# List saved profiles
+dotsmith profile list
+
+# Preview what loading would do
+dotsmith profile load laptop --dry-run
+
+# Restore configs from a profile (backs up existing files first)
+dotsmith profile load workstation
+
+# Load and also add tools that aren't currently tracked
+dotsmith profile load workstation --add-untracked
+
+# Remove a profile you no longer need
+dotsmith profile delete old-setup
+```
+
+Profiles are stored at `~/.config/dotsmith/profiles/<name>/` and include the full manifest plus actual config file contents.
+
+## Remote Deploy
+
+Deploy your tracked configs to a remote host via SSH:
+
+```sh
+# Deploy all tracked configs to a remote host
+dotsmith deploy-remote myserver
+
+# Preview what would be copied
+dotsmith deploy-remote myserver --dry-run
+
+# Deploy specific tools only
+dotsmith deploy-remote myserver --tool tmux --tool zsh
+
+# Specify a user
+dotsmith deploy-remote myserver --user alice
+```
+
+Uses your system `ssh` and `scp` commands, so your `~/.ssh/config` (aliases, ProxyJump, agent forwarding) is fully respected. Existing remote files are backed up before overwriting.
+
 ## How It Works
 
 dotsmith tracks your configs **in-place**. It never copies, moves, or re-symlinks your files.
@@ -203,6 +254,7 @@ Data is stored at `~/.config/dotsmith/`:
 - `backups/` -- automatic backups from rollback/deploy
 - `plugins/` -- cloned plugin repositories and loader files
 - `generated/` -- config snippet files from TUI explore (`g` key)
+- `profiles/` -- saved configuration profiles (manifest + file contents)
 
 All dotsmith-created files use `0600`/`0700` permissions.
 
@@ -211,14 +263,14 @@ All dotsmith-created files use `0600`/`0700` permissions.
 ```sh
 cargo build              # debug build
 cargo build --release    # optimized build
-cargo test               # run all tests (~375 tests)
+cargo test               # run all tests (~420 tests)
 cargo clippy             # lint check
 make check               # clippy + tests together
 ```
 
 ## Project Status
 
-**Current:** v0.1.0-alpha.7
+**Current:** v0.1.0-alpha.8
 
 - Phase 1: CLI skeleton, manifest, module system, tool detection
 - Phase 2: Snapshots, diff, deploy, rollback, reload, zsh module
@@ -227,6 +279,8 @@ make check               # clippy + tests together
 - Phase 5a: Shell completions, kitty/neovim/alacritty/awesomewm Tier 1 modules, starship integration
 - Quick wins: `doctor`, `search`, config generation from TUI explore
 - Phase 5b: `edit`, `watch`, config validation, man page generation
+- Phase 6: Git repo management (`repo init`, `repo sync`, `repo status`)
+- Phase 7: Configuration profiles (save/load), remote deploy via SSH
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release notes.
 

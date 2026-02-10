@@ -148,3 +148,95 @@ fn test_version_output() {
         .success()
         .stdout(predicate::str::contains("0.1.0"));
 }
+
+#[test]
+fn test_doctor_empty() {
+    let tmp = TempDir::new().unwrap();
+    let config_dir = tmp.path().join("dotsmith");
+    init_dotsmith(&config_dir);
+
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .arg("doctor")
+        .env("DOTSMITH_CONFIG_DIR", &config_dir)
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("No tools tracked"))
+        .stdout(predicate::str::contains("Summary"));
+}
+
+#[test]
+fn test_doctor_without_init_fails() {
+    let tmp = TempDir::new().unwrap();
+    let config_dir = tmp.path().join("dotsmith-noinit");
+
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .arg("doctor")
+        .env("DOTSMITH_CONFIG_DIR", &config_dir)
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("config directory missing"));
+}
+
+#[test]
+fn test_search_mouse() {
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .args(["search", "mouse"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("tmux"))
+        .stdout(predicate::str::contains("mouse"))
+        .stdout(predicate::str::contains("result"));
+}
+
+#[test]
+fn test_search_no_results() {
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .args(["search", "zzzznonexistent"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("No results"));
+}
+
+#[test]
+fn test_edit_not_tracked() {
+    let tmp = TempDir::new().unwrap();
+    let config_dir = tmp.path().join("dotsmith");
+    init_dotsmith(&config_dir);
+
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .args(["edit", "nonexistent"])
+        .env("DOTSMITH_CONFIG_DIR", &config_dir)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("not tracked"));
+}
+
+#[test]
+fn test_watch_not_tracked() {
+    let tmp = TempDir::new().unwrap();
+    let config_dir = tmp.path().join("dotsmith");
+    init_dotsmith(&config_dir);
+
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .args(["watch", "nonexistent"])
+        .env("DOTSMITH_CONFIG_DIR", &config_dir)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("not tracked"));
+}
+
+#[test]
+fn test_mangen_output() {
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .arg("mangen")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("dotsmith"));
+}

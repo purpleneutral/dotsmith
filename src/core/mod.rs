@@ -8,3 +8,4 @@ pub mod plugin;
 pub mod reload;
 pub mod repo;
 pub mod snapshot;
+pub mod validate;

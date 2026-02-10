@@ -14,6 +14,8 @@ pub enum ExploreAction {
     Snapshot(String),
     /// Reload the current tool.
     Reload(String),
+    /// Generate a config snippet file for the current tool.
+    GenerateConfig(String),
 }
 
 /// Handle a key event in the explore view.
@@ -63,6 +65,7 @@ pub fn handle_key(key: KeyEvent, state: &mut ExploreState) -> ExploreAction {
         }
         KeyCode::Char('s') => ExploreAction::Snapshot(state.tool_name.clone()),
         KeyCode::Char('r') => ExploreAction::Reload(state.tool_name.clone()),
+        KeyCode::Char('g') => ExploreAction::GenerateConfig(state.tool_name.clone()),
         _ => ExploreAction::None,
     }
 }
@@ -247,5 +250,15 @@ mod tests {
         let action = handle_key(make_key(KeyCode::Char('q')), &mut state);
         assert!(matches!(action, ExploreAction::None));
         assert_eq!(state.search_query, "q");
+    }
+
+    #[test]
+    fn test_generate_config() {
+        let mut state = sample_state();
+        let action = handle_key(make_key(KeyCode::Char('g')), &mut state);
+        assert!(matches!(action, ExploreAction::GenerateConfig(_)));
+        if let ExploreAction::GenerateConfig(tool) = action {
+            assert_eq!(tool, "tmux");
+        }
     }
 }

@@ -1,6 +1,8 @@
 pub mod add;
 pub mod deploy;
 pub mod diff;
+pub mod doctor;
+pub mod edit;
 pub mod history;
 pub mod init;
 pub mod list;
@@ -9,8 +11,10 @@ pub mod reload;
 pub mod remove;
 pub mod repo;
 pub mod rollback;
+pub mod search;
 pub mod snapshot;
 pub mod status;
+pub mod watch;
 
 use clap::{Parser, Subcommand};
 use clap_complete::Shell;
@@ -56,6 +60,18 @@ pub enum Commands {
 
     /// Show recent changes and warnings
     Status,
+
+    /// Run health checks on tracked tools and configuration
+    Doctor {
+        /// Specific tool to check (checks all if omitted)
+        tool: Option<String>,
+    },
+
+    /// Search config options across all Tier 1 tool databases
+    Search {
+        /// Search query (matches option names, descriptions, and tags)
+        query: String,
+    },
 
     /// Take a snapshot of config files
     Snapshot {
@@ -106,6 +122,18 @@ pub enum Commands {
         dry_run: bool,
     },
 
+    /// Open a tool's config file in your editor (auto-snapshots before editing)
+    Edit {
+        /// Tool name to edit
+        tool: String,
+    },
+
+    /// Watch tracked configs for changes and auto-snapshot on save
+    Watch {
+        /// Specific tool to watch (watches all if omitted)
+        tool: Option<String>,
+    },
+
     /// Reload configuration for a running tool
     Reload {
         /// Tool name to reload
@@ -132,6 +160,10 @@ pub enum Commands {
         /// Shell to generate completions for
         shell: Shell,
     },
+
+    /// Generate man page (hidden, for packaging)
+    #[command(hide = true)]
+    Mangen,
 
     /// Manage dotfile git repo for backups
     Repo {

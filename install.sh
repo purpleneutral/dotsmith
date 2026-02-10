@@ -112,6 +112,15 @@ if "$INSTALL_DIR/dotsmith" --version >/dev/null 2>&1; then
     info "verified" "$VERSION"
 fi
 
+# --- install man page ---
+
+MANDIR="${HOME}/.local/share/man/man1"
+if mkdir -p "$MANDIR" 2>/dev/null; then
+    if "${INSTALL_DIR}/dotsmith" mangen > "${MANDIR}/dotsmith.1" 2>/dev/null; then
+        info "man page" "${MANDIR}/dotsmith.1"
+    fi
+fi
+
 # Check PATH
 case ":${PATH}:" in
     *":${INSTALL_DIR}:"*) ;;

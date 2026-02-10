@@ -1,8 +1,9 @@
 PREFIX ?= $(HOME)/.local
 BINDIR  = $(PREFIX)/bin
+MANDIR  = $(PREFIX)/share/man/man1
 BINARY  = dotsmith
 
-.PHONY: build install uninstall test clean check help
+.PHONY: build install uninstall test clean check help man
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?##' $(MAKEFILE_LIST) | \
@@ -19,6 +20,11 @@ install: build ## Install to ~/.local/bin (override with PREFIX=/usr/local)
 	chmod 755 $(BINDIR)/$(BINARY)
 	@echo ""
 	@echo "  installed $(BINARY) to $(BINDIR)/$(BINARY)"
+	@if target/release/$(BINARY) mangen > /dev/null 2>&1; then \
+		mkdir -p $(MANDIR); \
+		target/release/$(BINARY) mangen > $(MANDIR)/dotsmith.1; \
+		echo "  installed man page to $(MANDIR)/dotsmith.1"; \
+	fi
 	@echo ""
 	@case ":$$PATH:" in \
 		*":$(BINDIR):"*) ;; \
@@ -30,7 +36,12 @@ install: build ## Install to ~/.local/bin (override with PREFIX=/usr/local)
 
 uninstall: ## Remove dotsmith from install location
 	rm -f $(BINDIR)/$(BINARY)
+	rm -f $(MANDIR)/dotsmith.1
 	@echo "  removed $(BINDIR)/$(BINARY)"
+
+man: build ## Generate man page
+	target/release/$(BINARY) mangen > dotsmith.1
+	@echo "  generated dotsmith.1"
 
 test: ## Run all tests
 	cargo test

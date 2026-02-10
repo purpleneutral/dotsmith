@@ -20,6 +20,8 @@ fn main() -> Result<()> {
         Some(Commands::Remove { ref tool }) => cli::remove::run(cli.verbose, tool),
         Some(Commands::List) => cli::list::run(cli.verbose),
         Some(Commands::Status) => cli::status::run(cli.verbose),
+        Some(Commands::Doctor { ref tool }) => cli::doctor::run(cli.verbose, tool.as_deref()),
+        Some(Commands::Search { ref query }) => cli::search::run(cli.verbose, query),
         Some(Commands::Snapshot {
             ref tool,
             ref message,
@@ -35,6 +37,8 @@ fn main() -> Result<()> {
             ref target,
             dry_run,
         }) => cli::deploy::run(cli.verbose, source, target, dry_run),
+        Some(Commands::Edit { ref tool }) => cli::edit::run(cli.verbose, tool),
+        Some(Commands::Watch { ref tool }) => cli::watch::run(cli.verbose, tool.as_deref()),
         Some(Commands::Reload { ref tool }) => cli::reload::run(cli.verbose, tool),
         Some(Commands::Plugins {
             ref tool,
@@ -43,6 +47,12 @@ fn main() -> Result<()> {
         Some(Commands::Completions { shell }) => {
             let mut cmd = DotsmithCli::command();
             generate(shell, &mut cmd, "dotsmith", &mut std::io::stdout());
+            Ok(())
+        }
+        Some(Commands::Mangen) => {
+            let cmd = DotsmithCli::command();
+            let man = clap_mangen::Man::new(cmd);
+            man.render(&mut std::io::stdout())?;
             Ok(())
         }
         Some(Commands::Repo { action }) => match action {

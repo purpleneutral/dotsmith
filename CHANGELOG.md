@@ -2,6 +2,29 @@
 
 All notable changes to dotsmith will be documented in this file.
 
+## [0.1.0-alpha.7] - 2026-02-10
+
+### Added
+
+- **Phase 5b: edit, watch, validate, man page**
+  - `dotsmith edit <tool>` — open config in $EDITOR with automatic pre-edit snapshot and change detection
+  - `dotsmith watch [tool]` — poll-based file watching with auto-snapshot on save (2s interval, Ctrl-C to stop)
+  - Config syntax validation in `dotsmith doctor` — validates TOML, key-value (kitty), git INI, and tmux formats
+  - Man page generation via `clap_mangen` — hidden `mangen` subcommand, `make man` target
+  - `make install` now automatically installs the man page to `$PREFIX/share/man/man1/`
+  - `install.sh` now installs the man page alongside the binary
+
+## [0.1.0-alpha.6] - 2026-02-10
+
+### Added
+
+- **Quick Wins: doctor, search, config generation**
+  - `dotsmith doctor [tool]` — deep health check: installation status, config paths, snapshot freshness, actionable hints
+  - `dotsmith search <query>` — search across all 220+ Tier 1 options from the CLI (matches names, descriptions, categories, tags)
+  - Config generation in TUI explore: press `g` to generate a commented config snippet file at `~/.config/dotsmith/generated/<tool>.<ext>`
+  - Generated files include all visible options with descriptions, types, defaults, and examples (all commented)
+  - Filter by category or search first to generate focused config snippets
+
 ## [0.1.0-alpha.5] - 2026-02-10
 
 ### Added

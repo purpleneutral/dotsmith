@@ -245,6 +245,7 @@ fn draw_help(f: &mut Frame, area: Rect) {
         HelpItem { key: "Tab", action: "panel" },
         HelpItem { key: "s", action: "snapshot" },
         HelpItem { key: "r", action: "reload" },
+        HelpItem { key: "g", action: "generate" },
         HelpItem { key: "Esc", action: "back" },
         HelpItem { key: "q", action: "quit" },
     ]);

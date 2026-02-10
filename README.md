@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/purpleneutral/dotsmith/actions/workflows/ci.yml/badge.svg)](https://github.com/purpleneutral/dotsmith/actions/workflows/ci.yml)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0--alpha.5-orange.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.1.0--alpha.7-orange.svg)](CHANGELOG.md)
 
 The dotfile workbench -- explore, manage, and master your configs.
 
@@ -43,6 +43,13 @@ The binary installs to `~/.local/bin` by default. Override with `PREFIX`:
 make install PREFIX=/usr/local
 ```
 
+A man page is installed automatically with `make install`. You can also generate it separately:
+
+```sh
+make man              # generates dotsmith.1
+man ./dotsmith.1      # preview locally
+```
+
 ## Quick Start
 
 ```sh
@@ -79,6 +86,8 @@ Running `dotsmith` with no arguments opens an interactive dashboard:
 
 The TUI includes a scrollable diff viewer, snapshot history browser with rollback, and plugin management -- all without leaving the terminal.
 
+In the explore view, press `g` to generate a commented config snippet file at `~/.config/dotsmith/generated/<tool>.<ext>` containing all currently visible options. Filter by category or search first to generate a focused snippet.
+
 ## Commands
 
 | Command | Description |
@@ -88,6 +97,10 @@ The TUI includes a scrollable diff viewer, snapshot history browser with rollbac
 | `remove <tool>` | Remove a tool (never touches your config files) |
 | `list` | List all tracked tools with tier, paths, plugin manager |
 | `status` | Health check -- verify tracked configs still exist |
+| `doctor [tool]` | Deep health check -- installation, paths, syntax validation, snapshot freshness |
+| `search <query>` | Search config options across all Tier 1 tool databases |
+| `edit <tool>` | Open config in $EDITOR (auto-snapshots before editing) |
+| `watch [tool]` | Watch tracked configs for changes and auto-snapshot on save |
 | `snapshot [tool] [-m msg]` | Snapshot config files for rollback |
 | `history <tool> [-l N]` | Show snapshot history |
 | `diff [tool]` | Colored diff between current state and last snapshot |
@@ -189,6 +202,7 @@ Data is stored at `~/.config/dotsmith/`:
 - `snapshots.db` -- snapshot history (SQLite, WAL mode)
 - `backups/` -- automatic backups from rollback/deploy
 - `plugins/` -- cloned plugin repositories and loader files
+- `generated/` -- config snippet files from TUI explore (`g` key)
 
 All dotsmith-created files use `0600`/`0700` permissions.
 
@@ -197,20 +211,22 @@ All dotsmith-created files use `0600`/`0700` permissions.
 ```sh
 cargo build              # debug build
 cargo build --release    # optimized build
-cargo test               # run all tests (~318 tests)
+cargo test               # run all tests (~375 tests)
 cargo clippy             # lint check
 make check               # clippy + tests together
 ```
 
 ## Project Status
 
-**Current:** v0.1.0-alpha.5
+**Current:** v0.1.0-alpha.7
 
 - Phase 1: CLI skeleton, manifest, module system, tool detection
 - Phase 2: Snapshots, diff, deploy, rollback, reload, zsh module
 - Phase 3: Built-in plugin management for zsh and tmux
 - Phase 4: TUI dashboard, option explorer, diff/history/plugin views, repo sync
 - Phase 5a: Shell completions, kitty/neovim/alacritty/awesomewm Tier 1 modules, starship integration
+- Quick wins: `doctor`, `search`, config generation from TUI explore
+- Phase 5b: `edit`, `watch`, config validation, man page generation
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release notes.
 

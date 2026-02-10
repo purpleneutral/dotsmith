@@ -13,18 +13,11 @@ pub fn run(_verbose: bool, tool: Option<&str>) -> Result<()> {
 
     let tools_to_diff: Vec<(&String, &crate::core::manifest::ToolEntry)> = match tool {
         Some(name) => {
-            let entry = manifest
+            manifest
                 .tools
-                .get(name)
-                .ok_or_else(|| anyhow::anyhow!("'{}' is not tracked by dotsmith", name))?;
-            vec![(&name.to_string(), entry)]
-                .into_iter()
-                .map(|(_, e)| {
-                    // Re-borrow from manifest to satisfy lifetimes
-                    let n = manifest.tools.keys().find(|k| k.as_str() == name).unwrap();
-                    (n, e)
-                })
-                .collect()
+                .get_key_value(name)
+                .map(|(k, v)| vec![(k, v)])
+                .ok_or_else(|| anyhow::anyhow!("'{}' is not tracked by dotsmith", name))?
         }
         None => manifest.tools.iter().collect(),
     };

@@ -177,13 +177,41 @@ mod tests {
     fn test_new_zsh() {
         let state = ExploreState::new("zsh").unwrap();
         assert_eq!(state.tool_name, "zsh");
-        assert_eq!(state.all_options.len(), 31);
+        assert_eq!(state.all_options.len(), 33);
     }
 
     #[test]
     fn test_new_git() {
         let state = ExploreState::new("git").unwrap();
         assert_eq!(state.tool_name, "git");
+        assert_eq!(state.all_options.len(), 31);
+    }
+
+    #[test]
+    fn test_new_kitty() {
+        let state = ExploreState::new("kitty").unwrap();
+        assert_eq!(state.tool_name, "kitty");
+        assert_eq!(state.all_options.len(), 31);
+    }
+
+    #[test]
+    fn test_new_neovim() {
+        let state = ExploreState::new("neovim").unwrap();
+        assert_eq!(state.tool_name, "neovim");
+        assert_eq!(state.all_options.len(), 31);
+    }
+
+    #[test]
+    fn test_new_alacritty() {
+        let state = ExploreState::new("alacritty").unwrap();
+        assert_eq!(state.tool_name, "alacritty");
+        assert_eq!(state.all_options.len(), 31);
+    }
+
+    #[test]
+    fn test_new_awesomewm() {
+        let state = ExploreState::new("awesomewm").unwrap();
+        assert_eq!(state.tool_name, "awesomewm");
         assert_eq!(state.all_options.len(), 31);
     }
 

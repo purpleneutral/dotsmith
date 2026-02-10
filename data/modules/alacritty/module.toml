@@ -1,0 +1,31 @@
+[metadata]
+name = "alacritty"
+display_name = "Alacritty"
+description = "GPU-accelerated terminal emulator focused on simplicity and performance"
+homepage = "https://alacritty.org"
+
+config_paths = [
+    "~/.config/alacritty/alacritty.toml",
+    "~/.config/alacritty/alacritty.yml",
+    "~/.config/alacritty",
+]
+
+detect_command = "which alacritty"
+
+reload_description = "Alacritty auto-reloads config on save"
+
+man_page = "alacritty"
+config_format = "toml"
+
+plugins_supported = false
+
+categories = [
+    "window",
+    "font",
+    "colors",
+    "cursor",
+    "scrolling",
+    "shell",
+    "keybindings",
+    "hints",
+]

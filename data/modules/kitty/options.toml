@@ -1,0 +1,337 @@
+# kitty option database — 31 curated options
+# Categories: appearance, fonts, cursor, scrollback, mouse, performance, tabs, keybindings
+
+# --- appearance ---
+
+[[options]]
+name = "background_opacity"
+type = "float"
+default = "1.0"
+category = "appearance"
+description = "Opacity of the terminal background from 0.0 (fully transparent) to 1.0 (fully opaque)"
+why = "Transparency lets you see your wallpaper or other windows behind the terminal. Requires a compositor."
+example = "background_opacity 0.9"
+tags = ["transparency", "compositor", "visual"]
+
+[[options]]
+name = "dim_opacity"
+type = "float"
+default = "0.4"
+category = "appearance"
+description = "Opacity for text marked as dim (SGR escape code)"
+why = "Controls how faded dim text appears. Lower values make dim text harder to read but more visually distinct."
+example = "dim_opacity 0.5"
+tags = ["dim", "opacity", "text"]
+
+[[options]]
+name = "window_padding_width"
+type = "integer"
+default = "0"
+category = "appearance"
+description = "Padding in points between the terminal content and the window edges"
+why = "Adds breathing room around your terminal content. Makes the terminal feel less cramped."
+example = "window_padding_width 8"
+tags = ["padding", "spacing", "visual"]
+
+[[options]]
+name = "hide_window_decorations"
+type = "enum"
+default = "no"
+values = ["yes", "no", "titlebar-only", "titlebar-and-corners"]
+category = "appearance"
+description = "Control whether window decorations (title bar, borders) are shown"
+why = "Hiding decorations gives a clean, borderless look. Popular with tiling window managers."
+example = "hide_window_decorations yes"
+tags = ["decorations", "titlebar", "borderless", "tiling"]
+
+# --- fonts ---
+
+[[options]]
+name = "font_family"
+type = "string"
+default = "monospace"
+category = "fonts"
+description = "The primary font family used for rendering text"
+why = "Choose a programming font with good glyph coverage. Nerd Fonts add icons for file managers and prompts."
+example = "font_family JetBrainsMono Nerd Font"
+tags = ["essential", "font", "typography"]
+
+[[options]]
+name = "bold_font"
+type = "string"
+default = "auto"
+category = "fonts"
+description = "Font family for bold text, or 'auto' to use the bold variant of font_family"
+why = "Override if your font's auto-detected bold variant doesn't look right."
+example = "bold_font JetBrainsMono Nerd Font Bold"
+tags = ["font", "bold", "typography"]
+related = ["font_family"]
+
+[[options]]
+name = "italic_font"
+type = "string"
+default = "auto"
+category = "fonts"
+description = "Font family for italic text, or 'auto' to use the italic variant of font_family"
+why = "Some fonts have beautiful italic variants (like Monaspace Radon) worth specifying explicitly."
+example = "italic_font JetBrainsMono Nerd Font Italic"
+tags = ["font", "italic", "typography"]
+related = ["font_family"]
+
+[[options]]
+name = "font_size"
+type = "float"
+default = "11.0"
+category = "fonts"
+description = "Font size in points"
+why = "Adjust for your display resolution and viewing distance. HiDPI displays often need larger sizes."
+example = "font_size 13.0"
+tags = ["essential", "font", "size"]
+
+[[options]]
+name = "modify_font"
+type = "string"
+default = ""
+category = "fonts"
+description = "Fine-tune font metrics like cell height, baseline, and underline position"
+why = "Fix line spacing issues or adjust underline/strikethrough position for your chosen font."
+example = "modify_font cell_height 110%"
+tags = ["font", "metrics", "spacing", "line-height"]
+
+# --- cursor ---
+
+[[options]]
+name = "cursor_shape"
+type = "enum"
+default = "block"
+values = ["block", "beam", "underline"]
+category = "cursor"
+description = "Shape of the text cursor"
+why = "Beam cursors are popular for insert-mode feel. Block cursors are classic terminal style. Underline is a middle ground."
+example = "cursor_shape beam"
+tags = ["cursor", "visual"]
+
+[[options]]
+name = "cursor_blink_interval"
+type = "float"
+default = "-1"
+category = "cursor"
+description = "Interval in seconds between cursor blinks. Set to 0 to disable blinking, -1 for system default."
+why = "Disable blinking to reduce visual distraction, or set a custom rate."
+example = "cursor_blink_interval 0"
+tags = ["cursor", "blink", "animation"]
+
+[[options]]
+name = "cursor_stop_blinking_after"
+type = "float"
+default = "15.0"
+category = "cursor"
+description = "Stop cursor blinking after this many seconds of keyboard inactivity (0 = never stop)"
+why = "Saves a tiny bit of CPU when you step away, and reduces distraction in idle terminals."
+example = "cursor_stop_blinking_after 0"
+tags = ["cursor", "blink", "idle"]
+
+[[options]]
+name = "cursor_beam_thickness"
+type = "float"
+default = "1.5"
+category = "cursor"
+description = "Thickness of the beam cursor in points"
+why = "Increase thickness if the beam cursor is too thin on HiDPI displays."
+example = "cursor_beam_thickness 2.0"
+tags = ["cursor", "beam", "thickness"]
+
+# --- scrollback ---
+
+[[options]]
+name = "scrollback_lines"
+type = "integer"
+default = "2000"
+category = "scrollback"
+description = "Number of lines of scrollback history to keep"
+why = "More lines let you scroll back further in build logs, test output, etc. Uses memory proportionally."
+example = "scrollback_lines 10000"
+tags = ["essential", "history", "memory"]
+
+[[options]]
+name = "scrollback_pager"
+type = "string"
+default = "less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER"
+category = "scrollback"
+description = "Program to view scrollback in a pager (Ctrl+Shift+H)"
+why = "Replace with a better pager like bat or use nvim for full search and copy capabilities."
+example = "scrollback_pager nvim -c 'set ft=man' -"
+tags = ["pager", "scrollback", "viewer"]
+
+[[options]]
+name = "scrollback_fill_enlarged_window"
+type = "boolean"
+default = "no"
+category = "scrollback"
+description = "Fill newly visible lines from scrollback when the window is enlarged"
+why = "Shows more history when you resize the window taller instead of leaving blank lines."
+example = "scrollback_fill_enlarged_window yes"
+tags = ["scrollback", "resize"]
+
+# --- mouse ---
+
+[[options]]
+name = "mouse_hide_wait"
+type = "float"
+default = "3.0"
+category = "mouse"
+description = "Seconds of keyboard activity before hiding the mouse cursor (0 = never hide, negative = immediately)"
+why = "Hiding the mouse while typing reduces visual clutter. Set to 0 if you find it annoying."
+example = "mouse_hide_wait 0"
+tags = ["mouse", "cursor", "hide"]
+
+[[options]]
+name = "url_style"
+type = "enum"
+default = "curly"
+values = ["none", "straight", "double", "curly", "dotted", "dashed"]
+category = "mouse"
+description = "Underline style for URLs detected in terminal output"
+why = "Makes clickable URLs visually distinct. Set to 'none' to disable URL highlighting."
+example = "url_style straight"
+tags = ["url", "underline", "links"]
+
+[[options]]
+name = "open_url_with"
+type = "string"
+default = "default"
+category = "mouse"
+description = "Program to open clicked URLs with ('default' uses the system handler)"
+why = "Override to open URLs in a specific browser or handle them with a custom script."
+example = "open_url_with firefox"
+tags = ["url", "browser", "links"]
+
+[[options]]
+name = "copy_on_select"
+type = "enum"
+default = "no"
+values = ["yes", "no", "clipboard"]
+category = "mouse"
+description = "Automatically copy selected text to clipboard or primary selection"
+why = "Enables X11-style copy-on-select. Set to 'clipboard' to copy to system clipboard instead of primary."
+example = "copy_on_select clipboard"
+tags = ["clipboard", "selection", "copy"]
+
+# --- performance ---
+
+[[options]]
+name = "repaint_delay"
+type = "integer"
+default = "10"
+category = "performance"
+description = "Delay in milliseconds between screen repaints"
+why = "Lower values feel more responsive but use more CPU. Increase on battery-powered devices."
+example = "repaint_delay 10"
+tags = ["performance", "latency", "gpu"]
+
+[[options]]
+name = "input_delay"
+type = "integer"
+default = "3"
+category = "performance"
+description = "Delay in milliseconds before processing keyboard/mouse input"
+why = "Batches rapid input for efficiency. Lower values reduce input latency at the cost of CPU."
+example = "input_delay 3"
+tags = ["performance", "latency", "input"]
+
+[[options]]
+name = "sync_to_monitor"
+type = "boolean"
+default = "yes"
+category = "performance"
+description = "Sync rendering to the monitor refresh rate to prevent tearing"
+why = "Disable for potentially lower latency at the cost of possible screen tearing."
+example = "sync_to_monitor yes"
+tags = ["performance", "vsync", "tearing"]
+
+[[options]]
+name = "wayland_enable_ime"
+type = "boolean"
+default = "yes"
+category = "performance"
+description = "Enable input method editor (IME) support on Wayland"
+why = "Required for CJK and other complex input methods. Disable if you only type in Latin scripts for slightly less overhead."
+example = "wayland_enable_ime no"
+tags = ["wayland", "ime", "input"]
+
+# --- tabs ---
+
+[[options]]
+name = "tab_bar_style"
+type = "enum"
+default = "fade"
+values = ["fade", "slant", "separator", "powerline", "custom", "hidden"]
+category = "tabs"
+description = "Visual style of the tab bar"
+why = "Each style has a different aesthetic. 'powerline' gives arrow separators, 'hidden' removes the bar entirely."
+example = "tab_bar_style powerline"
+tags = ["tabs", "visual", "style"]
+
+[[options]]
+name = "tab_bar_edge"
+type = "enum"
+default = "bottom"
+values = ["top", "bottom"]
+category = "tabs"
+description = "Position of the tab bar"
+why = "Top mimics browser tabs, bottom keeps them near the shell prompt."
+example = "tab_bar_edge top"
+tags = ["tabs", "position"]
+
+[[options]]
+name = "tab_title_template"
+type = "string"
+default = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title}"
+category = "tabs"
+description = "Template for rendering tab titles using Python string formatting"
+why = "Customize to show tab index, running command, working directory, or other metadata."
+example = "tab_title_template \"{index}: {title}\""
+tags = ["tabs", "title", "template"]
+
+[[options]]
+name = "active_tab_font_style"
+type = "enum"
+default = "bold-italic"
+values = ["normal", "bold", "italic", "bold-italic"]
+category = "tabs"
+description = "Font style for the currently active tab title"
+why = "Makes the active tab stand out visually. Bold is the most common choice."
+example = "active_tab_font_style bold"
+tags = ["tabs", "font", "active"]
+
+# --- keybindings ---
+
+[[options]]
+name = "kitty_mod"
+type = "keybinding"
+default = "ctrl+shift"
+category = "keybindings"
+description = "The modifier key combo used as the 'kitty modifier' in default keybindings"
+why = "All default kitty shortcuts use this modifier. Change it to avoid conflicts with your shell or editor."
+example = "kitty_mod ctrl+shift"
+tags = ["essential", "modifier", "keybinding"]
+
+[[options]]
+name = "clear_all_shortcuts"
+type = "boolean"
+default = "no"
+category = "keybindings"
+description = "Remove all default keybindings before defining custom ones"
+why = "Start from a clean slate when you want full control over keybindings."
+example = "clear_all_shortcuts yes"
+tags = ["keybinding", "reset"]
+
+[[options]]
+name = "clipboard_control"
+type = "string"
+default = "write-clipboard read-clipboard write-primary read-primary"
+category = "keybindings"
+description = "Control which clipboard operations programs running in the terminal are allowed to perform"
+why = "Restrict clipboard access for security. Programs use OSC 52 escape sequences to access clipboard."
+example = "clipboard_control write-clipboard read-clipboard"
+tags = ["clipboard", "security", "osc52"]

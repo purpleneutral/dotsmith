@@ -36,6 +36,11 @@ pub fn reload_tool(tool: &str, config_path: Option<&str>) -> Result<String> {
         "tmux" => reload_tmux(config_path),
         "kitty" => reload_kitty(),
         "sway" | "i3" => reload_wm(tool),
+        "alacritty" => Ok("alacritty auto-reloads config on file change".to_string()),
+        "awesomewm" => reload_awesomewm(),
+        "neovim" => anyhow::bail!(
+            "neovim reloads interactively — use :source % inside nvim"
+        ),
         _ => anyhow::bail!(
             "no reload method known for '{}'. You may need to restart it manually.",
             tool
@@ -99,6 +104,22 @@ fn reload_kitty() -> Result<String> {
     }
 
     Ok("sent SIGUSR1 to kitty".to_string())
+}
+
+/// Reload awesome window manager.
+fn reload_awesomewm() -> Result<String> {
+    let status = Command::new("awesome-client")
+        .arg("awesome.restart()")
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .status()
+        .context("failed to run awesome-client")?;
+
+    if !status.success() {
+        anyhow::bail!("awesome-client failed — is awesome running?");
+    }
+
+    Ok("restarted awesome".to_string())
 }
 
 /// Reload a window manager (i3/sway).

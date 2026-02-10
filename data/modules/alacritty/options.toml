@@ -1,0 +1,339 @@
+# alacritty option database — 31 curated options
+# Categories: window, font, colors, cursor, scrolling, shell, keybindings, hints
+
+# --- window ---
+
+[[options]]
+name = "window.dimensions.columns"
+type = "integer"
+default = "0"
+category = "window"
+description = "Initial number of columns (0 = use terminal default)"
+why = "Set a fixed size so Alacritty always opens at your preferred dimensions."
+example = "[window.dimensions]\ncolumns = 120"
+tags = ["window", "size", "columns"]
+related = ["window.dimensions.lines"]
+
+[[options]]
+name = "window.dimensions.lines"
+type = "integer"
+default = "0"
+category = "window"
+description = "Initial number of lines (0 = use terminal default)"
+why = "Combined with columns, gives a consistent window size on launch."
+example = "[window.dimensions]\nlines = 40"
+tags = ["window", "size", "lines"]
+related = ["window.dimensions.columns"]
+
+[[options]]
+name = "window.padding.x"
+type = "integer"
+default = "0"
+category = "window"
+description = "Horizontal padding in pixels around the terminal content"
+why = "Adds breathing room between text and window edges. Looks cleaner, especially with transparency."
+example = "[window.padding]\nx = 8"
+tags = ["padding", "spacing"]
+related = ["window.padding.y"]
+
+[[options]]
+name = "window.decorations"
+type = "enum"
+default = "Full"
+values = ["Full", "None", "Transparent", "Buttonless"]
+category = "window"
+description = "Window decoration style (title bar and borders)"
+why = "'None' gives a borderless window — popular with tiling WMs. 'Transparent' (macOS) blends the title bar."
+example = "[window]\ndecorations = \"None\""
+tags = ["decorations", "titlebar", "borderless"]
+
+[[options]]
+name = "window.opacity"
+type = "float"
+default = "1.0"
+category = "window"
+description = "Background opacity from 0.0 (transparent) to 1.0 (opaque)"
+why = "Transparency lets your wallpaper show through. Requires a compositor on X11."
+example = "[window]\nopacity = 0.9"
+tags = ["transparency", "opacity", "visual"]
+
+# --- font ---
+
+[[options]]
+name = "font.normal.family"
+type = "string"
+default = "monospace"
+category = "font"
+description = "Font family for regular text"
+why = "Pick a font with good programming ligature and icon support. Nerd Fonts are popular."
+example = "[font.normal]\nfamily = \"JetBrainsMono Nerd Font\""
+tags = ["essential", "font", "typography"]
+
+[[options]]
+name = "font.bold.family"
+type = "string"
+default = ""
+category = "font"
+description = "Font family for bold text (empty = use normal family's bold variant)"
+why = "Override if the auto-detected bold variant doesn't match your preferred weight."
+example = "[font.bold]\nfamily = \"JetBrainsMono Nerd Font\""
+tags = ["font", "bold", "typography"]
+related = ["font.normal.family"]
+
+[[options]]
+name = "font.size"
+type = "float"
+default = "11.25"
+category = "font"
+description = "Font size in points"
+why = "Adjust for your display DPI. HiDPI screens may need 13-15pt for comfortable reading."
+example = "[font]\nsize = 13.0"
+tags = ["essential", "font", "size"]
+
+[[options]]
+name = "font.offset.y"
+type = "integer"
+default = "0"
+category = "font"
+description = "Vertical offset for font rendering in pixels (adjusts line spacing)"
+why = "Positive values increase line spacing, negative values decrease it. Fine-tune for your font."
+example = "[font.offset]\ny = 1"
+tags = ["font", "spacing", "line-height"]
+
+# --- colors ---
+
+[[options]]
+name = "colors.primary.background"
+type = "color"
+default = "#1d1f21"
+category = "colors"
+description = "Background color of the terminal"
+why = "The foundation of your color scheme. Match your editor and shell prompt theme."
+example = "[colors.primary]\nbackground = \"#282c34\""
+tags = ["essential", "color", "theme", "background"]
+related = ["colors.primary.foreground"]
+
+[[options]]
+name = "colors.primary.foreground"
+type = "color"
+default = "#c5c8c6"
+category = "colors"
+description = "Default foreground (text) color"
+why = "Should contrast well with your background color for readability."
+example = "[colors.primary]\nforeground = \"#abb2bf\""
+tags = ["essential", "color", "theme", "foreground"]
+related = ["colors.primary.background"]
+
+[[options]]
+name = "colors.draw_bold_text_with_bright_colors"
+type = "boolean"
+default = "false"
+category = "colors"
+description = "Use bright color variants for bold text instead of just increasing font weight"
+why = "Enable for classic terminal behavior where bold text is brighter. Disable for modern colorscheme accuracy."
+example = "[colors]\ndraw_bold_text_with_bright_colors = true"
+tags = ["color", "bold", "bright"]
+
+[[options]]
+name = "colors.transparent_background_colors"
+type = "boolean"
+default = "false"
+category = "colors"
+description = "Allow programs to set transparent background colors via escape codes"
+why = "Enable to let programs like tmux or vim set partially transparent backgrounds within the terminal."
+example = "[colors]\ntransparent_background_colors = true"
+tags = ["color", "transparency", "background"]
+
+# --- cursor ---
+
+[[options]]
+name = "cursor.style.shape"
+type = "enum"
+default = "Block"
+values = ["Block", "Underline", "Beam"]
+category = "cursor"
+description = "Shape of the text cursor"
+why = "Beam is popular for its modern look. Block is classic terminal style."
+example = "[cursor.style]\nshape = \"Beam\""
+tags = ["cursor", "shape", "visual"]
+
+[[options]]
+name = "cursor.style.blinking"
+type = "enum"
+default = "Off"
+values = ["Never", "Off", "On", "Always"]
+category = "cursor"
+description = "Whether the cursor blinks (Off/On respect terminal escape codes, Never/Always override)"
+why = "Disable blinking to reduce distraction. 'Never' prevents programs from enabling it."
+example = "[cursor.style]\nblinking = \"Never\""
+tags = ["cursor", "blink", "animation"]
+
+[[options]]
+name = "cursor.blink_interval"
+type = "integer"
+default = "750"
+category = "cursor"
+description = "Cursor blink interval in milliseconds"
+why = "Lower values give a faster blink. Only matters when blinking is enabled."
+example = "[cursor]\nblink_interval = 500"
+tags = ["cursor", "blink", "interval"]
+
+[[options]]
+name = "cursor.unfocused_hollow"
+type = "boolean"
+default = "true"
+category = "cursor"
+description = "Show a hollow block cursor when the terminal window is unfocused"
+why = "Makes it clear which terminal has focus in a multi-window setup."
+example = "[cursor]\nunfocused_hollow = true"
+tags = ["cursor", "focus", "visual"]
+
+# --- scrolling ---
+
+[[options]]
+name = "scrolling.history"
+type = "integer"
+default = "10000"
+category = "scrolling"
+description = "Maximum number of lines in the scrollback buffer (0 = disable scrollback)"
+why = "More lines let you scroll back further through build output or logs."
+example = "[scrolling]\nhistory = 10000"
+tags = ["essential", "scrollback", "history"]
+
+[[options]]
+name = "scrolling.multiplier"
+type = "integer"
+default = "3"
+category = "scrolling"
+description = "Number of lines to scroll per scroll wheel tick"
+why = "Increase for faster scrolling through long output. Decrease for precise navigation."
+example = "[scrolling]\nmultiplier = 5"
+tags = ["scrolling", "mouse", "speed"]
+
+[[options]]
+name = "window.padding.y"
+type = "integer"
+default = "0"
+category = "window"
+description = "Vertical padding in pixels around the terminal content"
+why = "Adds breathing room above and below text. Combined with x padding, creates a balanced frame."
+example = "[window.padding]\ny = 8"
+tags = ["padding", "spacing"]
+related = ["window.padding.x"]
+
+# --- shell ---
+
+[[options]]
+name = "terminal.shell.program"
+type = "path"
+default = ""
+category = "shell"
+description = "Path to the shell program to run (empty = user's default login shell)"
+why = "Override to use a specific shell like zsh or fish regardless of your login shell."
+example = "[terminal.shell]\nprogram = \"/bin/zsh\""
+tags = ["shell", "program", "login"]
+
+[[options]]
+name = "terminal.shell.args"
+type = "list"
+default = "[]"
+category = "shell"
+description = "Arguments passed to the shell program on startup"
+why = "Pass '--login' for login shell behavior, or custom flags for your shell."
+example = "[terminal.shell]\nargs = [\"--login\"]"
+tags = ["shell", "args", "startup"]
+
+[[options]]
+name = "terminal.osc52"
+type = "enum"
+default = "OnlyCopy"
+values = ["Disabled", "OnlyCopy", "OnlyPaste", "CopyPaste"]
+category = "shell"
+description = "Control OSC 52 clipboard escape sequence behavior"
+why = "OnlyCopy lets programs copy to clipboard via escape codes. CopyPaste enables full clipboard access."
+example = "[terminal]\nosc52 = \"CopyPaste\""
+tags = ["clipboard", "osc52", "security"]
+
+[[options]]
+name = "env.TERM"
+type = "string"
+default = "alacritty"
+category = "shell"
+description = "Value of the TERM environment variable set inside the terminal"
+why = "Some programs don't recognize 'alacritty'. Set to 'xterm-256color' for maximum compatibility."
+example = "[env]\nTERM = \"xterm-256color\""
+tags = ["essential", "term", "compatibility", "environment"]
+
+# --- keybindings ---
+
+[[options]]
+name = "keyboard.bindings"
+type = "list"
+default = "[]"
+category = "keybindings"
+description = "Custom keyboard shortcuts that override or extend defaults"
+why = "Add shortcuts for common actions like copying, pasting, font size changes, or spawning new windows."
+example = "[[keyboard.bindings]]\nkey = \"N\"\nmods = \"Control|Shift\"\naction = \"CreateNewWindow\""
+tags = ["keybinding", "shortcuts", "keyboard"]
+
+[[options]]
+name = "mouse.bindings"
+type = "list"
+default = "[]"
+category = "keybindings"
+description = "Custom mouse button bindings"
+why = "Override middle-click paste or add custom mouse actions."
+example = "[[mouse.bindings]]\nmouse = \"Right\"\naction = \"Paste\""
+tags = ["mouse", "bindings", "shortcuts"]
+
+[[options]]
+name = "mouse.hide_when_typing"
+type = "boolean"
+default = "false"
+category = "keybindings"
+description = "Hide the mouse cursor while typing"
+why = "Reduces visual clutter when you're focused on typing. Cursor reappears on mouse movement."
+example = "[mouse]\nhide_when_typing = true"
+tags = ["mouse", "cursor", "typing"]
+
+[[options]]
+name = "selection.save_to_clipboard"
+type = "boolean"
+default = "false"
+category = "keybindings"
+description = "Automatically copy selected text to the system clipboard"
+why = "Enables X11-style copy-on-select behavior without needing a separate copy shortcut."
+example = "[selection]\nsave_to_clipboard = true"
+tags = ["clipboard", "selection", "copy"]
+
+# --- hints ---
+
+[[options]]
+name = "hints.enabled"
+type = "list"
+default = "[]"
+category = "hints"
+description = "URL and pattern hints configuration for keyboard-driven clicking"
+why = "Enables vim-like link hints — press a shortcut and type the hint label to open a URL without using the mouse."
+example = "[[hints.enabled]]\ncommand = \"xdg-open\"\nhyperlinks = true\npost_processing = true\nregex = \"(https?://)[^\\s]+\""
+tags = ["hints", "url", "keyboard"]
+
+[[options]]
+name = "hints.alphabet"
+type = "string"
+default = "jfkdls;ahgurieowpq"
+category = "hints"
+description = "Characters used for hint labels (ordered by keyboard accessibility)"
+why = "Customize the hint characters to match your keyboard layout and typing habits."
+example = "[hints]\nalphabet = \"asdfjkl;\""
+tags = ["hints", "alphabet", "keyboard"]
+
+[[options]]
+name = "hints.enabled.regex"
+type = "string"
+default = ""
+category = "hints"
+description = "Regex pattern for matching hintable content in terminal output"
+why = "Define custom patterns beyond URLs — match file paths, IP addresses, hex colors, etc."
+example = "regex = \"(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\\\\u0000-\\\\u001F\\\\u007F-\\\\u009F<>\\\"\\\\s{-}\\\\^⟨⟩`]+\""
+tags = ["hints", "regex", "pattern"]

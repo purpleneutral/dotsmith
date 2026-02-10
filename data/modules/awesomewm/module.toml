@@ -1,0 +1,30 @@
+[metadata]
+name = "awesomewm"
+display_name = "awesome"
+description = "Highly configurable tiling window manager for X11"
+homepage = "https://awesomewm.org"
+
+config_paths = [
+    "~/.config/awesome/rc.lua",
+    "~/.config/awesome",
+]
+
+detect_command = "which awesome"
+
+reload_description = "restart awesome window manager"
+
+man_page = "awesome"
+config_format = "lua"
+
+plugins_supported = false
+
+categories = [
+    "general",
+    "tags",
+    "layouts",
+    "keybindings",
+    "rules",
+    "wibar",
+    "themes",
+    "notifications",
+]

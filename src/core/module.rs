@@ -126,9 +126,13 @@ impl ModuleRegistry {
     /// Get the module definition for a built-in tool.
     pub fn get_builtin(name: &str) -> Option<ModuleDefinition> {
         let toml_str = match name {
+            "alacritty" => include_str!("../../data/modules/alacritty/module.toml"),
+            "awesomewm" => include_str!("../../data/modules/awesomewm/module.toml"),
+            "git" => include_str!("../../data/modules/git/module.toml"),
+            "kitty" => include_str!("../../data/modules/kitty/module.toml"),
+            "neovim" => include_str!("../../data/modules/neovim/module.toml"),
             "tmux" => include_str!("../../data/modules/tmux/module.toml"),
             "zsh" => include_str!("../../data/modules/zsh/module.toml"),
-            "git" => include_str!("../../data/modules/git/module.toml"),
             _ => return None,
         };
         match toml::from_str(toml_str) {
@@ -143,9 +147,13 @@ impl ModuleRegistry {
     /// Get the option database for a built-in tool.
     pub fn get_options(name: &str) -> Option<OptionDatabase> {
         let toml_str = match name {
+            "alacritty" => include_str!("../../data/modules/alacritty/options.toml"),
+            "awesomewm" => include_str!("../../data/modules/awesomewm/options.toml"),
+            "git" => include_str!("../../data/modules/git/options.toml"),
+            "kitty" => include_str!("../../data/modules/kitty/options.toml"),
+            "neovim" => include_str!("../../data/modules/neovim/options.toml"),
             "tmux" => include_str!("../../data/modules/tmux/options.toml"),
             "zsh" => include_str!("../../data/modules/zsh/options.toml"),
-            "git" => include_str!("../../data/modules/git/options.toml"),
             _ => return None,
         };
         match toml::from_str(toml_str) {
@@ -163,7 +171,7 @@ impl ModuleRegistry {
     /// List all built-in module names.
     #[allow(dead_code)]
     pub fn builtin_names() -> &'static [&'static str] {
-        &["git", "tmux", "zsh"]
+        &["alacritty", "awesomewm", "git", "kitty", "neovim", "tmux", "zsh"]
     }
 }
 
@@ -204,5 +212,81 @@ mod tests {
     fn test_builtin_names() {
         let names = ModuleRegistry::builtin_names();
         assert!(names.contains(&"tmux"));
+        assert!(names.contains(&"kitty"));
+        assert!(names.contains(&"neovim"));
+        assert!(names.contains(&"alacritty"));
+        assert!(names.contains(&"awesomewm"));
+        assert_eq!(names.len(), 7);
+    }
+
+    #[test]
+    fn test_load_kitty_module() {
+        let module = ModuleRegistry::get_builtin("kitty").expect("kitty module should exist");
+        assert_eq!(module.metadata.name, "kitty");
+        assert_eq!(module.metadata.display_name, "kitty");
+        assert!(!module.metadata.config_paths.is_empty());
+        assert!(!module.metadata.plugins_supported);
+    }
+
+    #[test]
+    fn test_load_kitty_options() {
+        let db = ModuleRegistry::get_options("kitty").expect("kitty options should exist");
+        assert_eq!(db.options.len(), 31);
+        let font = db.options.iter().find(|o| o.name == "font_family");
+        assert!(font.is_some(), "should have 'font_family' option");
+    }
+
+    #[test]
+    fn test_load_neovim_module() {
+        let module = ModuleRegistry::get_builtin("neovim").expect("neovim module should exist");
+        assert_eq!(module.metadata.name, "neovim");
+        assert_eq!(module.metadata.display_name, "Neovim");
+        assert!(!module.metadata.config_paths.is_empty());
+        assert!(!module.metadata.plugins_supported);
+    }
+
+    #[test]
+    fn test_load_neovim_options() {
+        let db = ModuleRegistry::get_options("neovim").expect("neovim options should exist");
+        assert_eq!(db.options.len(), 31);
+        let number = db.options.iter().find(|o| o.name == "number");
+        assert!(number.is_some(), "should have 'number' option");
+    }
+
+    #[test]
+    fn test_load_alacritty_module() {
+        let module =
+            ModuleRegistry::get_builtin("alacritty").expect("alacritty module should exist");
+        assert_eq!(module.metadata.name, "alacritty");
+        assert_eq!(module.metadata.display_name, "Alacritty");
+        assert!(!module.metadata.config_paths.is_empty());
+        assert!(!module.metadata.plugins_supported);
+    }
+
+    #[test]
+    fn test_load_alacritty_options() {
+        let db = ModuleRegistry::get_options("alacritty").expect("alacritty options should exist");
+        assert_eq!(db.options.len(), 31);
+        let font = db.options.iter().find(|o| o.name == "font.normal.family");
+        assert!(font.is_some(), "should have 'font.normal.family' option");
+    }
+
+    #[test]
+    fn test_load_awesomewm_module() {
+        let module =
+            ModuleRegistry::get_builtin("awesomewm").expect("awesomewm module should exist");
+        assert_eq!(module.metadata.name, "awesomewm");
+        assert_eq!(module.metadata.display_name, "awesome");
+        assert!(!module.metadata.config_paths.is_empty());
+        assert!(!module.metadata.plugins_supported);
+    }
+
+    #[test]
+    fn test_load_awesomewm_options() {
+        let db =
+            ModuleRegistry::get_options("awesomewm").expect("awesomewm options should exist");
+        assert_eq!(db.options.len(), 31);
+        let gap = db.options.iter().find(|o| o.name == "beautiful.useless_gap");
+        assert!(gap.is_some(), "should have 'beautiful.useless_gap' option");
     }
 }

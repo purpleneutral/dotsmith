@@ -239,7 +239,7 @@ pub fn detect_plugin_manager(tool: &str, config_paths: &[PathBuf]) -> Option<Str
             }
             None
         }
-        "nvim" => {
+        "nvim" | "neovim" => {
             // Check for lazy.nvim lockfile
             if config_root.join("lazy-lock.json").exists() {
                 return Some("lazy".to_string());

@@ -1,0 +1,30 @@
+[metadata]
+name = "kitty"
+display_name = "kitty"
+description = "GPU-accelerated terminal emulator with advanced features"
+homepage = "https://sw.kovidgoyal.net/kitty/"
+
+config_paths = [
+    "~/.config/kitty/kitty.conf",
+    "~/.config/kitty",
+]
+
+detect_command = "which kitty"
+
+reload_description = "send SIGUSR1 to kitty"
+
+man_page = "kitty"
+config_format = "key-value"
+
+plugins_supported = false
+
+categories = [
+    "appearance",
+    "fonts",
+    "cursor",
+    "scrollback",
+    "mouse",
+    "performance",
+    "tabs",
+    "keybindings",
+]

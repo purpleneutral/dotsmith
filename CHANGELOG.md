@@ -2,6 +2,30 @@
 
 All notable changes to dotsmith will be documented in this file.
 
+## [0.1.0-alpha.5] - 2026-02-10
+
+### Added
+
+- **Phase 5a: Shell Completions + New Tier 1 Modules**
+  - `dotsmith completions <shell>` command for bash, zsh, and fish via `clap_complete`
+  - kitty Tier 1 module: 31 options across appearance, fonts, cursor, scrollback, mouse, performance, tabs, keybindings
+  - neovim Tier 1 module: 31 options across ui, editing, search, indentation, completion, lsp, performance, files
+  - alacritty Tier 1 module: 31 options across window, font, colors, cursor, scrolling, shell, keybindings, hints
+  - awesomewm Tier 1 module: 31 options across general, tags, layouts, keybindings, rules, wibar, themes, notifications
+  - Starship prompt integration: 2 options added to zsh module (STARSHIP_CONFIG, starship init)
+  - Reload support: alacritty (auto-reloads), awesomewm (awesome-client), neovim (interactive message)
+  - Neovim plugin detection: `dotsmith add neovim` now detects lazy.nvim
+
+### Fixed
+
+- Replaced `unwrap()` calls in CLI reload and diff commands with proper error handling
+- Simplified lifetime workaround in diff command using `get_key_value()`
+
+### Changed
+
+- Release workflow now builds for Linux x86_64, Linux aarch64, macOS x86_64, and macOS aarch64
+- Tier 1 modules expanded from 3 to 7 (93 → 220 curated options)
+
 ## [0.1.0-alpha.4] - 2026-02-08
 
 ### Added

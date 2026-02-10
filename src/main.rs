@@ -1,5 +1,6 @@
 use anyhow::Result;
-use clap::Parser;
+use clap::{CommandFactory, Parser};
+use clap_complete::generate;
 
 mod cli;
 mod core;
@@ -39,6 +40,11 @@ fn main() -> Result<()> {
             ref tool,
             ref action,
         }) => cli::plugins::run(cli.verbose, tool, action),
+        Some(Commands::Completions { shell }) => {
+            let mut cmd = DotsmithCli::command();
+            generate(shell, &mut cmd, "dotsmith", &mut std::io::stdout());
+            Ok(())
+        }
         Some(Commands::Repo { action }) => match action {
             RepoAction::Init { path } => cli::repo::run_init(cli.verbose, &path),
             RepoAction::Sync => cli::repo::run_sync(cli.verbose),

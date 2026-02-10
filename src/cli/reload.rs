@@ -10,11 +10,10 @@ pub fn run(verbose: bool, tool: &str) -> Result<()> {
     let config_dir = util::paths::config_dir()?;
     let manifest = Manifest::load(&config_dir)?;
 
-    if !manifest.has_tool(tool) {
-        anyhow::bail!("'{}' is not tracked by dotsmith", tool);
-    }
-
-    let entry = manifest.tools.get(tool).unwrap();
+    let entry = manifest
+        .tools
+        .get(tool)
+        .ok_or_else(|| anyhow::anyhow!("'{}' is not tracked by dotsmith", tool))?;
 
     // Use the first config path as the reload target
     let config_path = entry.config_paths.first().map(|s| s.as_str());

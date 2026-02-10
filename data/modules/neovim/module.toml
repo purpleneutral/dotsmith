@@ -1,0 +1,29 @@
+[metadata]
+name = "neovim"
+display_name = "Neovim"
+description = "Hyperextensible Vim-based text editor"
+homepage = "https://neovim.io"
+
+config_paths = [
+    "~/.config/nvim",
+    "~/.config/nvim/init.lua",
+    "~/.config/nvim/init.vim",
+]
+
+detect_command = "which nvim"
+
+man_page = "nvim"
+config_format = "lua"
+
+plugins_supported = false
+
+categories = [
+    "ui",
+    "editing",
+    "search",
+    "indentation",
+    "completion",
+    "lsp",
+    "performance",
+    "files",
+]

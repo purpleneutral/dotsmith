@@ -1,0 +1,338 @@
+# neovim option database — 31 curated options
+# Categories: ui, editing, search, indentation, completion, lsp, performance, files
+
+# --- ui ---
+
+[[options]]
+name = "number"
+type = "boolean"
+default = "false"
+category = "ui"
+description = "Show line numbers in the gutter"
+why = "Line numbers are essential for navigating code, reporting errors, and pair programming."
+example = "vim.o.number = true"
+tags = ["essential", "lines", "gutter"]
+related = ["relativenumber"]
+
+[[options]]
+name = "relativenumber"
+type = "boolean"
+default = "false"
+category = "ui"
+description = "Show relative line numbers (distance from cursor line)"
+why = "Makes vim motions like 5j or 12k instant — you can see the count without mental math."
+example = "vim.o.relativenumber = true"
+tags = ["essential", "lines", "motions"]
+related = ["number"]
+
+[[options]]
+name = "signcolumn"
+type = "enum"
+default = "auto"
+values = ["auto", "yes", "no", "number"]
+category = "ui"
+description = "When to show the sign column (used by diagnostics, git signs, breakpoints)"
+why = "Set to 'yes' to prevent the editor from shifting text left/right as signs appear and disappear."
+example = "vim.o.signcolumn = 'yes'"
+tags = ["essential", "gutter", "diagnostics", "git"]
+
+[[options]]
+name = "termguicolors"
+type = "boolean"
+default = "false"
+category = "ui"
+description = "Enable 24-bit RGB color in the terminal UI"
+why = "Required for modern colorschemes to display correctly. Almost all terminals now support this."
+example = "vim.o.termguicolors = true"
+tags = ["essential", "color", "theme"]
+
+[[options]]
+name = "cursorline"
+type = "boolean"
+default = "false"
+category = "ui"
+description = "Highlight the entire line the cursor is on"
+why = "Makes it easy to spot your cursor position, especially in large files."
+example = "vim.o.cursorline = true"
+tags = ["cursor", "highlight", "visual"]
+
+# --- editing ---
+
+[[options]]
+name = "clipboard"
+type = "string"
+default = ""
+category = "editing"
+description = "Configure clipboard integration with the system"
+why = "Set to 'unnamedplus' to make yank/paste use the system clipboard by default — no more \"+y."
+example = "vim.o.clipboard = 'unnamedplus'"
+tags = ["essential", "clipboard", "copy", "paste"]
+
+[[options]]
+name = "mouse"
+type = "string"
+default = ""
+category = "editing"
+description = "Enable mouse support for specified modes (n=normal, v=visual, i=insert, a=all)"
+why = "Enable mouse for clicking to position cursor, selecting text, scrolling, and resizing splits."
+example = "vim.o.mouse = 'a'"
+tags = ["mouse", "interaction"]
+
+[[options]]
+name = "wrap"
+type = "boolean"
+default = "true"
+category = "editing"
+description = "Wrap long lines at the edge of the screen"
+why = "Disable for code to see the true line length. Enable for prose editing."
+example = "vim.o.wrap = false"
+tags = ["wrap", "lines", "display"]
+
+[[options]]
+name = "scrolloff"
+type = "integer"
+default = "0"
+category = "editing"
+description = "Minimum number of lines to keep above and below the cursor"
+why = "Set to 8-10 so you always have context around your cursor. Set to 999 to center the cursor vertically."
+example = "vim.o.scrolloff = 8"
+tags = ["scroll", "context", "navigation"]
+
+# --- search ---
+
+[[options]]
+name = "ignorecase"
+type = "boolean"
+default = "false"
+category = "search"
+description = "Ignore case in search patterns"
+why = "Combined with smartcase, gives case-insensitive search that becomes case-sensitive when you type uppercase."
+example = "vim.o.ignorecase = true"
+tags = ["essential", "search", "case"]
+related = ["smartcase"]
+
+[[options]]
+name = "smartcase"
+type = "boolean"
+default = "false"
+category = "search"
+description = "Override ignorecase if the search pattern contains uppercase letters"
+why = "Best used with ignorecase: /foo matches Foo and FOO, but /Foo only matches Foo."
+example = "vim.o.smartcase = true"
+tags = ["essential", "search", "case"]
+related = ["ignorecase"]
+
+[[options]]
+name = "hlsearch"
+type = "boolean"
+default = "true"
+category = "search"
+description = "Highlight all matches of the last search pattern"
+why = "Useful for seeing all occurrences. Use :noh to clear highlights after finding what you need."
+example = "vim.o.hlsearch = true"
+tags = ["search", "highlight"]
+
+[[options]]
+name = "incsearch"
+type = "boolean"
+default = "true"
+category = "search"
+description = "Show matches incrementally as you type the search pattern"
+why = "Gives instant feedback while typing a search, helping you refine the pattern before pressing Enter."
+example = "vim.o.incsearch = true"
+tags = ["search", "incremental", "preview"]
+
+# --- indentation ---
+
+[[options]]
+name = "expandtab"
+type = "boolean"
+default = "false"
+category = "indentation"
+description = "Use spaces instead of tab characters when pressing Tab"
+why = "Spaces ensure consistent indentation across editors and displays. Most style guides require spaces."
+example = "vim.o.expandtab = true"
+tags = ["essential", "tabs", "spaces", "indent"]
+related = ["shiftwidth", "tabstop"]
+
+[[options]]
+name = "shiftwidth"
+type = "integer"
+default = "8"
+category = "indentation"
+description = "Number of spaces for each step of autoindent and >> / << commands"
+why = "Set to 2 or 4 depending on your project's style guide. Should usually match tabstop."
+example = "vim.o.shiftwidth = 4"
+tags = ["essential", "indent", "width"]
+related = ["expandtab", "tabstop"]
+
+[[options]]
+name = "tabstop"
+type = "integer"
+default = "8"
+category = "indentation"
+description = "Number of spaces a Tab character displays as"
+why = "Controls visual width of existing tab characters. Set to match shiftwidth for consistency."
+example = "vim.o.tabstop = 4"
+tags = ["essential", "tabs", "width"]
+related = ["expandtab", "shiftwidth"]
+
+[[options]]
+name = "smartindent"
+type = "boolean"
+default = "false"
+category = "indentation"
+description = "Automatically indent new lines based on syntax (after {, before }, etc.)"
+why = "Provides basic auto-indentation for C-like languages. Treesitter indent may be preferred for modern setups."
+example = "vim.o.smartindent = true"
+tags = ["indent", "auto", "syntax"]
+
+# --- completion ---
+
+[[options]]
+name = "completeopt"
+type = "string"
+default = "menu,preview"
+category = "completion"
+description = "Comma-separated list of options for insert-mode completion behavior"
+why = "Set to 'menuone,noselect' for nvim-cmp style: show menu even for one match, don't auto-select."
+example = "vim.o.completeopt = 'menuone,noselect'"
+tags = ["completion", "popup", "menu"]
+
+[[options]]
+name = "pumheight"
+type = "integer"
+default = "0"
+category = "completion"
+description = "Maximum number of items to show in the popup completion menu (0 = use available space)"
+why = "Limit the popup height to prevent it from covering too much of your code."
+example = "vim.o.pumheight = 15"
+tags = ["completion", "popup", "height"]
+
+[[options]]
+name = "wildmode"
+type = "string"
+default = "full"
+category = "completion"
+description = "Completion mode for command-line (: commands) Tab completion"
+why = "Set to 'longest:full,full' to first complete the longest common match, then cycle through options."
+example = "vim.o.wildmode = 'longest:full,full'"
+tags = ["completion", "commandline", "wildmenu"]
+
+# --- lsp ---
+
+[[options]]
+name = "updatetime"
+type = "integer"
+default = "4000"
+category = "lsp"
+description = "Milliseconds of idle time before CursorHold event fires and swap file is written"
+why = "Lower values make LSP diagnostics and git signs appear faster. 250ms is a popular choice."
+example = "vim.o.updatetime = 250"
+tags = ["essential", "lsp", "diagnostics", "performance"]
+
+[[options]]
+name = "shortmess"
+type = "string"
+default = "filnxtToOS"
+category = "lsp"
+description = "Flags controlling which messages are shortened or suppressed"
+why = "Append 'c' to avoid showing completion messages ('match 1 of 2') which clutter the command line."
+example = "vim.opt.shortmess:append('c')"
+tags = ["messages", "completion", "lsp"]
+
+[[options]]
+name = "showmode"
+type = "boolean"
+default = "true"
+category = "lsp"
+description = "Show current mode (INSERT, VISUAL, etc.) in the command line"
+why = "Disable when using a statusline plugin (lualine, etc.) that already shows the mode."
+example = "vim.o.showmode = false"
+tags = ["statusline", "mode", "display"]
+
+[[options]]
+name = "laststatus"
+type = "integer"
+default = "2"
+category = "lsp"
+description = "When to display the status line (0=never, 1=only with splits, 2=always, 3=global)"
+why = "Set to 3 for a single global statusline shared across all splits (Neovim 0.7+)."
+example = "vim.o.laststatus = 3"
+tags = ["statusline", "display", "splits"]
+
+# --- performance ---
+
+[[options]]
+name = "lazyredraw"
+type = "boolean"
+default = "false"
+category = "performance"
+description = "Do not redraw the screen while executing macros and commands"
+why = "Speeds up macro execution significantly. The screen updates once when the macro finishes."
+example = "vim.o.lazyredraw = true"
+tags = ["performance", "macros", "redraw"]
+
+[[options]]
+name = "timeoutlen"
+type = "integer"
+default = "1000"
+category = "performance"
+description = "Milliseconds to wait for a mapped key sequence to complete"
+why = "Lower values make single-key mappings respond faster but give less time to type multi-key sequences."
+example = "vim.o.timeoutlen = 300"
+tags = ["performance", "mappings", "timeout"]
+
+[[options]]
+name = "ttimeoutlen"
+type = "integer"
+default = "50"
+category = "performance"
+description = "Milliseconds to wait for a terminal key code sequence to complete"
+why = "Keep low (0-50ms) to eliminate delay when pressing Escape to exit insert mode."
+example = "vim.o.ttimeoutlen = 10"
+tags = ["performance", "escape", "terminal"]
+
+# --- files ---
+
+[[options]]
+name = "swapfile"
+type = "boolean"
+default = "true"
+category = "files"
+description = "Create swap files for crash recovery"
+why = "Disable if swap file warnings annoy you (e.g., when opening the same file in two nvim instances)."
+example = "vim.o.swapfile = false"
+tags = ["swap", "recovery", "files"]
+
+[[options]]
+name = "backup"
+type = "boolean"
+default = "false"
+category = "files"
+description = "Create backup files before overwriting"
+why = "Disable (default) to avoid cluttering your directories with ~ backup files."
+example = "vim.o.backup = false"
+tags = ["backup", "files"]
+
+[[options]]
+name = "undofile"
+type = "boolean"
+default = "false"
+category = "files"
+description = "Persist undo history to disk so it survives closing and reopening files"
+why = "Lets you undo changes even after restarting nvim. The undo files are stored in undodir."
+example = "vim.o.undofile = true"
+tags = ["essential", "undo", "persistence"]
+related = ["undodir"]
+
+[[options]]
+name = "undodir"
+type = "path"
+default = "~/.local/state/nvim/undo//"
+category = "files"
+description = "Directory for storing persistent undo files"
+why = "Keep undo files in a central location to avoid cluttering project directories."
+example = "vim.o.undodir = vim.fn.stdpath('state') .. '/undo//'"
+tags = ["undo", "directory", "persistence"]
+related = ["undofile"]

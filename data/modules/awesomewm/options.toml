@@ -1,0 +1,337 @@
+# awesomewm option database — 31 curated options
+# Categories: general, tags, layouts, keybindings, rules, wibar, themes, notifications
+
+# --- general ---
+
+[[options]]
+name = "beautiful.useless_gap"
+type = "integer"
+default = "0"
+category = "general"
+description = "Gap size in pixels between tiled windows"
+why = "Adds visual separation between windows. 4-8px is a popular choice for aesthetics."
+example = "beautiful.useless_gap = 5"
+tags = ["essential", "gaps", "spacing", "tiling"]
+
+[[options]]
+name = "beautiful.border_width"
+type = "integer"
+default = "1"
+category = "general"
+description = "Width of window borders in pixels"
+why = "Thicker borders make the focused window more visible. Set to 0 for borderless windows."
+example = "beautiful.border_width = 2"
+tags = ["essential", "border", "visual"]
+related = ["beautiful.border_focus", "beautiful.border_normal"]
+
+[[options]]
+name = "beautiful.border_focus"
+type = "color"
+default = "#535d6c"
+category = "general"
+description = "Border color for the currently focused window"
+why = "A bright or contrasting color makes it obvious which window has focus."
+example = "beautiful.border_focus = \"#61afef\""
+tags = ["essential", "border", "color", "focus"]
+related = ["beautiful.border_normal"]
+
+[[options]]
+name = "beautiful.border_normal"
+type = "color"
+default = "#000000"
+category = "general"
+description = "Border color for unfocused windows"
+why = "Keep subtle so unfocused windows don't compete for attention."
+example = "beautiful.border_normal = \"#282c34\""
+tags = ["border", "color", "unfocused"]
+related = ["beautiful.border_focus"]
+
+# --- tags ---
+
+[[options]]
+name = "tags"
+type = "list"
+default = "[\"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", \"8\", \"9\"]"
+category = "tags"
+description = "Names for the workspace tags (shown in the tag list widget)"
+why = "Use descriptive names or icons to label workspaces by purpose (web, code, chat, etc.)."
+example = "awful.tag({ \"web\", \"code\", \"term\", \"chat\", \"media\" }, s, awful.layout.layouts[1])"
+tags = ["essential", "workspace", "tags"]
+
+[[options]]
+name = "awful.tag.gap"
+type = "integer"
+default = "0"
+category = "tags"
+description = "Per-tag gap override (overrides beautiful.useless_gap for specific tags)"
+why = "Set different gaps for different workspaces — larger gaps for browsing, zero for terminals."
+example = "awful.tag.find_by_name(s, \"code\").gap = 0"
+tags = ["gaps", "spacing", "per-tag"]
+related = ["beautiful.useless_gap"]
+
+[[options]]
+name = "volatile"
+type = "boolean"
+default = "false"
+category = "tags"
+description = "Whether a tag is automatically deleted when its last client is closed"
+why = "Create temporary tags that clean up after themselves."
+example = "awful.tag.add(\"temp\", { volatile = true })"
+tags = ["tags", "cleanup", "dynamic"]
+
+# --- layouts ---
+
+[[options]]
+name = "awful.layout.layouts"
+type = "list"
+default = "[]"
+category = "layouts"
+description = "List of available tiling layouts in the rotation order"
+why = "Include only layouts you actually use. The first layout is the default for new tags."
+example = "awful.layout.layouts = {\n    awful.layout.suit.tile,\n    awful.layout.suit.floating,\n    awful.layout.suit.max,\n}"
+tags = ["essential", "layout", "tiling"]
+
+[[options]]
+name = "master_width_factor"
+type = "float"
+default = "0.5"
+category = "layouts"
+description = "Proportion of screen width taken by the master area in tiled layouts"
+why = "Set to 0.6-0.65 to give the master window more space, which is better for coding."
+example = "awful.tag.find_by_name(s, \"code\").master_width_factor = 0.65"
+tags = ["layout", "master", "ratio"]
+
+[[options]]
+name = "master_count"
+type = "integer"
+default = "1"
+category = "layouts"
+description = "Number of windows in the master area"
+why = "Set to 2 for side-by-side master windows (useful for comparing files)."
+example = "awful.tag.find_by_name(s, \"code\").master_count = 1"
+tags = ["layout", "master", "count"]
+
+[[options]]
+name = "column_count"
+type = "integer"
+default = "1"
+category = "layouts"
+description = "Number of columns in the slave area"
+why = "More columns distribute slave windows horizontally instead of stacking them vertically."
+example = "awful.tag.find_by_name(s, \"code\").column_count = 2"
+tags = ["layout", "columns", "slave"]
+
+# --- keybindings ---
+
+[[options]]
+name = "modkey"
+type = "keybinding"
+default = "Mod4"
+category = "keybindings"
+description = "The primary modifier key for awesome keybindings (Mod4 = Super/Windows key)"
+why = "Mod4 is standard to avoid conflicts with applications. Mod1 (Alt) conflicts with many programs."
+example = "modkey = \"Mod4\""
+tags = ["essential", "modifier", "super"]
+
+[[options]]
+name = "terminal"
+type = "string"
+default = "xterm"
+category = "keybindings"
+description = "Default terminal emulator launched by the keybinding (modkey+Return)"
+why = "Set to your preferred terminal (kitty, alacritty, wezterm, etc.)."
+example = "terminal = \"kitty\""
+tags = ["essential", "terminal", "launcher"]
+
+[[options]]
+name = "editor"
+type = "string"
+default = "nano"
+category = "keybindings"
+description = "Default text editor used by awesome (for editing config, etc.)"
+why = "Set to your editor of choice. Used when awesome needs to open a text file."
+example = "editor = os.getenv(\"EDITOR\") or \"nvim\""
+tags = ["editor", "default"]
+
+[[options]]
+name = "menubar.utils.terminal"
+type = "string"
+default = "xterm"
+category = "keybindings"
+description = "Terminal used by the menubar to launch terminal applications"
+why = "Must match your terminal so menubar-launched apps open in the right emulator."
+example = "menubar.utils.terminal = terminal"
+tags = ["menubar", "terminal", "launcher"]
+
+# --- rules ---
+
+[[options]]
+name = "awful.rules.floating"
+type = "list"
+default = "[]"
+category = "rules"
+description = "Window classes or instances that should always float instead of tiling"
+why = "Dialogs, pop-ups, and certain apps work better floating. Match by class or instance name."
+example = "rule = { class = \"Gimp\" },\nproperties = { floating = true }"
+tags = ["rules", "floating", "windows"]
+
+[[options]]
+name = "awful.rules.placement"
+type = "string"
+default = "no_overlap+no_offscreen"
+category = "rules"
+description = "Default placement strategy for new floating windows"
+why = "Prevents new windows from appearing off-screen or directly overlapping existing ones."
+example = "placement = awful.placement.no_overlap + awful.placement.no_offscreen"
+tags = ["rules", "placement", "floating"]
+
+[[options]]
+name = "awful.rules.titlebars"
+type = "boolean"
+default = "true"
+category = "rules"
+description = "Whether to show title bars on windows (for normal, non-dialog windows)"
+why = "Disable title bars for a cleaner look — most tiling WM users identify windows by position, not title bar."
+example = "properties = { titlebars_enabled = false }"
+tags = ["rules", "titlebar", "decoration"]
+
+[[options]]
+name = "awful.rules.size_hints_honor"
+type = "boolean"
+default = "true"
+category = "rules"
+description = "Whether to respect application size hints (minimum/maximum size, resize increments)"
+why = "Disable to force all windows to tile perfectly without gaps caused by size hint restrictions."
+example = "properties = { size_hints_honor = false }"
+tags = ["rules", "size", "hints", "gaps"]
+
+# --- wibar ---
+
+[[options]]
+name = "awful.wibar.position"
+type = "enum"
+default = "top"
+values = ["top", "bottom", "left", "right"]
+category = "wibar"
+description = "Position of the wibar (panel/taskbar)"
+why = "Top is the most common. Bottom puts it near the terminal prompt. Left/right for vertical layouts."
+example = "awful.wibar({ position = \"top\", screen = s })"
+tags = ["essential", "wibar", "panel", "position"]
+
+[[options]]
+name = "awful.wibar.height"
+type = "integer"
+default = "20"
+category = "wibar"
+description = "Height of the wibar in pixels"
+why = "Increase for better readability or to accommodate larger fonts/icons."
+example = "awful.wibar({ position = \"top\", screen = s, height = 28 })"
+tags = ["wibar", "height", "size"]
+
+[[options]]
+name = "beautiful.wibar_bg"
+type = "color"
+default = "#000000"
+category = "wibar"
+description = "Background color of the wibar"
+why = "Match your terminal and editor theme for a cohesive look."
+example = "beautiful.wibar_bg = \"#282c34\""
+tags = ["wibar", "color", "background"]
+related = ["beautiful.wibar_fg"]
+
+[[options]]
+name = "beautiful.wibar_fg"
+type = "color"
+default = "#ffffff"
+category = "wibar"
+description = "Foreground (text) color of the wibar"
+why = "Should contrast with wibar_bg for readability."
+example = "beautiful.wibar_fg = \"#abb2bf\""
+tags = ["wibar", "color", "foreground"]
+related = ["beautiful.wibar_bg"]
+
+# --- themes ---
+
+[[options]]
+name = "beautiful.wallpaper"
+type = "path"
+default = ""
+category = "themes"
+description = "Path to the desktop wallpaper image"
+why = "Set per-screen wallpapers for a polished desktop appearance."
+example = "beautiful.wallpaper = os.getenv(\"HOME\") .. \"/Pictures/wallpaper.png\""
+tags = ["wallpaper", "background", "desktop"]
+
+[[options]]
+name = "beautiful.font"
+type = "string"
+default = "sans 8"
+category = "themes"
+description = "Default font for all awesome UI elements (wibar, notifications, menus)"
+why = "Pick a clean sans-serif font. Nerd Fonts add icons to the wibar and tag list."
+example = "beautiful.font = \"JetBrainsMono Nerd Font 10\""
+tags = ["essential", "font", "theme"]
+
+[[options]]
+name = "beautiful.bg_normal"
+type = "color"
+default = "#222222"
+category = "themes"
+description = "Background color for normal (unfocused) UI elements"
+why = "Base background for menus, tooltips, and unfocused tag indicators."
+example = "beautiful.bg_normal = \"#282c34\""
+tags = ["color", "background", "theme"]
+
+[[options]]
+name = "beautiful.fg_normal"
+type = "color"
+default = "#aaaaaa"
+category = "themes"
+description = "Foreground color for normal (unfocused) UI elements"
+why = "Text color for menus, tooltips, and unfocused tag indicators."
+example = "beautiful.fg_normal = \"#abb2bf\""
+tags = ["color", "foreground", "theme"]
+
+[[options]]
+name = "beautiful.bg_focus"
+type = "color"
+default = "#535d6c"
+category = "themes"
+description = "Background color for focused UI elements (active tag, focused client in tasklist)"
+why = "A distinct color makes the active tag and focused window entry stand out in the wibar."
+example = "beautiful.bg_focus = \"#61afef\""
+tags = ["color", "background", "focus", "theme"]
+related = ["beautiful.fg_normal", "beautiful.bg_normal"]
+
+# --- notifications ---
+
+[[options]]
+name = "naughty.config.defaults.timeout"
+type = "integer"
+default = "5"
+category = "notifications"
+description = "Default timeout in seconds before a notification auto-dismisses (0 = sticky)"
+why = "Increase for important notifications you might miss. Set to 0 for notifications that must be manually dismissed."
+example = "naughty.config.defaults.timeout = 10"
+tags = ["notification", "timeout", "duration"]
+
+[[options]]
+name = "naughty.config.defaults.position"
+type = "enum"
+default = "top_right"
+values = ["top_right", "top_left", "bottom_right", "bottom_left", "top_middle", "bottom_middle"]
+category = "notifications"
+description = "Screen corner where notifications appear"
+why = "Choose a position that doesn't overlap with your wibar or frequently used screen area."
+example = "naughty.config.defaults.position = \"top_right\""
+tags = ["notification", "position", "placement"]
+
+[[options]]
+name = "naughty.config.defaults.margin"
+type = "integer"
+default = "4"
+category = "notifications"
+description = "Margin in pixels around notification content"
+why = "Increase for more padding inside notification bubbles."
+example = "naughty.config.defaults.margin = 8"
+tags = ["notification", "margin", "spacing"]

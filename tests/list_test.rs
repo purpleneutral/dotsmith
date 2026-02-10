@@ -110,6 +110,36 @@ fn test_help_output() {
 }
 
 #[test]
+fn test_completions_bash() {
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .args(["completions", "bash"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("dotsmith"));
+}
+
+#[test]
+fn test_completions_zsh() {
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .args(["completions", "zsh"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("dotsmith"));
+}
+
+#[test]
+fn test_completions_fish() {
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .args(["completions", "fish"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("dotsmith"));
+}
+
+#[test]
 fn test_version_output() {
     Command::cargo_bin("dotsmith")
         .unwrap()

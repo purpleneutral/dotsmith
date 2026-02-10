@@ -316,3 +316,23 @@ description = "Directory to look for zsh startup files (.zshrc, .zshenv, etc.)"
 why = "Move zsh configs out of ~ into ~/.config/zsh/ for XDG compliance"
 example = "export ZDOTDIR=~/.config/zsh"
 tags = ["essential", "performance"]
+
+[[options]]
+name = "STARSHIP_CONFIG"
+type = "path"
+default = "~/.config/starship.toml"
+category = "prompt"
+description = "Path to the starship prompt configuration file"
+why = "Override the default location if you keep configs in a custom ZDOTDIR or dotfiles repo"
+example = "export STARSHIP_CONFIG=~/.config/zsh/starship.toml"
+tags = ["starship", "prompt", "path"]
+
+[[options]]
+name = "starship init"
+type = "string"
+default = ""
+category = "prompt"
+description = "Initialize starship as the zsh prompt"
+why = "Starship is a fast, customizable cross-shell prompt. Add this line to .zshrc to enable it."
+example = "eval \"$(starship init zsh)\""
+tags = ["starship", "prompt", "init"]

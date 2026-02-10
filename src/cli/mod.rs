@@ -13,6 +13,7 @@ pub mod snapshot;
 pub mod status;
 
 use clap::{Parser, Subcommand};
+use clap_complete::Shell;
 
 #[derive(Parser)]
 #[command(
@@ -124,6 +125,12 @@ pub enum Commands {
 
         #[command(subcommand)]
         action: PluginAction,
+    },
+
+    /// Generate shell completions for bash, zsh, or fish
+    Completions {
+        /// Shell to generate completions for
+        shell: Shell,
     },
 
     /// Manage dotfile git repo for backups

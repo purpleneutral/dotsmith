@@ -41,6 +41,9 @@ pub fn run(_verbose: bool, query: &str) -> Result<()> {
             if let Some(ref example) = opt.example {
                 println!("      Example: {}", example.dimmed());
             }
+            if let Some(ref url) = opt.url {
+                println!("      {}", url.blue().underline());
+            }
             println!();
         }
     }

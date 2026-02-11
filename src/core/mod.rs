@@ -5,6 +5,7 @@ pub mod errors;
 pub mod manifest;
 pub mod module;
 pub mod plugin;
+pub mod plugin_info;
 pub mod profile;
 pub mod reload;
 pub mod remote;

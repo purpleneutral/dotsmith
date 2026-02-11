@@ -6,6 +6,16 @@ All notable changes to dotsmith will be documented in this file.
 
 ### Added
 
+- **Plugin option databases and plugin info scanning**
+  - 24 curated tmux plugin options across 7 plugins: tmux-resurrect, tmux-continuum, tmux-yank, catppuccin/tmux, tmux-prefix-highlight, tmux-fingers, tmux-sensible
+  - 28 curated zsh plugin options across 7 plugins: zsh-autosuggestions, zsh-syntax-highlighting, zsh-history-substring-search, fzf-tab, powerlevel10k, zoxide, fzf
+  - All plugin options include URLs linking to plugin repos and documentation
+  - `url` field added to option entries -- displayed in TUI explore (blue/underlined) and CLI search
+  - `dotsmith plugins <tool> info [name]` -- scan installed plugins and show description, configuration excerpts, and URL extracted from each plugin's README
+  - Plugin info scanning handles ATX (`#`) and setext (`===`/`---`) style markdown headings
+  - TUI plugin view: press `i` to toggle a split info panel showing plugin details alongside the list
+  - tmux option database: 31 → 55 options; zsh option database: 33 → 61 options
+
 - **Phase 7: Configuration profiles + remote deploy**
   - `dotsmith profile save <name>` — save current tracked tools and config file contents as a named profile
   - `dotsmith profile load <name>` — restore config files from a saved profile (backs up existing files first)
@@ -40,7 +50,7 @@ All notable changes to dotsmith will be documented in this file.
 
 - **Quick Wins: doctor, search, config generation**
   - `dotsmith doctor [tool]` — deep health check: installation status, config paths, snapshot freshness, actionable hints
-  - `dotsmith search <query>` — search across all 220+ Tier 1 options from the CLI (matches names, descriptions, categories, tags)
+  - `dotsmith search <query>` — search across all Tier 1 options from the CLI (matches names, descriptions, categories, tags)
   - Config generation in TUI explore: press `g` to generate a commented config snippet file at `~/.config/dotsmith/generated/<tool>.<ext>`
   - Generated files include all visible options with descriptions, types, defaults, and examples (all commented)
   - Filter by category or search first to generate focused config snippets
@@ -67,7 +77,7 @@ All notable changes to dotsmith will be documented in this file.
 ### Changed
 
 - Release workflow now builds for Linux x86_64, Linux aarch64, macOS x86_64, and macOS aarch64
-- Tier 1 modules expanded from 3 to 7 (93 → 220 curated options)
+- Tier 1 modules expanded from 3 to 7
 
 ## [0.1.0-alpha.4] - 2026-02-08
 

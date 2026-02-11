@@ -4,6 +4,7 @@ use colored::Colorize;
 use crate::cli::PluginAction;
 use crate::core::manifest::Manifest;
 use crate::core::plugin;
+use crate::core::plugin_info;
 use crate::util;
 
 pub fn run(verbose: bool, tool: &str, action: &PluginAction) -> Result<()> {
@@ -14,6 +15,7 @@ pub fn run(verbose: bool, tool: &str, action: &PluginAction) -> Result<()> {
         PluginAction::Remove { name } => run_remove(&config_dir, tool, name),
         PluginAction::List => run_list(&config_dir, tool),
         PluginAction::Update { name } => run_update(verbose, &config_dir, tool, name.as_deref()),
+        PluginAction::Info { name } => run_info(&config_dir, tool, name.as_deref()),
     }
 }
 
@@ -155,6 +157,60 @@ fn run_update(
         updated_count,
         up_to_date
     );
+
+    Ok(())
+}
+
+fn run_info(config_dir: &std::path::Path, tool: &str, name: Option<&str>) -> Result<()> {
+    let manifest = Manifest::load(config_dir)?;
+
+    let tool_entry = manifest
+        .get_tool(tool)
+        .ok_or_else(|| crate::core::errors::DotsmithError::ToolNotTracked(tool.to_string()))?;
+
+    if tool_entry.plugins.is_empty() {
+        println!("No plugins installed for {}.", tool.bold());
+        return Ok(());
+    }
+
+    let plugins_to_show: Vec<(&String, &crate::core::manifest::PluginEntry)> = match name {
+        Some(n) => {
+            if let Some((key, entry)) = tool_entry.plugins.get_key_value(n) {
+                vec![(key, entry)]
+            } else {
+                println!("Plugin '{}' not found for {}.", n.bold(), tool.bold());
+                return Ok(());
+            }
+        }
+        None => tool_entry.plugins.iter().collect(),
+    };
+
+    for (plugin_name, entry) in &plugins_to_show {
+        let dir = plugin::plugin_dir(config_dir, tool, plugin_name);
+        let info = plugin_info::scan_plugin(&dir, plugin_name, &entry.repo);
+
+        println!();
+        println!("  {} {}", "plugin".dimmed(), info.name.cyan().bold());
+        println!("  {} {}", "repo  ".dimmed(), entry.repo);
+        println!("  {} {}", "url   ".dimmed(), info.url.blue().underline());
+        println!("  {} {}", "init  ".dimmed(), entry.init.dimmed());
+
+        if let Some(ref desc) = info.description {
+            println!();
+            println!("  {}", desc);
+        }
+
+        if let Some(ref config) = info.config_excerpt {
+            println!();
+            println!("  {}", "Configuration:".yellow().bold());
+            for line in config.lines().take(20) {
+                println!("  {}", line);
+            }
+        }
+
+        println!();
+        println!("  {}", "─".repeat(60).dimmed());
+    }
 
     Ok(())
 }

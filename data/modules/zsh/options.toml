@@ -336,3 +336,345 @@ description = "Initialize starship as the zsh prompt"
 why = "Starship is a fast, customizable cross-shell prompt. Add this line to .zshrc to enable it."
 example = "eval \"$(starship init zsh)\""
 tags = ["starship", "prompt", "init"]
+url = "https://starship.rs/"
+
+# ==========================================================================
+# Plugin options — zsh-autosuggestions
+# ==========================================================================
+
+[[options]]
+name = "ZSH_AUTOSUGGEST_STRATEGY"
+type = "list"
+default = "(history)"
+category = "plugin:autosuggestions"
+description = "Ordered list of suggestion strategies — suggestions are tried in order until one succeeds"
+why = "Add 'completion' after 'history' to get tab-completion-style suggestions when history has no match. Game-changer for discoverability."
+example = "ZSH_AUTOSUGGEST_STRATEGY=(history completion)"
+tags = ["plugin", "autosuggestions", "strategy", "fish-like"]
+url = "https://github.com/zsh-users/zsh-autosuggestions"
+
+[[options]]
+name = "ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE"
+type = "string"
+default = "fg=8"
+category = "plugin:autosuggestions"
+description = "Style for the inline suggestion text (uses zsh character highlighting syntax)"
+why = "Default gray can be hard to read on some themes. Adjust to match your terminal palette."
+example = "ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#555555'"
+tags = ["plugin", "autosuggestions", "style", "color"]
+url = "https://github.com/zsh-users/zsh-autosuggestions"
+
+[[options]]
+name = "ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE"
+type = "integer"
+default = ""
+category = "plugin:autosuggestions"
+description = "Disable suggestions for input longer than this number of characters"
+why = "Prevents slow lookups on very long command lines. Set to 20-30 for a good balance."
+example = "ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20"
+tags = ["plugin", "autosuggestions", "performance"]
+url = "https://github.com/zsh-users/zsh-autosuggestions"
+
+[[options]]
+name = "ZSH_AUTOSUGGEST_ACCEPT_WIDGETS"
+type = "list"
+default = "(forward-char end-of-line)"
+category = "plugin:autosuggestions"
+description = "Widgets that accept the current suggestion when invoked"
+why = "By default, right-arrow and end-of-line accept. Add your own keybinding widgets if needed."
+example = "ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(forward-char end-of-line vi-forward-char)"
+tags = ["plugin", "autosuggestions", "keybinding", "accept"]
+url = "https://github.com/zsh-users/zsh-autosuggestions"
+
+# ==========================================================================
+# Plugin options — zsh-syntax-highlighting
+# ==========================================================================
+
+[[options]]
+name = "ZSH_HIGHLIGHT_HIGHLIGHTERS"
+type = "list"
+default = "(main)"
+category = "plugin:syntax-highlighting"
+description = "Active highlighter modules — 'main' for command highlighting, 'brackets' for bracket matching, etc."
+why = "Enable multiple highlighters for richer visual feedback. 'brackets' catches mismatched parens/braces."
+example = "ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)"
+tags = ["plugin", "syntax-highlighting", "highlighters"]
+url = "https://github.com/zsh-users/zsh-syntax-highlighting"
+
+[[options]]
+name = "ZSH_HIGHLIGHT_STYLES"
+type = "string"
+default = ""
+category = "plugin:syntax-highlighting"
+description = "Associative array to override styles for specific token types (commands, aliases, paths, etc.)"
+why = "Customize colors to match your theme. Common overrides: command, alias, builtin, path, globbing."
+example = "ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'"
+tags = ["plugin", "syntax-highlighting", "style", "color"]
+url = "https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md"
+
+[[options]]
+name = "ZSH_HIGHLIGHT_MAXLENGTH"
+type = "integer"
+default = ""
+category = "plugin:syntax-highlighting"
+description = "Maximum line length to apply syntax highlighting (longer lines are skipped)"
+why = "Prevents slowdowns when pasting very long commands or working with large one-liners."
+example = "ZSH_HIGHLIGHT_MAXLENGTH=512"
+tags = ["plugin", "syntax-highlighting", "performance"]
+url = "https://github.com/zsh-users/zsh-syntax-highlighting"
+
+# ==========================================================================
+# Plugin options — zsh-history-substring-search
+# ==========================================================================
+
+[[options]]
+name = "HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND"
+type = "string"
+default = "bg=magenta,fg=white,bold"
+category = "plugin:history-substring-search"
+description = "Style for the matched substring when a history match is found"
+why = "Makes it obvious which part of the command matched your search query."
+example = "HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=cyan,fg=white,bold'"
+tags = ["plugin", "history-substring-search", "style", "color"]
+url = "https://github.com/zsh-users/zsh-history-substring-search"
+
+[[options]]
+name = "HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND"
+type = "string"
+default = "bg=red,fg=white,bold"
+category = "plugin:history-substring-search"
+description = "Style for the input when no history match is found"
+why = "Red background clearly signals that no matching command exists in history."
+example = "HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=white,bold'"
+tags = ["plugin", "history-substring-search", "style", "color"]
+url = "https://github.com/zsh-users/zsh-history-substring-search"
+
+[[options]]
+name = "HISTORY_SUBSTRING_SEARCH_FUZZY"
+type = "boolean"
+default = "off"
+category = "plugin:history-substring-search"
+description = "Enable fuzzy matching — characters don't need to be contiguous"
+why = "More forgiving search: typing 'gtp' matches 'git push'. Useful if you don't remember exact commands."
+example = "HISTORY_SUBSTRING_SEARCH_FUZZY=true"
+tags = ["plugin", "history-substring-search", "fuzzy"]
+url = "https://github.com/zsh-users/zsh-history-substring-search"
+
+[[options]]
+name = "HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE"
+type = "boolean"
+default = "off"
+category = "plugin:history-substring-search"
+description = "Skip duplicate matches when cycling through results"
+why = "Avoids seeing the same command multiple times when scrolling through history matches."
+example = "HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=true"
+tags = ["plugin", "history-substring-search", "dedup"]
+url = "https://github.com/zsh-users/zsh-history-substring-search"
+
+# ==========================================================================
+# Plugin options — fzf-tab
+# ==========================================================================
+
+[[options]]
+name = "fzf-tab"
+type = "string"
+default = ""
+category = "plugin:fzf-tab"
+description = "Replace zsh's default completion menu with fzf — fuzzy, searchable tab completion for everything"
+why = "The single most impactful zsh plugin for productivity. Turns every tab completion into an interactive fuzzy finder with previews."
+example = "# source after compinit: source /path/to/fzf-tab/fzf-tab.plugin.zsh"
+tags = ["plugin", "fzf-tab", "completion", "fuzzy", "essential"]
+url = "https://github.com/Aloxaf/fzf-tab"
+
+[[options]]
+name = "FZF_TAB_GROUP_COLORS"
+type = "list"
+default = ""
+category = "plugin:fzf-tab"
+description = "ANSI color codes for different completion groups in fzf-tab results"
+why = "Visually distinguish file completions from command completions, options from arguments, etc."
+example = "FZF_TAB_GROUP_COLORS=($'\\033[94m' $'\\033[32m' $'\\033[33m')"
+tags = ["plugin", "fzf-tab", "color", "groups"]
+url = "https://github.com/Aloxaf/fzf-tab"
+
+[[options]]
+name = "fzf-tab-preview"
+type = "string"
+default = ""
+category = "plugin:fzf-tab"
+description = "Configure previews for fzf-tab completions using zstyle — show file contents, man pages, etc."
+why = "Previews let you see file contents, directory listings, or man page summaries while tab-completing."
+example = "zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'"
+tags = ["plugin", "fzf-tab", "preview", "zstyle"]
+url = "https://github.com/Aloxaf/fzf-tab/wiki/Preview"
+
+# ==========================================================================
+# Plugin options — powerlevel10k
+# ==========================================================================
+
+[[options]]
+name = "POWERLEVEL9K_MODE"
+type = "enum"
+default = "nerdfont-complete"
+values = ["nerdfont-complete", "nerdfont-v3", "awesome-fontconfig", "flat", "compatible"]
+category = "plugin:powerlevel10k"
+description = "Icon mode — determines which glyphs are available for prompt segments"
+why = "Use 'nerdfont-complete' if you have a Nerd Font installed (most modern terminal setups). Use 'compatible' for safe ASCII-only."
+example = "# Set by running: p10k configure"
+tags = ["plugin", "powerlevel10k", "prompt", "icons", "font"]
+url = "https://github.com/romkatv/powerlevel10k"
+
+[[options]]
+name = "POWERLEVEL9K_INSTANT_PROMPT"
+type = "enum"
+default = "verbose"
+values = ["off", "quiet", "verbose"]
+category = "plugin:powerlevel10k"
+description = "Instant prompt mode — shows the prompt immediately before .zshrc finishes loading"
+why = "Eliminates perceived shell startup latency. 'quiet' suppresses warnings; 'verbose' shows diagnostic info."
+example = "# In ~/.zshrc (near top): if [[ -r ${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh ]]; then\n#   source ${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh\n# fi"
+tags = ["plugin", "powerlevel10k", "prompt", "performance", "startup"]
+url = "https://github.com/romkatv/powerlevel10k#instant-prompt"
+
+[[options]]
+name = "POWERLEVEL9K_LEFT_PROMPT_ELEMENTS"
+type = "list"
+default = "(os_icon dir vcs)"
+category = "plugin:powerlevel10k"
+description = "Segments shown on the left side of the prompt"
+why = "Customize what info appears in your prompt. Popular additions: node_version, virtualenv, kubecontext, time."
+example = "POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs virtualenv)"
+tags = ["plugin", "powerlevel10k", "prompt", "segments"]
+related = ["POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS"]
+url = "https://github.com/romkatv/powerlevel10k#batteries-included"
+
+[[options]]
+name = "POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS"
+type = "list"
+default = "(status command_execution_time background_jobs)"
+category = "plugin:powerlevel10k"
+description = "Segments shown on the right side of the prompt"
+why = "Right prompt is great for contextual info: execution time, exit status, git status, clock."
+example = "POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time time)"
+tags = ["plugin", "powerlevel10k", "prompt", "segments"]
+related = ["POWERLEVEL9K_LEFT_PROMPT_ELEMENTS"]
+url = "https://github.com/romkatv/powerlevel10k#batteries-included"
+
+# ==========================================================================
+# Plugin options — zoxide
+# ==========================================================================
+
+[[options]]
+name = "_ZO_DATA_DIR"
+type = "path"
+default = "~/.local/share/zoxide"
+category = "plugin:zoxide"
+description = "Directory where zoxide stores its frecency database"
+why = "Override if you want the database in your dotfiles repo or a custom XDG location."
+example = "export _ZO_DATA_DIR=~/.local/share/zoxide"
+tags = ["plugin", "zoxide", "navigation", "path"]
+url = "https://github.com/ajeetdsouza/zoxide"
+
+[[options]]
+name = "_ZO_ECHO"
+type = "boolean"
+default = "off"
+category = "plugin:zoxide"
+description = "Print the matched directory before changing to it"
+why = "Useful for debugging or confirming that zoxide picked the right directory."
+example = "export _ZO_ECHO=1"
+tags = ["plugin", "zoxide", "navigation", "debug"]
+url = "https://github.com/ajeetdsouza/zoxide"
+
+[[options]]
+name = "_ZO_MAXAGE"
+type = "integer"
+default = "10000"
+category = "plugin:zoxide"
+description = "Maximum total age (frecency score sum) of entries in the database before pruning"
+why = "Higher values keep more directories remembered. Lower values keep the database lean."
+example = "export _ZO_MAXAGE=20000"
+tags = ["plugin", "zoxide", "navigation", "database"]
+url = "https://github.com/ajeetdsouza/zoxide"
+
+[[options]]
+name = "_ZO_EXCLUDE_DIRS"
+type = "list"
+default = ""
+category = "plugin:zoxide"
+description = "Glob patterns for directories to exclude from zoxide tracking"
+why = "Prevent temporary dirs, build outputs, or sensitive paths from cluttering the database."
+example = "export _ZO_EXCLUDE_DIRS='/tmp/*:$HOME/.cache/*'"
+tags = ["plugin", "zoxide", "navigation", "exclude"]
+url = "https://github.com/ajeetdsouza/zoxide"
+
+[[options]]
+name = "zoxide init"
+type = "string"
+default = ""
+category = "plugin:zoxide"
+description = "Initialize zoxide for zsh — adds the z/zi commands for smart directory jumping"
+why = "zoxide learns which directories you visit most and lets you jump to them with partial names. 'z proj' → /home/user/projects."
+example = "eval \"$(zoxide init zsh)\""
+tags = ["plugin", "zoxide", "init", "navigation", "essential"]
+url = "https://github.com/ajeetdsouza/zoxide"
+
+# ==========================================================================
+# Plugin options — fzf (core integration, not a zsh plugin per se)
+# ==========================================================================
+
+[[options]]
+name = "FZF_DEFAULT_OPTS"
+type = "string"
+default = ""
+category = "plugin:fzf"
+description = "Default options passed to every fzf invocation — colors, layout, keybindings"
+why = "Set your theme and preferred layout once. Applies to Ctrl+R history, Ctrl+T file picker, and all fzf-powered tools."
+example = "export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --color=16'"
+tags = ["plugin", "fzf", "fuzzy", "options", "theme"]
+url = "https://github.com/junegunn/fzf"
+
+[[options]]
+name = "FZF_DEFAULT_COMMAND"
+type = "string"
+default = ""
+category = "plugin:fzf"
+description = "Command used to generate the file list for fzf (replaces default find)"
+why = "Use 'fd' or 'rg --files' for faster listing that respects .gitignore. Huge speedup on large repos."
+example = "export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'"
+tags = ["plugin", "fzf", "fuzzy", "files", "performance"]
+url = "https://github.com/junegunn/fzf"
+
+[[options]]
+name = "FZF_CTRL_T_COMMAND"
+type = "string"
+default = ""
+category = "plugin:fzf"
+description = "Command used to generate the file list for the Ctrl+T file picker widget"
+why = "Override to use fd with custom filtering. Ctrl+T inserts the selected file path into the command line."
+example = "export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'"
+tags = ["plugin", "fzf", "fuzzy", "files", "keybinding"]
+related = ["FZF_DEFAULT_COMMAND"]
+url = "https://github.com/junegunn/fzf#key-bindings-for-command-line"
+
+[[options]]
+name = "FZF_ALT_C_COMMAND"
+type = "string"
+default = ""
+category = "plugin:fzf"
+description = "Command used to generate the directory list for the Alt+C cd widget"
+why = "Alt+C lets you fuzzy-cd into any directory. Use fd for speed and .gitignore awareness."
+example = "export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'"
+tags = ["plugin", "fzf", "fuzzy", "navigation", "keybinding"]
+url = "https://github.com/junegunn/fzf#key-bindings-for-command-line"
+
+[[options]]
+name = "fzf init"
+type = "string"
+default = ""
+category = "plugin:fzf"
+description = "Initialize fzf key bindings and completions for zsh"
+why = "Enables Ctrl+R (history search), Ctrl+T (file picker), and Alt+C (cd) fuzzy widgets."
+example = "source <(fzf --zsh)"
+tags = ["plugin", "fzf", "init", "keybinding", "essential"]
+url = "https://github.com/junegunn/fzf#setting-up-shell-integration"

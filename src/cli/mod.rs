@@ -267,4 +267,10 @@ pub enum PluginAction {
         /// Plugin name (updates all if omitted)
         name: Option<String>,
     },
+
+    /// Show plugin info from README (description, configuration, URL)
+    Info {
+        /// Plugin name (shows all if omitted)
+        name: Option<String>,
+    },
 }

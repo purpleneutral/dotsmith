@@ -273,7 +273,7 @@ fn handle_dashboard_action(key: crossterm::event::KeyEvent, app: &mut App) {
             app.current_view = CurrentView::History;
         }
         DashboardAction::ShowPlugins(tool_name) => {
-            let state = PluginState::new(&tool_name, &app.manifest);
+            let state = PluginState::new(&tool_name, &app.manifest, Some(&app.config_dir));
             app.plugins_view = Some(state);
             app.current_view = CurrentView::Plugins;
         }
@@ -543,7 +543,7 @@ fn handle_plugin_action(key: crossterm::event::KeyEvent, app: &mut App) {
             ) {
                 Ok((name, _init)) => {
                     app.toast_success(format!("Added plugin: {}", name));
-                    app.plugins_view = Some(PluginState::new(&tool, &app.manifest));
+                    app.plugins_view = Some(PluginState::new(&tool, &app.manifest, Some(&app.config_dir)));
                     app.refresh_dashboard();
                 }
                 Err(e) => app.toast_error(format!("Add failed: {}", e)),
@@ -563,7 +563,7 @@ fn handle_plugin_action(key: crossterm::event::KeyEvent, app: &mut App) {
             ) {
                 Ok(()) => {
                     app.toast_success(format!("Removed plugin: {}", name));
-                    app.plugins_view = Some(PluginState::new(&tool, &app.manifest));
+                    app.plugins_view = Some(PluginState::new(&tool, &app.manifest, Some(&app.config_dir)));
                     app.refresh_dashboard();
                 }
                 Err(e) => app.toast_error(format!("Remove failed: {}", e)),

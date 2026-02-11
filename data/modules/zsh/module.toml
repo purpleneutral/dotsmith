@@ -30,4 +30,11 @@ categories = [
     "safety",
     "performance",
     "interaction",
+    "plugin:autosuggestions",
+    "plugin:syntax-highlighting",
+    "plugin:history-substring-search",
+    "plugin:fzf-tab",
+    "plugin:powerlevel10k",
+    "plugin:zoxide",
+    "plugin:fzf",
 ]

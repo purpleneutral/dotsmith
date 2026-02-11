@@ -327,3 +327,307 @@ description = "Style for status line messages"
 why = "Match your theme for a polished look."
 example = "set -g message-style 'fg=#abb2bf,bg=#282c34'"
 tags = ["message", "style", "color", "theme"]
+
+# ==========================================================================
+# Plugin options — tmux-resurrect
+# ==========================================================================
+
+[[options]]
+name = "@resurrect-capture-pane-contents"
+type = "boolean"
+default = "off"
+category = "plugin:resurrect"
+description = "Capture and restore pane contents (scrollback) when saving/restoring sessions"
+why = "Preserves terminal output across restarts. Useful for long-running logs or build output you want to keep."
+example = "set -g @resurrect-capture-pane-contents 'on'"
+tags = ["plugin", "resurrect", "session", "restore", "pane"]
+url = "https://github.com/tmux-plugins/tmux-resurrect"
+
+[[options]]
+name = "@resurrect-strategy-vim"
+type = "enum"
+default = ""
+values = ["session"]
+category = "plugin:resurrect"
+description = "Restore strategy for Vim — set to 'session' to restore Vim sessions via Session.vim"
+why = "With 'session', resurrect runs 'vim -S' to restore your Vim session file. Requires tpope/vim-obsession or manual :mksession."
+example = "set -g @resurrect-strategy-vim 'session'"
+tags = ["plugin", "resurrect", "vim", "session"]
+url = "https://github.com/tmux-plugins/tmux-resurrect/blob/master/docs/restoring_vim_and_neovim_sessions.md"
+
+[[options]]
+name = "@resurrect-strategy-nvim"
+type = "enum"
+default = ""
+values = ["session"]
+category = "plugin:resurrect"
+description = "Restore strategy for Neovim — set to 'session' to restore Neovim sessions via Session.vim"
+why = "Same as vim strategy but for nvim. Pair with a session manager like auto-session or persistence.nvim."
+example = "set -g @resurrect-strategy-nvim 'session'"
+tags = ["plugin", "resurrect", "nvim", "neovim", "session"]
+related = ["@resurrect-strategy-vim"]
+url = "https://github.com/tmux-plugins/tmux-resurrect/blob/master/docs/restoring_vim_and_neovim_sessions.md"
+
+[[options]]
+name = "@resurrect-dir"
+type = "path"
+default = "~/.tmux/resurrect"
+category = "plugin:resurrect"
+description = "Directory where resurrect saves session state files"
+why = "Relocate to keep XDG compliance or to back up session files with your dotfiles repo."
+example = "set -g @resurrect-dir '~/.local/share/tmux/resurrect'"
+tags = ["plugin", "resurrect", "path", "storage"]
+url = "https://github.com/tmux-plugins/tmux-resurrect"
+
+[[options]]
+name = "@resurrect-save-shell-history"
+type = "boolean"
+default = "off"
+category = "plugin:resurrect"
+description = "Save and restore shell history for each pane"
+why = "Preserves per-pane command history across restarts. Experimental — may increase save time."
+example = "set -g @resurrect-save-shell-history 'on'"
+tags = ["plugin", "resurrect", "history", "shell"]
+url = "https://github.com/tmux-plugins/tmux-resurrect"
+
+[[options]]
+name = "@resurrect-processes"
+type = "list"
+default = "vi vim nvim emacs man less more tail top htop irssi weechat mutt"
+category = "plugin:resurrect"
+description = "Space-separated list of additional programs to capture and restore in panes"
+why = "By default, only common programs are restored. Add your own (e.g., 'watch' 'python') to restore custom workflows."
+example = "set -g @resurrect-processes 'ssh watch python'"
+tags = ["plugin", "resurrect", "processes", "restore"]
+url = "https://github.com/tmux-plugins/tmux-resurrect/blob/master/docs/restoring_programs.md"
+
+# ==========================================================================
+# Plugin options — tmux-continuum
+# ==========================================================================
+
+[[options]]
+name = "@continuum-save-interval"
+type = "integer"
+default = "15"
+category = "plugin:continuum"
+description = "Auto-save interval in minutes (set to 0 to disable auto-save)"
+why = "Continuous saving means you never lose your session layout. 15 minutes is a good default; lower for paranoia."
+example = "set -g @continuum-save-interval '10'"
+tags = ["plugin", "continuum", "auto-save", "interval"]
+related = ["@resurrect-dir"]
+url = "https://github.com/tmux-plugins/tmux-continuum"
+
+[[options]]
+name = "@continuum-restore"
+type = "boolean"
+default = "off"
+category = "plugin:continuum"
+description = "Automatically restore last saved session when tmux server starts"
+why = "Combined with continuum-save, your tmux environment survives reboots transparently. This is the killer feature."
+example = "set -g @continuum-restore 'on'"
+tags = ["plugin", "continuum", "auto-restore", "boot"]
+related = ["@continuum-save-interval"]
+url = "https://github.com/tmux-plugins/tmux-continuum"
+
+[[options]]
+name = "@continuum-boot"
+type = "boolean"
+default = "off"
+category = "plugin:continuum"
+description = "Start tmux automatically when the system boots (macOS/Linux)"
+why = "Ensures your tmux session is always available. Uses systemd on Linux, launchd on macOS."
+example = "set -g @continuum-boot 'on'"
+tags = ["plugin", "continuum", "boot", "systemd", "autostart"]
+url = "https://github.com/tmux-plugins/tmux-continuum"
+
+[[options]]
+name = "@continuum-systemd-start-cmd"
+type = "string"
+default = "new-session -d"
+category = "plugin:continuum"
+description = "The tmux command used by the systemd service to start the server"
+why = "Customize if you need specific session names or startup commands for the auto-boot service."
+example = "set -g @continuum-systemd-start-cmd 'new-session -d -s main'"
+tags = ["plugin", "continuum", "systemd", "boot"]
+related = ["@continuum-boot"]
+url = "https://github.com/tmux-plugins/tmux-continuum"
+
+# ==========================================================================
+# Plugin options — tmux-yank
+# ==========================================================================
+
+[[options]]
+name = "@yank_selection"
+type = "enum"
+default = "clipboard"
+values = ["clipboard", "primary"]
+category = "plugin:yank"
+description = "Which X/Wayland selection to copy to (clipboard = Ctrl+V, primary = middle-click)"
+why = "Most users want 'clipboard' for Ctrl+V pasting. Use 'primary' for traditional X11 middle-click workflow."
+example = "set -g @yank_selection 'clipboard'"
+tags = ["plugin", "yank", "clipboard", "copy"]
+url = "https://github.com/tmux-plugins/tmux-yank"
+
+[[options]]
+name = "@yank_action"
+type = "enum"
+default = "copy-pipe-and-cancel"
+values = ["copy-pipe-and-cancel", "copy-pipe"]
+category = "plugin:yank"
+description = "Action after yanking: cancel copy mode or remain in copy mode"
+why = "Use 'copy-pipe' to stay in copy mode for multiple yanks. 'copy-pipe-and-cancel' is more intuitive for single selections."
+example = "set -g @yank_action 'copy-pipe'"
+tags = ["plugin", "yank", "clipboard", "copy-mode"]
+url = "https://github.com/tmux-plugins/tmux-yank"
+
+[[options]]
+name = "@yank_with_mouse"
+type = "boolean"
+default = "on"
+category = "plugin:yank"
+description = "Copy to system clipboard when selecting text with mouse drag"
+why = "Makes mouse selection work like other terminal apps — select and it's on your clipboard."
+example = "set -g @yank_with_mouse 'on'"
+tags = ["plugin", "yank", "mouse", "clipboard"]
+related = ["mouse"]
+url = "https://github.com/tmux-plugins/tmux-yank"
+
+# ==========================================================================
+# Plugin options — catppuccin/tmux
+# ==========================================================================
+
+[[options]]
+name = "@catppuccin_flavor"
+type = "enum"
+default = "mocha"
+values = ["latte", "frappe", "macchiato", "mocha"]
+category = "plugin:catppuccin"
+description = "Color palette variant — latte (light), frappe/macchiato/mocha (dark, increasing contrast)"
+why = "Catppuccin is one of the most popular tmux themes. Mocha is the darkest and most popular variant."
+example = "set -g @catppuccin_flavor 'mocha'"
+tags = ["plugin", "catppuccin", "theme", "color"]
+url = "https://github.com/catppuccin/tmux"
+
+[[options]]
+name = "@catppuccin_window_status_style"
+type = "enum"
+default = "basic"
+values = ["basic", "rounded", "slanted", "custom", "none"]
+category = "plugin:catppuccin"
+description = "Style for window status indicators in the status bar"
+why = "Controls the visual shape of window tabs. 'rounded' gives a modern look with powerline-style separators."
+example = "set -g @catppuccin_window_status_style 'rounded'"
+tags = ["plugin", "catppuccin", "theme", "status-bar", "style"]
+url = "https://github.com/catppuccin/tmux"
+
+[[options]]
+name = "@catppuccin_status_background"
+type = "string"
+default = "theme"
+category = "plugin:catppuccin"
+description = "Status bar background color — 'theme' uses the catppuccin palette, 'default' uses terminal default"
+why = "Set to 'default' for a transparent status bar that blends with your terminal background."
+example = "set -g @catppuccin_status_background 'default'"
+tags = ["plugin", "catppuccin", "theme", "status-bar", "background"]
+url = "https://github.com/catppuccin/tmux"
+
+# ==========================================================================
+# Plugin options — tmux-prefix-highlight
+# ==========================================================================
+
+[[options]]
+name = "@prefix_highlight_fg"
+type = "color"
+default = "colour231"
+category = "plugin:prefix-highlight"
+description = "Foreground color of the prefix indicator when prefix key is active"
+why = "Visual feedback that you've pressed the prefix key. Customize to match your theme."
+example = "set -g @prefix_highlight_fg 'white'"
+tags = ["plugin", "prefix-highlight", "color", "status-bar"]
+url = "https://github.com/tmux-plugins/tmux-prefix-highlight"
+
+[[options]]
+name = "@prefix_highlight_bg"
+type = "color"
+default = "colour04"
+category = "plugin:prefix-highlight"
+description = "Background color of the prefix indicator when prefix key is active"
+why = "A bold background color makes the prefix state obvious in the status bar."
+example = "set -g @prefix_highlight_bg 'blue'"
+tags = ["plugin", "prefix-highlight", "color", "status-bar"]
+url = "https://github.com/tmux-plugins/tmux-prefix-highlight"
+
+[[options]]
+name = "@prefix_highlight_show_copy_mode"
+type = "boolean"
+default = "off"
+category = "plugin:prefix-highlight"
+description = "Also highlight when in copy mode, not just when prefix is pressed"
+why = "Gives visual feedback for both prefix and copy mode states in one indicator."
+example = "set -g @prefix_highlight_show_copy_mode 'on'"
+tags = ["plugin", "prefix-highlight", "copy-mode", "status-bar"]
+url = "https://github.com/tmux-plugins/tmux-prefix-highlight"
+
+[[options]]
+name = "@prefix_highlight_copy_mode_attr"
+type = "string"
+default = "fg=default,bg=yellow"
+category = "plugin:prefix-highlight"
+description = "Style attributes for the copy mode indicator"
+why = "Differentiate copy mode from prefix mode with a distinct color."
+example = "set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=yellow,bold'"
+tags = ["plugin", "prefix-highlight", "copy-mode", "style"]
+related = ["@prefix_highlight_show_copy_mode"]
+url = "https://github.com/tmux-plugins/tmux-prefix-highlight"
+
+# ==========================================================================
+# Plugin options — tmux-fingers
+# ==========================================================================
+
+[[options]]
+name = "@fingers-key"
+type = "keybinding"
+default = "F"
+category = "plugin:fingers"
+description = "Key binding (after prefix) to enter finger-selection mode for quick text copying"
+why = "Press prefix+F to see hint labels on URLs, file paths, hashes, IPs, etc. Type the hint to copy."
+example = "set -g @fingers-key 'F'"
+tags = ["plugin", "fingers", "copy", "hints", "keybinding"]
+url = "https://github.com/Morantron/tmux-fingers"
+
+[[options]]
+name = "@fingers-compact-hints"
+type = "boolean"
+default = "on"
+category = "plugin:fingers"
+description = "Show hints in compact mode (overlaid on text) instead of expanded mode"
+why = "Compact hints take less space. Turn off for clearer hint visibility on dense text."
+example = "set -g @fingers-compact-hints '0'"
+tags = ["plugin", "fingers", "hints", "display"]
+url = "https://github.com/Morantron/tmux-fingers"
+
+[[options]]
+name = "@fingers-hint-format"
+type = "string"
+default = "#[fg=yellow,bold]%s"
+category = "plugin:fingers"
+description = "tmux style format string for hint labels"
+why = "Customize hint appearance to match your theme. %s is replaced with the hint character."
+example = "set -g @fingers-hint-format '#[fg=red,bold]%s'"
+tags = ["plugin", "fingers", "hints", "style"]
+url = "https://github.com/Morantron/tmux-fingers"
+
+# ==========================================================================
+# Plugin — tmux-sensible (no configurable options, but worth documenting)
+# ==========================================================================
+
+[[options]]
+name = "tmux-sensible"
+type = "boolean"
+default = ""
+category = "plugin:sensible"
+description = "A set of sensible tmux defaults that everyone can agree on. No configuration needed — just install."
+why = "Fixes escape-time (0), increases history-limit (50000), enables focus-events, sets emacs keys in status, and more. A great starting point."
+example = "# Install via TPM: set -g @plugin 'tmux-plugins/tmux-sensible'"
+tags = ["plugin", "sensible", "defaults", "essential"]
+url = "https://github.com/tmux-plugins/tmux-sensible"

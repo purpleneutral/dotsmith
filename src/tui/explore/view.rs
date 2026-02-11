@@ -210,6 +210,17 @@ fn draw_details(f: &mut Frame, area: Rect, state: &ExploreState) {
             ]));
         }
 
+        if let Some(ref url) = opt.url {
+            lines.push(Line::from(""));
+            lines.push(Line::from(vec![
+                Span::styled("URL: ", Style::default().fg(Color::Yellow)),
+                Span::styled(
+                    url.clone(),
+                    Style::default().fg(Color::Blue).add_modifier(Modifier::UNDERLINED),
+                ),
+            ]));
+        }
+
         lines
     } else {
         vec![Line::from(Span::styled(

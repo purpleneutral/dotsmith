@@ -28,4 +28,11 @@ categories = [
     "performance",
     "status-bar",
     "windows-panes",
+    "plugin:resurrect",
+    "plugin:continuum",
+    "plugin:yank",
+    "plugin:catppuccin",
+    "plugin:prefix-highlight",
+    "plugin:fingers",
+    "plugin:sensible",
 ]

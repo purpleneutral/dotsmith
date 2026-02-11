@@ -84,7 +84,7 @@ Running `dotsmith` with no arguments opens an interactive dashboard:
 | `g` | Sync dotfile git repo |
 | `q` | Quit |
 
-The TUI includes a scrollable diff viewer, snapshot history browser with rollback, and plugin management -- all without leaving the terminal.
+The TUI includes a scrollable diff viewer, snapshot history browser with rollback, and plugin management with info panels -- all without leaving the terminal.
 
 In the explore view, press `g` to generate a commented config snippet file at `~/.config/dotsmith/generated/<tool>.<ext>` containing all currently visible options. Filter by category or search first to generate a focused snippet.
 
@@ -98,7 +98,7 @@ In the explore view, press `g` to generate a commented config snippet file at `~
 | `list` | List all tracked tools with tier, paths, plugin manager |
 | `status` | Health check -- verify tracked configs still exist |
 | `doctor [tool]` | Deep health check -- installation, paths, syntax validation, snapshot freshness |
-| `search <query>` | Search config options across all Tier 1 tool databases |
+| `search <query>` | Search config options across all Tier 1 tool databases (with URLs for plugin options) |
 | `edit <tool>` | Open config in $EDITOR (auto-snapshots before editing) |
 | `watch [tool]` | Watch tracked configs for changes and auto-snapshot on save |
 | `snapshot [tool] [-m msg]` | Snapshot config files for rollback |
@@ -113,6 +113,7 @@ In the explore view, press `g` to generate a commented config snippet file at `~
 | `plugins <tool> remove <name>` | Remove a plugin |
 | `plugins <tool> list` | List installed plugins |
 | `plugins <tool> update [name]` | Update one or all plugins |
+| `plugins <tool> info [name]` | Show plugin info (description, config, URL from README) |
 | `profile save <name>` | Save current configs as a named profile |
 | `profile load <name>` | Restore config files from a saved profile |
 | `profile list` | List saved profiles |
@@ -140,8 +141,8 @@ dotsmith completions fish > ~/.config/fish/completions/dotsmith.fish
 ## Tiered Support
 
 **Tier 1** -- Full support with curated option databases:
-- **tmux** -- 31 options across interaction, display, behavior, plugins, clipboard
-- **zsh** -- 33 options across history, completion, prompt, navigation, globbing, safety, starship
+- **tmux** -- 55 options across interaction, display, behavior, clipboard, and plugins (resurrect, continuum, yank, catppuccin, prefix-highlight, fingers, sensible)
+- **zsh** -- 61 options across history, completion, prompt, navigation, globbing, safety, starship, and plugins (autosuggestions, syntax-highlighting, history-substring-search, fzf-tab, powerlevel10k, zoxide, fzf)
 - **git** -- 31 options across user, core, diff, merge, push, color, aliases, safety
 - **kitty** -- 31 options across appearance, fonts, cursor, scrollback, mouse, performance, tabs
 - **neovim** -- 31 options across ui, editing, search, indentation, completion, lsp, files
@@ -168,6 +169,18 @@ dotsmith plugins tmux add tmux-plugins/tmux-sensible
 ```
 
 dotsmith clones with `--depth 1`, auto-detects init files (`*.plugin.zsh`, `*.tmux`, etc.), and generates a loader file that you source once. Updates are a single command: `dotsmith plugins zsh update`.
+
+Use `dotsmith plugins <tool> info` to see descriptions, configuration excerpts, and URLs extracted from each plugin's README:
+
+```sh
+# Show info for all installed plugins
+dotsmith plugins zsh info
+
+# Show info for a specific plugin
+dotsmith plugins zsh info zsh-autosuggestions
+```
+
+The TUI plugin view also supports an info panel -- press `i` to toggle a split view showing plugin details alongside the list.
 
 Supported tools: **zsh**, **tmux**. Existing plugin managers (TPM, zinit, etc.) are detected on `add` but never replaced -- opt in to dotsmith plugin management explicitly.
 
@@ -263,7 +276,7 @@ All dotsmith-created files use `0600`/`0700` permissions.
 ```sh
 cargo build              # debug build
 cargo build --release    # optimized build
-cargo test               # run all tests (~420 tests)
+cargo test               # run all tests (~450 tests)
 cargo clippy             # lint check
 make check               # clippy + tests together
 ```
@@ -281,6 +294,7 @@ make check               # clippy + tests together
 - Phase 5b: `edit`, `watch`, config validation, man page generation
 - Phase 6: Git repo management (`repo init`, `repo sync`, `repo status`)
 - Phase 7: Configuration profiles (save/load), remote deploy via SSH
+- Plugin options: 52 curated plugin options for tmux + zsh with URLs, plugin info scanning from READMEs
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release notes.
 

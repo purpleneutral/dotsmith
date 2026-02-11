@@ -44,6 +44,10 @@ fn handle_list_key(key: KeyEvent, state: &mut PluginState) -> PluginAction {
             .map(|p| PluginAction::UpdatePlugin(Some(p.name.clone())))
             .unwrap_or(PluginAction::None),
         KeyCode::Char('U') if state.supported => PluginAction::UpdatePlugin(None),
+        KeyCode::Char('i') if state.supported => {
+            state.show_info = !state.show_info;
+            PluginAction::None
+        }
         _ => PluginAction::None,
     }
 }
@@ -100,17 +104,24 @@ mod tests {
                     name: "zsh-autosuggestions".into(),
                     repo: "zsh-users/zsh-autosuggestions".into(),
                     init: "zsh-autosuggestions.plugin.zsh".into(),
+                    url: "https://github.com/zsh-users/zsh-autosuggestions".into(),
+                    description: None,
+                    config_excerpt: None,
                 },
                 PluginRow {
                     name: "zsh-syntax-highlighting".into(),
                     repo: "zsh-users/zsh-syntax-highlighting".into(),
                     init: "zsh-syntax-highlighting.plugin.zsh".into(),
+                    url: "https://github.com/zsh-users/zsh-syntax-highlighting".into(),
+                    description: None,
+                    config_excerpt: None,
                 },
             ],
             selected: 0,
             mode: PluginMode::List,
             input_buffer: String::new(),
             supported: true,
+            show_info: false,
         }
     }
 
@@ -222,6 +233,7 @@ mod tests {
             mode: PluginMode::List,
             input_buffer: String::new(),
             supported: false,
+            show_info: false,
         };
         assert!(matches!(
             handle_key(make_key(KeyCode::Char('a')), &mut state),

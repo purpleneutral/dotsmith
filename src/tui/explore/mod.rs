@@ -166,18 +166,18 @@ mod tests {
     fn test_new_tmux() {
         let state = ExploreState::new("tmux").unwrap();
         assert_eq!(state.tool_name, "tmux");
-        assert_eq!(state.all_options.len(), 31);
+        assert!(state.all_options.len() >= 31, "should have at least 31 native + plugin options");
         assert!(state.categories.len() > 1);
         assert_eq!(state.categories[0].name, "All");
-        assert_eq!(state.categories[0].count, 31);
-        assert_eq!(state.filtered_indices.len(), 31);
+        assert_eq!(state.categories[0].count, state.all_options.len());
+        assert_eq!(state.filtered_indices.len(), state.all_options.len());
     }
 
     #[test]
     fn test_new_zsh() {
         let state = ExploreState::new("zsh").unwrap();
         assert_eq!(state.tool_name, "zsh");
-        assert_eq!(state.all_options.len(), 33);
+        assert!(state.all_options.len() >= 33, "should have at least 33 native + plugin options");
     }
 
     #[test]
@@ -225,7 +225,7 @@ mod tests {
         let mut state = ExploreState::new("tmux").unwrap();
 
         // "All" shows everything
-        assert_eq!(state.filtered_indices.len(), 31);
+        assert_eq!(state.filtered_indices.len(), state.all_options.len());
 
         // Select a specific category
         state.select_next_category();

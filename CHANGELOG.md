@@ -6,6 +6,16 @@ All notable changes to dotsmith will be documented in this file.
 
 ### Added
 
+- **Auto-initialize on first use**
+  - All commands now auto-create config directory, manifest, and config files if missing -- no separate `dotsmith init` step needed
+  - `dotsmith init` is now idempotent (succeeds on re-run instead of erroring)
+
+- **TUI dashboard: add and remove tools**
+  - Press `a` on the dashboard to add a tool interactively (type name, Enter to add, Esc to cancel)
+  - Press `x` to remove the selected tool from tracking
+  - Toast notifications for success/error feedback
+  - Full detection: tier, config paths, plugin managers -- same as CLI `add`
+
 - **Plugin option databases and plugin info scanning**
   - 24 curated tmux plugin options across 7 plugins: tmux-resurrect, tmux-continuum, tmux-yank, catppuccin/tmux, tmux-prefix-highlight, tmux-fingers, tmux-sensible
   - 28 curated zsh plugin options across 7 plugins: zsh-autosuggestions, zsh-syntax-highlighting, zsh-history-substring-search, fzf-tab, powerlevel10k, zoxide, fzf

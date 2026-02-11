@@ -61,21 +61,15 @@ man ./dotsmith.1      # preview locally
 
 ## First Run
 
-### 1. Initialize dotsmith
-
-```sh
-dotsmith init
-```
-
-This creates `~/.config/dotsmith/` with the configuration directory, manifest, and snapshot database.
-
-### 2. Add tools to track
+### 1. Add tools to track
 
 ```sh
 dotsmith add tmux
 dotsmith add zsh
 dotsmith add git
 ```
+
+dotsmith auto-initializes on first use -- no separate `init` step is needed. Running `dotsmith init` explicitly is also fine (it's idempotent).
 
 When you add a tool, dotsmith:
 
@@ -84,20 +78,20 @@ When you add a tool, dotsmith:
 - Records existing symlinks (follows the user-facing path, not the target)
 - Detects existing plugin managers (TPM, zinit, oh-my-zsh, etc.) without replacing them
 
-### 3. Check your setup
+### 2. Check your setup
 
 ```sh
 dotsmith list     # see tracked tools with tier, paths, plugin status
 dotsmith status   # verify all tracked configs still exist
 ```
 
-### 4. Launch the TUI
+### 3. Launch the TUI
 
 ```sh
 dotsmith          # opens the interactive dashboard
 ```
 
-Or jump straight into exploring a tool's config options:
+From the dashboard you can also press `a` to add tools interactively, or jump straight into exploring a tool's config options:
 
 ```sh
 dotsmith explore tmux

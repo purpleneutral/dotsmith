@@ -16,7 +16,7 @@ use crate::core::manifest::Manifest;
 use crate::core::snapshot::SnapshotEngine;
 use crate::util;
 
-use dashboard::DashboardState;
+use dashboard::{DashboardMode, DashboardState};
 use dashboard::handler::{DashboardAction, handle_key as dashboard_handle_key};
 use dashboard::view::draw_dashboard;
 use diff::DiffState;
@@ -297,8 +297,108 @@ fn handle_dashboard_action(key: crossterm::event::KeyEvent, app: &mut App) {
                 app.toast_error("No repo configured. Run `dotsmith repo init <path>` first.");
             }
         }
+        DashboardAction::EnterAddMode => {
+            app.dashboard.mode = DashboardMode::AddInput;
+            app.dashboard.input_buffer.clear();
+        }
+        DashboardAction::AddTool(tool_name) => {
+            add_tool_from_tui(app, &tool_name);
+        }
+        DashboardAction::RemoveTool(tool_name) => {
+            match app.manifest.remove_tool(&tool_name) {
+                Ok(_) => {
+                    if let Err(e) = app.manifest.save(&app.config_dir) {
+                        app.toast_error(format!("Save failed: {}", e));
+                    } else {
+                        app.refresh_dashboard();
+                        app.toast_success(format!("Removed {}", tool_name));
+                    }
+                }
+                Err(e) => app.toast_error(format!("{}", e)),
+            }
+        }
         DashboardAction::None => {}
     }
+}
+
+fn add_tool_from_tui(app: &mut App, tool: &str) {
+    use crate::core::detect;
+    use crate::core::manifest::ToolEntry;
+    use crate::core::module::ModuleRegistry;
+    use chrono::Utc;
+
+    if app.manifest.has_tool(tool) {
+        app.toast_error(format!("'{}' is already tracked", tool));
+        return;
+    }
+
+    let (tier, module_def) = match ModuleRegistry::get_builtin(tool) {
+        Some(def) => (1u8, Some(def)),
+        None => (2u8, None),
+    };
+
+    let detect_cmd = module_def
+        .as_ref()
+        .map(|d| d.metadata.detect_command.as_str())
+        .unwrap_or(&format!("which {}", tool))
+        .to_string();
+
+    if let Err(e) = detect::check_installed(tool, &detect_cmd) {
+        app.toast_error(format!("{}", e));
+        return;
+    }
+
+    let config_paths = if let Some(ref def) = module_def {
+        match detect::find_config_paths_from_module(def) {
+            Ok(paths) => paths,
+            Err(e) => {
+                app.toast_error(format!("{}", e));
+                return;
+            }
+        }
+    } else {
+        match detect::auto_detect_config_paths(tool) {
+            Ok(paths) => paths,
+            Err(e) => {
+                app.toast_error(format!("{}", e));
+                return;
+            }
+        }
+    };
+
+    if config_paths.is_empty() {
+        app.toast_error(format!("No config files found for '{}'", tool));
+        return;
+    }
+
+    let plugin_manager = detect::detect_plugin_manager(tool, &config_paths);
+
+    let entry = ToolEntry {
+        tier,
+        config_paths: config_paths
+            .iter()
+            .map(|p| util::paths::contract_tilde(p))
+            .collect(),
+        plugins_managed: false,
+        plugin_manager,
+        added_at: Utc::now(),
+        last_snapshot: None,
+        plugins: std::collections::BTreeMap::new(),
+    };
+
+    if let Err(e) = app.manifest.add_tool(tool, entry) {
+        app.toast_error(format!("{}", e));
+        return;
+    }
+
+    if let Err(e) = app.manifest.save(&app.config_dir) {
+        app.toast_error(format!("Save failed: {}", e));
+        return;
+    }
+
+    app.refresh_dashboard();
+    let tier_label = if tier == 1 { "Tier 1" } else { "Tier 2" };
+    app.toast_success(format!("Added {} ({})", tool, tier_label));
 }
 
 fn handle_explore_action(key: crossterm::event::KeyEvent, app: &mut App) {

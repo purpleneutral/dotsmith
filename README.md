@@ -33,10 +33,9 @@ See [Getting Started](docs/getting-started.md) for all install methods, shell co
 ## Quick Start
 
 ```sh
-dotsmith init          # initialize dotsmith
-dotsmith add tmux      # start tracking a tool
+dotsmith add tmux      # start tracking a tool (auto-initializes on first use)
 dotsmith add zsh
-dotsmith                # launch the TUI dashboard
+dotsmith                # launch the TUI dashboard (press 'a' to add more tools)
 dotsmith explore tmux   # explore config options
 ```
 

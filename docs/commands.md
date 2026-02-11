@@ -19,7 +19,7 @@ Initialize the dotsmith configuration directory.
 dotsmith init
 ```
 
-Creates `~/.config/dotsmith/` with `manifest.toml`, `config.toml`, and `snapshots.db`.
+Creates `~/.config/dotsmith/` with `manifest.toml`, `config.toml`, and `snapshots.db`. Idempotent -- safe to run multiple times. Note: most commands auto-initialize on first use, so explicit `init` is optional.
 
 ### `add`
 

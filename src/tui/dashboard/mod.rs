@@ -19,10 +19,19 @@ pub struct ToolRow {
     pub has_option_db: bool,
 }
 
+/// Dashboard interaction mode.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum DashboardMode {
+    Normal,
+    AddInput,
+}
+
 /// State for the dashboard view.
 pub struct DashboardState {
     pub tools: Vec<ToolRow>,
     pub selected: usize,
+    pub mode: DashboardMode,
+    pub input_buffer: String,
 }
 
 impl DashboardState {
@@ -50,7 +59,12 @@ impl DashboardState {
             })
             .collect();
 
-        Self { tools, selected: 0 }
+        Self {
+            tools,
+            selected: 0,
+            mode: DashboardMode::Normal,
+            input_buffer: String::new(),
+        }
     }
 
     pub fn select_next(&mut self) {

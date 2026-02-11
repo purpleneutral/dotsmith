@@ -1,6 +1,6 @@
 use crossterm::event::{KeyCode, KeyEvent};
 
-use super::DashboardState;
+use super::{DashboardMode, DashboardState};
 
 /// Action returned by the dashboard key handler.
 pub enum DashboardAction {
@@ -20,12 +20,25 @@ pub enum DashboardAction {
     ShowPlugins(String),
     /// Sync the git repo.
     SyncRepo,
+    /// Enter add-tool input mode.
+    EnterAddMode,
+    /// Add a tool by name.
+    AddTool(String),
+    /// Remove the selected tool.
+    RemoveTool(String),
     /// User wants to quit.
     Quit,
 }
 
 /// Handle a key event in the dashboard view.
 pub fn handle_key(key: KeyEvent, state: &mut DashboardState) -> DashboardAction {
+    match state.mode {
+        DashboardMode::Normal => handle_normal_key(key, state),
+        DashboardMode::AddInput => handle_add_input_key(key, state),
+    }
+}
+
+fn handle_normal_key(key: KeyEvent, state: &mut DashboardState) -> DashboardAction {
     match key.code {
         KeyCode::Char('q') | KeyCode::Esc => DashboardAction::Quit,
         KeyCode::Char('j') | KeyCode::Down => {
@@ -47,6 +60,11 @@ pub fn handle_key(key: KeyEvent, state: &mut DashboardState) -> DashboardAction 
                 DashboardAction::None
             }
         }
+        KeyCode::Char('a') => DashboardAction::EnterAddMode,
+        KeyCode::Char('x') => state
+            .selected_tool()
+            .map(|t| DashboardAction::RemoveTool(t.name.clone()))
+            .unwrap_or(DashboardAction::None),
         KeyCode::Char('s') => DashboardAction::SnapshotAll,
         KeyCode::Char('r') => state
             .selected_tool()
@@ -69,11 +87,40 @@ pub fn handle_key(key: KeyEvent, state: &mut DashboardState) -> DashboardAction 
     }
 }
 
+fn handle_add_input_key(key: KeyEvent, state: &mut DashboardState) -> DashboardAction {
+    match key.code {
+        KeyCode::Esc => {
+            state.mode = DashboardMode::Normal;
+            state.input_buffer.clear();
+            DashboardAction::None
+        }
+        KeyCode::Enter => {
+            let tool_name = state.input_buffer.trim().to_string();
+            state.mode = DashboardMode::Normal;
+            state.input_buffer.clear();
+            if tool_name.is_empty() {
+                DashboardAction::None
+            } else {
+                DashboardAction::AddTool(tool_name)
+            }
+        }
+        KeyCode::Backspace => {
+            state.input_buffer.pop();
+            DashboardAction::None
+        }
+        KeyCode::Char(c) => {
+            state.input_buffer.push(c);
+            DashboardAction::None
+        }
+        _ => DashboardAction::None,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::core::manifest::{Manifest, ToolEntry};
-    use crate::tui::dashboard::DashboardState;
+    use crate::tui::dashboard::{DashboardMode, DashboardState};
     use chrono::Utc;
     use crossterm::event::{KeyCode, KeyEvent, KeyEventKind, KeyEventState, KeyModifiers};
     use std::collections::BTreeMap;
@@ -214,8 +261,72 @@ mod tests {
     fn test_unknown_key() {
         let mut state = sample_state();
         assert!(matches!(
-            handle_key(make_key(KeyCode::Char('x')), &mut state),
+            handle_key(make_key(KeyCode::Char('z')), &mut state),
             DashboardAction::None
         ));
+    }
+
+    #[test]
+    fn test_enter_add_mode() {
+        let mut state = sample_state();
+        assert!(matches!(
+            handle_key(make_key(KeyCode::Char('a')), &mut state),
+            DashboardAction::EnterAddMode
+        ));
+    }
+
+    #[test]
+    fn test_add_input_type_and_submit() {
+        let mut state = sample_state();
+        state.mode = DashboardMode::AddInput;
+
+        handle_key(make_key(KeyCode::Char('g')), &mut state);
+        handle_key(make_key(KeyCode::Char('i')), &mut state);
+        handle_key(make_key(KeyCode::Char('t')), &mut state);
+        assert_eq!(state.input_buffer, "git");
+
+        let action = handle_key(make_key(KeyCode::Enter), &mut state);
+        assert!(matches!(action, DashboardAction::AddTool(name) if name == "git"));
+        assert_eq!(state.mode, DashboardMode::Normal);
+        assert!(state.input_buffer.is_empty());
+    }
+
+    #[test]
+    fn test_add_input_cancel() {
+        let mut state = sample_state();
+        state.mode = DashboardMode::AddInput;
+        state.input_buffer = "git".to_string();
+
+        let action = handle_key(make_key(KeyCode::Esc), &mut state);
+        assert!(matches!(action, DashboardAction::None));
+        assert_eq!(state.mode, DashboardMode::Normal);
+        assert!(state.input_buffer.is_empty());
+    }
+
+    #[test]
+    fn test_add_input_backspace() {
+        let mut state = sample_state();
+        state.mode = DashboardMode::AddInput;
+        state.input_buffer = "git".to_string();
+
+        handle_key(make_key(KeyCode::Backspace), &mut state);
+        assert_eq!(state.input_buffer, "gi");
+    }
+
+    #[test]
+    fn test_add_input_empty_submit() {
+        let mut state = sample_state();
+        state.mode = DashboardMode::AddInput;
+
+        let action = handle_key(make_key(KeyCode::Enter), &mut state);
+        assert!(matches!(action, DashboardAction::None));
+        assert_eq!(state.mode, DashboardMode::Normal);
+    }
+
+    #[test]
+    fn test_remove_tool() {
+        let mut state = sample_state();
+        let action = handle_key(make_key(KeyCode::Char('x')), &mut state);
+        assert!(matches!(action, DashboardAction::RemoveTool(name) if name == "tmux"));
     }
 }

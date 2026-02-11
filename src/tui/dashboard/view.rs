@@ -7,18 +7,22 @@ use ratatui::{
     widgets::{Block, Borders, Cell, Row, Table},
 };
 
-use super::DashboardState;
+use super::{DashboardMode, DashboardState};
 use crate::tui::widgets::help_bar::{HelpBar, HelpItem};
 
 pub fn draw_dashboard(f: &mut Frame, area: Rect, state: &DashboardState) {
     let chunks = Layout::vertical([
         Constraint::Min(5),    // table
-        Constraint::Length(1), // help bar
+        Constraint::Length(1), // input / help bar
     ])
     .split(area);
 
     draw_table(f, chunks[0], state);
-    draw_help(f, chunks[1]);
+
+    match state.mode {
+        DashboardMode::Normal => draw_help(f, chunks[1]),
+        DashboardMode::AddInput => draw_add_input(f, chunks[1], state),
+    }
 }
 
 fn draw_table(f: &mut Frame, area: Rect, state: &DashboardState) {
@@ -89,10 +93,11 @@ fn draw_table(f: &mut Frame, area: Rect, state: &DashboardState) {
 
 fn draw_help(f: &mut Frame, area: Rect) {
     let help = HelpBar::new(vec![
+        HelpItem { key: "a", action: "add" },
+        HelpItem { key: "x", action: "remove" },
         HelpItem { key: "j/k", action: "navigate" },
         HelpItem { key: "e", action: "explore" },
         HelpItem { key: "s", action: "snapshot" },
-        HelpItem { key: "r", action: "reload" },
         HelpItem { key: "d", action: "diff" },
         HelpItem { key: "h", action: "history" },
         HelpItem { key: "p", action: "plugins" },
@@ -100,6 +105,17 @@ fn draw_help(f: &mut Frame, area: Rect) {
         HelpItem { key: "q", action: "quit" },
     ]);
     f.render_widget(help, area);
+}
+
+fn draw_add_input(f: &mut Frame, area: Rect, state: &DashboardState) {
+    use ratatui::widgets::Paragraph;
+
+    let line = Line::from(vec![
+        Span::styled("Add tool: ", Style::default().fg(Color::Yellow)),
+        Span::raw(&state.input_buffer),
+        Span::styled("_", Style::default().fg(Color::Yellow)),
+    ]);
+    f.render_widget(Paragraph::new(line), area);
 }
 
 /// Format a datetime as a relative time string (e.g., "2h ago", "3d ago").

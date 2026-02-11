@@ -17,16 +17,25 @@ The dashboard is the default view when you run `dotsmith` with no arguments. It 
 
 | Key | Action |
 |-----|--------|
+| `a` | Add a tool (enters input mode) |
+| `x` | Remove the selected tool |
 | `j` / `↓` | Select next tool |
 | `k` / `↑` | Select previous tool |
 | `e` / `Enter` | Explore config options (Tier 1 tools) |
 | `s` | Snapshot all tracked configs |
-| `r` | Reload selected tool |
 | `d` | View diff since last snapshot |
 | `h` | Browse snapshot history |
 | `p` | Manage plugins for selected tool |
 | `g` | Sync dotfile git repo |
 | `q` / `Esc` | Quit |
+
+### Adding a Tool
+
+Press `a` to enter input mode. Type the tool name (e.g., `tmux`, `zsh`, `ranger`) and press `Enter` to add it. dotsmith detects the config paths, tier, and plugin manager automatically. Press `Esc` to cancel.
+
+### Removing a Tool
+
+Press `x` to remove the currently selected tool from tracking. This only removes the manifest entry -- **your config files are never touched**.
 
 ### Toast Notifications
 

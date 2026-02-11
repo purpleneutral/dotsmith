@@ -72,4 +72,8 @@ This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
 Foundation, version 3.
 
-See [LICENSE](LICENSE) for the full text.
+This software is provided **as-is, without warranty of any kind**. dotsmith
+creates backups before write operations (rollback, deploy, profile load), but
+you are responsible for verifying changes with `--dry-run` before applying them.
+The authors are not liable for any data loss or damage. See [LICENSE](LICENSE)
+for the full terms.

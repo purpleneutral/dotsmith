@@ -58,17 +58,21 @@ fn test_list_with_tools() {
 }
 
 #[test]
-fn test_list_without_init_fails() {
+fn test_list_without_init_auto_initializes() {
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith-noinit");
 
+    // Should auto-initialize and succeed
     Command::cargo_bin("dotsmith")
         .unwrap()
         .arg("list")
         .env("DOTSMITH_CONFIG_DIR", &config_dir)
         .assert()
-        .failure()
-        .stderr(predicate::str::contains("not initialized"));
+        .success()
+        .stdout(predicate::str::contains("No tools tracked"));
+
+    assert!(config_dir.join("manifest.toml").exists());
+    assert!(config_dir.join("config.toml").exists());
 }
 
 #[test]
@@ -166,17 +170,21 @@ fn test_doctor_empty() {
 }
 
 #[test]
-fn test_doctor_without_init_fails() {
+fn test_doctor_without_init_auto_initializes() {
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith-noinit");
 
+    // Should auto-initialize and report OK
     Command::cargo_bin("dotsmith")
         .unwrap()
         .arg("doctor")
         .env("DOTSMITH_CONFIG_DIR", &config_dir)
         .assert()
         .success()
-        .stdout(predicate::str::contains("config directory missing"));
+        .stdout(predicate::str::contains("config directory"))
+        .stdout(predicate::str::contains("Summary"));
+
+    assert!(config_dir.join("manifest.toml").exists());
 }
 
 #[test]

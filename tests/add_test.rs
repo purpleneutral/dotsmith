@@ -81,17 +81,25 @@ fn test_add_not_installed_fails() {
 }
 
 #[test]
-fn test_add_without_init_fails() {
+fn test_add_without_init_auto_initializes() {
+    if !common::tool_has_config("tmux") {
+        return;
+    }
+
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith-noinit");
 
+    // Should auto-initialize and succeed
     Command::cargo_bin("dotsmith")
         .unwrap()
         .args(["add", "tmux"])
         .env("DOTSMITH_CONFIG_DIR", &config_dir)
         .assert()
-        .failure()
-        .stderr(predicate::str::contains("not initialized"));
+        .success()
+        .stdout(predicate::str::contains("Added tmux"));
+
+    assert!(config_dir.join("manifest.toml").exists());
+    assert!(config_dir.join("config.toml").exists());
 }
 
 #[test]

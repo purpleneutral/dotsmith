@@ -12,6 +12,19 @@ use cli::{Commands, DotsmithCli, RepoAction};
 fn main() -> Result<()> {
     let cli = DotsmithCli::parse();
 
+    // Auto-initialize for commands that need config infrastructure.
+    // Skip for: Init (has its own UX), Completions, Mangen, Search (standalone).
+    let skip_init = matches!(
+        cli.command,
+        Some(Commands::Init)
+            | Some(Commands::Completions { .. })
+            | Some(Commands::Mangen)
+            | Some(Commands::Search { .. })
+    );
+    if !skip_init {
+        cli::init::ensure_initialized()?;
+    }
+
     let result = match cli.command {
         None => tui::run(None),
         Some(Commands::Explore { ref tool }) => tui::run(Some(tool)),

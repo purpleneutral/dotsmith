@@ -55,7 +55,7 @@ fn test_init_creates_valid_config() {
 }
 
 #[test]
-fn test_init_twice_fails() {
+fn test_init_twice_succeeds() {
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith");
 
@@ -65,16 +65,17 @@ fn test_init_twice_fails() {
         .arg("init")
         .env("DOTSMITH_CONFIG_DIR", &config_dir)
         .assert()
-        .success();
+        .success()
+        .stdout(predicate::str::contains("Initialized dotsmith"));
 
-    // Second init fails
+    // Second init also succeeds (idempotent)
     Command::cargo_bin("dotsmith")
         .unwrap()
         .arg("init")
         .env("DOTSMITH_CONFIG_DIR", &config_dir)
         .assert()
-        .failure()
-        .stderr(predicate::str::contains("already initialized"));
+        .success()
+        .stdout(predicate::str::contains("already initialized"));
 }
 
 #[test]
@@ -102,4 +103,39 @@ fn test_init_file_permissions() {
         .mode()
         & 0o777;
     assert_eq!(manifest_mode, 0o600, "manifest.toml should be 0600");
+}
+
+#[test]
+fn test_auto_init_on_list() {
+    let tmp = TempDir::new().unwrap();
+    let config_dir = tmp.path().join("dotsmith");
+
+    // Run list without prior init — should auto-initialize and succeed
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .arg("list")
+        .env("DOTSMITH_CONFIG_DIR", &config_dir)
+        .assert()
+        .success();
+
+    // Verify config files were created
+    assert!(config_dir.join("manifest.toml").exists());
+    assert!(config_dir.join("config.toml").exists());
+}
+
+#[test]
+fn test_auto_init_on_status() {
+    let tmp = TempDir::new().unwrap();
+    let config_dir = tmp.path().join("dotsmith");
+
+    // Run status without prior init — should auto-initialize and succeed
+    Command::cargo_bin("dotsmith")
+        .unwrap()
+        .arg("status")
+        .env("DOTSMITH_CONFIG_DIR", &config_dir)
+        .assert()
+        .success();
+
+    assert!(config_dir.join("manifest.toml").exists());
+    assert!(config_dir.join("config.toml").exists());
 }

@@ -5,16 +5,47 @@ use anyhow::{Context, Result};
 use colored::Colorize;
 
 use crate::core::config::DotsmithConfig;
-use crate::core::errors::DotsmithError;
 use crate::core::manifest::Manifest;
 use crate::util;
+
+/// Ensure dotsmith is initialized. Creates config dir, config.toml, and
+/// manifest.toml if they don't exist. Silent — no stdout output.
+/// Idempotent: returns Ok immediately if already initialized.
+pub fn ensure_initialized() -> Result<()> {
+    let config_dir = util::paths::config_dir()?;
+
+    if config_dir.join("manifest.toml").exists() {
+        return Ok(());
+    }
+
+    fs::create_dir_all(&config_dir)
+        .with_context(|| format!("failed to create {}", config_dir.display()))?;
+    fs::set_permissions(&config_dir, fs::Permissions::from_mode(0o700))
+        .with_context(|| format!("failed to set permissions on {}", config_dir.display()))?;
+
+    if !config_dir.join("config.toml").exists() {
+        let config = DotsmithConfig::default();
+        config.save(&config_dir)?;
+    }
+
+    if !config_dir.join("manifest.toml").exists() {
+        let manifest = Manifest::default();
+        manifest.save(&config_dir)?;
+    }
+
+    Ok(())
+}
 
 pub fn run(verbose: bool) -> Result<()> {
     let config_dir = util::paths::config_dir()?;
 
-    // Check if already initialized
     if config_dir.join("manifest.toml").exists() {
-        return Err(DotsmithError::AlreadyInitialized(config_dir.display().to_string()).into());
+        println!(
+            "{} dotsmith is already initialized at {}",
+            "OK".green().bold(),
+            config_dir.display()
+        );
+        return Ok(());
     }
 
     // Create config directory with restricted permissions

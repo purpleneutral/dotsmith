@@ -17,9 +17,6 @@ pub enum DotsmithError {
     #[error("dotsmith is not initialized — run `dotsmith init` first")]
     NotInitialized,
 
-    #[error("dotsmith is already initialized at {0}")]
-    AlreadyInitialized(String),
-
     #[error("path '{path}' resolves outside your home directory to '{resolved}'")]
     #[allow(dead_code)]
     PathTraversal { path: String, resolved: String },

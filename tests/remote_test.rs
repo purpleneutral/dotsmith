@@ -14,17 +14,27 @@ fn init_dotsmith(config_dir: &std::path::Path) {
 }
 
 #[test]
-fn test_deploy_remote_not_initialized() {
+fn test_deploy_remote_without_init_auto_initializes() {
     let tmp = TempDir::new().unwrap();
     let config_dir = tmp.path().join("dotsmith-noinit");
 
-    Command::cargo_bin("dotsmith")
+    // Should auto-initialize; with empty manifest, expect "No files" or ssh error
+    let output = Command::cargo_bin("dotsmith")
         .unwrap()
         .args(["deploy-remote", "example.com", "--dry-run"])
         .env("DOTSMITH_CONFIG_DIR", &config_dir)
-        .assert()
-        .failure()
-        .stderr(predicate::str::contains("not initialized"));
+        .output()
+        .unwrap();
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(
+        stdout.contains("No files") || stderr.contains("ssh"),
+        "Expected 'No files' or 'ssh' error, got stdout: {stdout}, stderr: {stderr}",
+    );
+
+    assert!(config_dir.join("manifest.toml").exists());
 }
 
 #[test]

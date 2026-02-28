@@ -29,7 +29,7 @@ pub enum DeployActionType {
 /// Plan a deploy operation for a tool without executing it.
 /// This analyzes what would happen if we deployed symlinks.
 ///
-/// `source_dir` is where the config files live (e.g., `~/.config/oz/dots/tmux`)
+/// `source_dir` is where the config files live (e.g., `~/dotfiles/tmux`)
 /// `target_dir` is where the symlinks should be created (e.g., `~/.config/tmux`)
 pub fn plan_deploy(
     source_dir: &Path,

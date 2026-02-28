@@ -19,7 +19,7 @@ man_page = "zshall"
 config_format = "shell"
 
 plugins_supported = true
-plugin_dir = "~/.config/zsh/zinix-mgr"
+plugin_dir = "~/.config/zsh/plugins"
 
 categories = [
     "history",

@@ -45,7 +45,7 @@ added_at = "2025-02-10T14:45:22Z"
 tier = 1
 config_paths = ["~/.config/zsh/scripts", "~/.config/zsh/.zshenv", "~/.config/zsh/.zshrc"]
 plugins_managed = false
-plugin_manager = "zinix-mgr"
+plugin_manager = "zinit"
 added_at = "2025-02-10T14:32:20Z"
 
 [tools.ranger]
@@ -95,7 +95,7 @@ This applies to the manifest, config, snapshot database, backups, generated file
 
 dotsmith stores paths in **tilde-contracted** form (e.g., `~/.config/tmux/tmux.conf`) for portability across environments. Paths are expanded to absolute form when accessed.
 
-**Symlink tracking:** When you `dotsmith add` a tool whose config is a symlink (e.g., `~/.config/tmux` → `~/.config/oz/dots/tmux`), dotsmith records the user-facing path (`~/.config/tmux`), not the symlink target. This means snapshots and diffs work against the path you expect.
+**Symlink tracking:** When you `dotsmith add` a tool whose config is a symlink (e.g., `~/.config/tmux` → `~/dotfiles/tmux`), dotsmith records the user-facing path (`~/.config/tmux`), not the symlink target. This means snapshots and diffs work against the path you expect.
 
 ## See Also
 

@@ -170,7 +170,7 @@ These options show up in `dotsmith explore` under `plugin:*` categories and in `
 When you run `dotsmith add`, it detects existing plugin managers:
 
 - **TPM** (tmux Plugin Manager)
-- **zinit**, **oh-my-zsh**, **zsh_unplugged**, **zinix-mgr** (zsh)
+- **zinit**, **oh-my-zsh**, **zsh_unplugged** (zsh)
 - **lazy.nvim** (neovim)
 
 These are noted in the manifest but never replaced or modified. dotsmith plugin management is opt-in -- you explicitly choose to use it by running `dotsmith plugins <tool> add`.

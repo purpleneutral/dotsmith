@@ -3,3 +3,19 @@
 *.swo
 *~
 .DS_Store
+
+# Sensitive / local-only files
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.db
+*.sqlite
+*.sqlite3
+WORKBENCH_PLAN.md
+
+# IDE
+.idea/
+.vscode/

@@ -42,7 +42,7 @@ Z Shell -- a powerful interactive shell with extensive customization.
 | **Config paths** | `~/.config/zsh`, `~/.zshrc`, `~/.zshenv`, `~/.zprofile`, `~/.zsh` |
 | **Reload** | Shell restart required |
 | **Config format** | shell (not validated) |
-| **Plugins** | Supported (zinit, oh-my-zsh, zinix-mgr detected) |
+| **Plugins** | Supported (zinit, oh-my-zsh, zsh_unplugged detected) |
 | **Homepage** | [zsh.org](https://www.zsh.org/) |
 
 ### Git
